@@ -4,10 +4,21 @@
  */
 package Persistencia;
 
+import Entidades.Cliente;
+import java.util.List;
+
 /**
  *
  * @author Chris
  */
 public interface IClienteDAO {
+    public Cliente agregar(Cliente cliente) throws PersistenciaException;
+
+    public void actualizarCliente(Cliente cliente) throws PersistenciaException;
+
+    public void eliminarCliente(int idCliente) throws PersistenciaException;
     
+    public List<Cliente> buscarCliente(int limit, int offset) throws PersistenciaException;
+
+    public Cliente buscarClientePorId(int idCliente) throws PersistenciaException;
 }
