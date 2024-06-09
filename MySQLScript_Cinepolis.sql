@@ -3,19 +3,19 @@ USE cinepolis;
 
 -- Creación de tablas
 
-CREATE TABLE Pais (
+CREATE TABLE Paises (
     pais_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Ciudad (
+CREATE TABLE Ciudades (
     ciudad_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     pais_id INT,
     FOREIGN KEY (pais_id) REFERENCES Pais(pais_id)
 );
 
-CREATE TABLE Sucursal (
+CREATE TABLE Sucursales (
     sucursal_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     direccion VARCHAR(255) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE Sucursal (
     FOREIGN KEY (ciudad_id) REFERENCES Ciudad(ciudad_id)
 );
 
-CREATE TABLE Sala (
+CREATE TABLE Salas (
     sala_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     num_asientos INT NOT NULL,
@@ -33,22 +33,25 @@ CREATE TABLE Sala (
     FOREIGN KEY (sucursal_id) REFERENCES Sucursal(sucursal_id)
 );
 
-CREATE TABLE Cliente (
+CREATE TABLE Clientes (
     cliente_id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
+    nombres VARCHAR(255) NOT NULL,
+	apellidoPA VARCHAR(255) NOT NULL,
+    apellidoMA VARCHAR(255) NOT NULL,
     correo VARCHAR(255) NOT NULL,
     fechaNacimiento DATE NOT NULL,
     ubicacion POINT NOT NULL,
+    
     ciudad_id INT,
     FOREIGN KEY (ciudad_id) REFERENCES Ciudad(ciudad_id)
 );
 
-CREATE TABLE Genero (
+CREATE TABLE Generos (
     genero_id INT AUTO_INCREMENT PRIMARY KEY,
     nombreGenero VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Pelicula (
+CREATE TABLE Peliculas (
     pelicula_id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     sinopsis TEXT NOT NULL,
@@ -59,7 +62,7 @@ CREATE TABLE Pelicula (
     clasificacion VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE Funcion (
+CREATE TABLE Funciones (
     funcion_id INT AUTO_INCREMENT PRIMARY KEY,
     precio DECIMAL(10, 2) NOT NULL,
     dia ENUM('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo') NOT NULL,
@@ -72,7 +75,7 @@ CREATE TABLE Funcion (
     FOREIGN KEY (pelicula_id) REFERENCES Pelicula(pelicula_id)
 );
 
-CREATE TABLE Compra (
+CREATE TABLE Compras (
     compra_id INT AUTO_INCREMENT PRIMARY KEY,
     fecha_compra DATE NOT NULL,
     cantidad_Boletos INT NOT NULL,
@@ -94,7 +97,7 @@ CREATE TABLE Pelicula_Genero (
 DELIMITER $$
 
 CREATE TRIGGER actualizar_asientos
-AFTER INSERT ON Compra
+AFTER INSERT ON Compras
 FOR EACH ROW
 BEGIN
     DECLARE asientos_actuales INT;
@@ -102,21 +105,21 @@ BEGIN
     -- Obtener los asientos disponibles de la función correspondiente
     SELECT asientos_Disponibles
     INTO asientos_actuales
-    FROM Funcion
+    FROM Funciones
     WHERE funcion_id = NEW.funcion_id;
-	UPDATE Funcion
+	UPDATE Funciones
 	SET asientos_Disponibles = asientos_Disponibles - NEW.cantidad_Boletos
 	WHERE funcion_id = NEW.funcion_id;
 END $$
 
 CREATE TRIGGER calcular_total_compra
-BEFORE INSERT ON Compra
+BEFORE INSERT ON Compras
 FOR EACH ROW
 BEGIN
     DECLARE precio_funcion DECIMAL(10, 2);
     -- Obtener el precio de la función correspondiente
     SELECT precio INTO precio_funcion
-    FROM Funcion
+    FROM Funciones
     WHERE funcion_id = NEW.funcion_id;
 
     -- Calcular el total de la compra
@@ -125,23 +128,23 @@ END $$
 
 CREATE PROCEDURE actualizarDuracionTotal()
 BEGIN
-    UPDATE Funcion f
-    JOIN Sala s ON f.sala_id = s.sala_id
-    JOIN Pelicula p ON f.pelicula_id = p.pelicula_id
+    UPDATE Funciones f
+    JOIN Salas s ON f.sala_id = s.sala_id
+    JOIN Peliculas p ON f.pelicula_id = p.pelicula_id
     SET f.duracionTotal = s.duracionLimpieza + p.duracion;
 END $$
 
 DELIMITER ;
 
 -- Insertar datos de prueba
-INSERT INTO Pais (nombre) VALUES ('México');
-INSERT INTO Ciudad (nombre, pais_id) VALUES ('CDMX', 1);
-INSERT INTO Sucursal (nombre, direccion, ubicacion, ciudad_id) VALUES ('Sucursal Centro', 'Av. Reforma', ST_GeomFromText('POINT(19.4326 -99.1332)'), 1);
-INSERT INTO Sala (nombre, num_asientos, duracionLimpieza, sucursal_id) VALUES ('Sala 1', 50, 30, 1);
-INSERT INTO Pelicula (titulo, sinopsis, pais, duracion, clasificacion) VALUES ('Pelicula 1', 'Sinopsis de Pelicula 1', 'México', 120, 'A');
-INSERT INTO Funcion (precio, dia, hora, asientos_Disponibles, duracionTotal, sala_id, pelicula_id) VALUES (100.00, 'Lunes', '18:00:00', 50, 150, 1, 1);
-INSERT INTO Cliente (nombre, correo, fechaNacimiento, ubicacion, ciudad_id) VALUES ('Juan Pérez', 'juan@example.com', '1990-01-01', ST_GeomFromText('POINT(19.4326 -99.1332)'), 1);
-INSERT INTO Compra (fecha_compra, cantidad_Boletos, cliente_id, funcion_id)
+INSERT INTO Paises (nombre) VALUES ('México');
+INSERT INTO Ciudades (nombre, pais_id) VALUES ('CDMX', 1);
+INSERT INTO Sucursales (nombre, direccion, ubicacion, ciudad_id) VALUES ('Sucursal Centro', 'Av. Reforma', ST_GeomFromText('POINT(19.4326 -99.1332)'), 1);
+INSERT INTO Salas (nombre, num_asientos, duracionLimpieza, sucursal_id) VALUES ('Sala 1', 50, 30, 1);
+INSERT INTO Peliculas (titulo, sinopsis, pais, duracion, clasificacion) VALUES ('Pelicula 1', 'Sinopsis de Pelicula 1', 'México', 120, 'A');
+INSERT INTO Funcions (precio, dia, hora, asientos_Disponibles, duracionTotal, sala_id, pelicula_id) VALUES (100.00, 'Lunes', '18:00:00', 50, 150, 1, 1);
+INSERT INTO Clientes (nombres, apellidoPA, apellidoMA, correo, fechaNacimiento, ubicacion, ciudad_id) VALUES ('Juan Alonso','Perez','Lopez', 'juan@example.com', '1990-01-01', ST_GeomFromText('POINT(19.4326 -99.1332)'), 1);
+INSERT INTO Compras (fecha_compra, cantidad_Boletos, cliente_id, funcion_id)
 VALUES (CURRENT_DATE(), 2, 1, 1);
 -- Actualizar la duración total de las funciones
 CALL actualizarDuracionTotal();
