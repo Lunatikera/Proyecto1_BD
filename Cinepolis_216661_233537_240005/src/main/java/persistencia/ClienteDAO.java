@@ -6,6 +6,7 @@ package persistencia;
 
 import entidades.Cliente;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,30 +28,77 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public Cliente agregar(Cliente cliente) throws PersistenciaException {
+        String sentenciaSQLCliente = "INSERT INTO Clientes (nombres, apellidoPA, apellidoMA, correo, contraseña, fechaNacimiento, ubicacion, ciudad_id) VALUES (?,?,?,?,?,?,?,?);";
+        String sentenciaSQLCiudad = "INSERT INTO Ciudades (nombre, pais_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE ciudad_id=LAST_INSERT_ID(ciudad_id);";
+        String sentenciaSQLPais = "INSERT INTO Paises (nombre) VALUES (?) ON DUPLICATE KEY UPDATE pais_id=LAST_INSERT_ID(pais_id);";
+        String obtenerPaisIdSQL = "SELECT pais_id FROM Paises WHERE nombre = ?";
+        String obtenerCiudadIdSQL = "SELECT ciudad_id FROM Ciudades WHERE nombre = ? AND pais_id = ?";
 
-        String sentenciaSQL = "INSERT INTO clientes (nombre, correo, fechaNacimiento, ubicacion) VALUES (?,?,?,?);";
         Connection conexion = null;
-        PreparedStatement pS = null;
+        PreparedStatement pSCiudad = null;
+        PreparedStatement pSPais = null;
+        PreparedStatement pSCliente = null;
+        PreparedStatement pSObtenerPaisId = null;
+        PreparedStatement pSObtenerCiudadId = null;
         ResultSet res = null;
 
         try {
             conexion = this.conexionBD.crearConexion();
             conexion.setAutoCommit(false);
-            pS = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
+            pSObtenerPaisId = conexion.prepareStatement(obtenerPaisIdSQL);
+            pSObtenerPaisId.setString(1, cliente.getPais());
+            res = pSObtenerPaisId.executeQuery();
+            int paisId = -1;
+            if (res.next()) {
+                paisId = res.getInt(1);
+            } else {
+                pSPais = conexion.prepareStatement(sentenciaSQLPais, Statement.RETURN_GENERATED_KEYS);
+                pSPais.setString(1, cliente.getPais());
+                pSPais.executeUpdate();
+                res = pSPais.getGeneratedKeys();
+                if (res.next()) {
+                    paisId = res.getInt(1);
+                } else {
+                    throw new PersistenciaException("No se pudo obtener el ID del país.");
+                }
+            }
 
-            pS.setString(1, cliente.getNombre());
-            pS.setString(2, cliente.getApellidoPA());
-            pS.setString(3, cliente.getApellidoMA());
-            pS.setString(4, cliente.getCorreo());
-            pS.setString(5, cliente.getContraseña());
-            pS.setDate(6, cliente.getFechaNacimiento());
-            pS.setDouble(7, cliente.getUbicacion());
-            pS.setInt(8, cliente.getIdCiudad());
+            pSObtenerCiudadId = conexion.prepareStatement(obtenerCiudadIdSQL);
+            pSObtenerCiudadId.setString(1, cliente.getCiudad());
+            pSObtenerCiudadId.setInt(2, paisId);
+            res = pSObtenerCiudadId.executeQuery();
+            int ciudadId = -1;
+            if (res.next()) {
+                ciudadId = res.getInt(1);
+            } else {
+                pSCiudad = conexion.prepareStatement(sentenciaSQLCiudad, Statement.RETURN_GENERATED_KEYS);
+                pSCiudad.setString(1, cliente.getCiudad());
+                pSCiudad.setInt(2, paisId);
+                pSCiudad.executeUpdate();
+                res = pSCiudad.getGeneratedKeys();
+                if (res.next()) {
+                    ciudadId = res.getInt(1);
+                } else {
+                    throw new PersistenciaException("No se pudo obtener el ID de la ciudad.");
+                }
+            }
 
-            pS.executeUpdate();
+            cliente.setIdCiudad(ciudadId);
 
-            res = pS.getGeneratedKeys();
+            java.sql.Date sqlDate = new java.sql.Date(cliente.getFechaNacimiento().getTime());
 
+            pSCliente = conexion.prepareStatement(sentenciaSQLCliente, Statement.RETURN_GENERATED_KEYS);
+            pSCliente.setString(1, cliente.getNombre());
+            pSCliente.setString(2, cliente.getApellidoPA());
+            pSCliente.setString(3, cliente.getApellidoMA());
+            pSCliente.setString(4, cliente.getCorreo());
+            pSCliente.setString(5, cliente.getContraseña());
+            pSCliente.setDate(6, sqlDate);
+            pSCliente.setObject(7, cliente.getUbicacion());
+            pSCliente.setInt(8, cliente.getIdCiudad());
+            pSCliente.executeUpdate();
+
+            res = pSCliente.getGeneratedKeys();
             int idGenerado = -1;
             if (res.next()) {
                 idGenerado = res.getInt(1);
@@ -76,15 +124,17 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public void actualizarCliente(Cliente cliente) throws PersistenciaException {
 
-        String sentenciaSQL = "UPDATE clientes SET nombre = ?, correo = ?, fechaNacimiento = ?, ubicacion = ?;";
+        String sentenciaSQL = "UPDATE clientes SET nombres = ?, apellidoPA = ?, apellidoMA = ?, correo = ?, contraseña = ?, fechaNacimiento = ?, ubicacion = ?, ciudad_id = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+
+            java.sql.Date sqlDate = new java.sql.Date(cliente.getFechaNacimiento().getTime());
 
             pS.setString(1, cliente.getNombre());
             pS.setString(2, cliente.getApellidoPA());
             pS.setString(3, cliente.getApellidoMA());
             pS.setString(4, cliente.getCorreo());
             pS.setString(5, cliente.getContraseña());
-            pS.setDate(6, cliente.getFechaNacimiento());
+            pS.setDate(6, sqlDate);
             pS.setDouble(7, cliente.getUbicacion());
             pS.setInt(8, cliente.getIdCiudad());
 
@@ -129,6 +179,7 @@ public class ClienteDAO implements IClienteDAO {
                     cliente.setApellidoPA(rs.getString("apellidoPA"));
                     cliente.setApellidoMA(rs.getString("apellidoMA"));
                     cliente.setCorreo(rs.getString("correo"));
+                    cliente.setContraseña(rs.getString("contraseña"));
                     cliente.setFechaNacimiento(rs.getDate("fechaNacimiento"));
                     cliente.setIdCiudad(rs.getInt("ciudad_id"));
                     clientes.add(cliente);
