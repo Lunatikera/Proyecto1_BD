@@ -10,7 +10,6 @@ import negocio.IClienteNegocio;
 import persistencia.ClienteDAO;
 import persistencia.ConexionBD;
 import persistencia.IClienteDAO;
-import persistencia.IConexionBD;
 
 /**
  *
@@ -26,5 +25,6 @@ public class Main {
 
         FrmInicio frmCrud = new FrmInicio(clienteNeg);
         frmCrud.show();
+
     }
 }

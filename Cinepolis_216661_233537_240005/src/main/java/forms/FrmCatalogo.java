@@ -4,17 +4,49 @@
  */
 package forms;
 
+import dtos.PeliculaDTO;
+import java.awt.Image;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import negocio.IPeliculaNegocio;
+import negocio.NegocioException;
+import negocio.PeliculaNegocio;
+import persistencia.ConexionBD;
+import persistencia.IConexionBD;
+import persistencia.IPeliculaDAO;
+import persistencia.PeliculaDAO;
+import static utilerias.Utilidades.textoConSaltosLinea;
+
 /**
  *
  * @author Usuario
  */
 public class FrmCatalogo extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmCatalogo
-     */
-    public FrmCatalogo() {
+    private int pagina = 1;
+    private final int LIMITE = 4;
+    private JButton[] botones;
+    private JLabel[] labels;
+    IPeliculaNegocio peliculas;
+    private List<PeliculaDTO> peliculasCargadas;
+
+    public FrmCatalogo(IPeliculaNegocio peliculas) {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(this);
+        this.peliculas = peliculas;
+        botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
+        labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
+        this.cargarMetodosIniciales();
+
+    }
+
+    private void cargarMetodosIniciales() {
+        this.cargarPeliculas();
+        this.estadoPagina();
     }
 
     /**
@@ -171,39 +203,44 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnPaginaSiguiente1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/flechaDer.png"))); // NOI18N
         BtnPaginaSiguiente1.setBorderPainted(false);
         BtnPaginaSiguiente1.setContentAreaFilled(false);
+        BtnPaginaSiguiente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPaginaSiguiente1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(76, 76, 76)
                 .addComponent(LblNumeroPagina1)
-                .addGap(80, 80, 80))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BtnPaginaSiguiente1)
+                .addContainerGap(32, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 11, Short.MAX_VALUE)
                     .addComponent(BtnPaginaAnterior1)
-                    .addGap(54, 54, 54)
-                    .addComponent(BtnPaginaSiguiente1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 133, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(LblNumeroPagina1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(BtnPaginaSiguiente1)
+                    .addComponent(LblNumeroPagina1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BtnPaginaAnterior1)
-                        .addComponent(BtnPaginaSiguiente1))
+                    .addComponent(BtnPaginaAnterior1)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, 190, -1));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 480, 190, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -219,6 +256,36 @@ public class FrmCatalogo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void cargarPeliculas() {
+        try {
+            List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
+            this.llenarCampos(peliculasLista);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Informacion", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }
+
+    private void llenarCampos(List<PeliculaDTO> peliculasLista) {
+        for (int i = 0; i < peliculasLista.size(); i++) {
+            botones[i].setEnabled(true);
+            ImageIcon icon = new ImageIcon(peliculasLista.get(i).getCartel());
+            Image scaledImage = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+            botones[i].setIcon(new ImageIcon(scaledImage));
+            labels[i].setText(textoConSaltosLinea(peliculasLista.get(i).getTitulo(),5));
+        }
+        // Limpiar botones y etiquetas restantes
+        for (int i = peliculasLista.size(); i < LIMITE; i++) {
+            ImageIcon icono = new ImageIcon(("carteles/ComingSoon.jpg"));
+            Image scaledIcono = icono.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+            botones[i].setIcon(new ImageIcon(scaledIcono));
+            labels[i].setText("");
+            botones[i].setEnabled(false);
+
+        }
+
+    }
+
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnPerfilActionPerformed
@@ -228,12 +295,50 @@ public class FrmCatalogo extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed
-        // TODO add your handling code here:
+        this.pagina = this.pagina - 1;
+        this.cargarPeliculas();
+        this.estadoPagina();
+
     }//GEN-LAST:event_BtnPaginaAnterior1ActionPerformed
 
-    private void BtnLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLogoActionPerformed
+
+    private void BtnPaginaSiguiente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaSiguiente1ActionPerformed
+        this.pagina = this.pagina + 1;
+        this.cargarPeliculas();
+        this.estadoPagina();
+    }//GEN-LAST:event_BtnPaginaSiguiente1ActionPerformed
+
+    private void estadoPagina() {
+        String numPagina = String.valueOf(pagina);
+        if (numPagina.length() == 1) {
+            numPagina = "0" + numPagina;
+        }
+        LblNumeroPagina1.setText(numPagina);
+        estatusBotonAtras();
+        estatusBotonSiguiente();
+    }
+
+    private void estatusBotonAtras() {
+        if (this.pagina > 1) {
+            BtnPaginaAnterior1.setEnabled(true);
+            return;
+        }
+        BtnPaginaAnterior1.setEnabled(false);
+    }
+
+    private void estatusBotonSiguiente() {
+
+        try {
+            BtnPaginaSiguiente1.setEnabled(true);
+            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1) == null
+                    || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1).isEmpty()) {
+                BtnPaginaSiguiente1.setEnabled(false);
+            }
+        } catch (NegocioException ex) {
+            System.out.println(ex);
+        }
+    }
+
 
     /**
      * @param args the command line arguments
@@ -265,7 +370,10 @@ public class FrmCatalogo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmCatalogo().setVisible(true);
+                IConexionBD conexion = new ConexionBD();
+                IPeliculaDAO peliculaDAO = new PeliculaDAO(conexion);
+                IPeliculaNegocio peliculas = new PeliculaNegocio(peliculaDAO);
+                new FrmCatalogo(peliculas).setVisible(true);
             }
         });
     }

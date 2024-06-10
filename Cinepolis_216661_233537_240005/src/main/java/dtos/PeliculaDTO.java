@@ -16,13 +16,13 @@ public class PeliculaDTO {
     private String pais;
     private String link_trailer;
     private int duracion;
-    private byte[] cartel;
+    private String cartel;
     private String clasificacion;
 
     public PeliculaDTO() {
     }
 
-    public PeliculaDTO(int id, String titulo, String sinopsis, String pais, String link_trailer, int duracion, byte[] cartel, String clasificacion) {
+    public PeliculaDTO(int id, String titulo, String sinopsis, String pais, String link_trailer, int duracion, String cartel, String clasificacion) {
         this.id = id;
         this.titulo = titulo;
         this.sinopsis = sinopsis;
@@ -33,7 +33,7 @@ public class PeliculaDTO {
         this.clasificacion = clasificacion;
     }
 
-    public PeliculaDTO(String titulo, String sinopsis, String pais, String link_trailer, int duracion, byte[] cartel, String clasificacion) {
+    public PeliculaDTO(String titulo, String sinopsis, String pais, String link_trailer, int duracion, String cartel, String clasificacion) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.pais = pais;
@@ -91,11 +91,11 @@ public class PeliculaDTO {
         this.duracion = duracion;
     }
 
-    public byte[] getCartel() {
+    public String getCartel() {
         return cartel;
     }
 
-    public void setCartel(byte[] cartel) {
+    public void setCartel(String cartel) {
         this.cartel = cartel;
     }
 

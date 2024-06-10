@@ -27,7 +27,8 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public Cliente agregar(Cliente cliente) throws PersistenciaException {
-        String sentenciaSQL = "INSERT INTO Clientes (nombres, apellidoPA, apellidoMA, correo, contraseña, fechaNacimiento, ubicacion, ciudad_id) VALUES (?,?,?,?,?,?,?,?);";
+
+        String sentenciaSQL = "INSERT INTO clientes (nombre, correo, fechaNacimiento, ubicacion) VALUES (?,?,?,?);";
         Connection conexion = null;
         PreparedStatement pS = null;
         ResultSet res = null;
@@ -73,7 +74,8 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public void actualizarCliente(Cliente cliente) throws PersistenciaException {
-        String sentenciaSQL = "UPDATE Clientes SET nombre = ?, apellidoPA = ?,apellidoMA = ?, correo = ?, contraseña = ?, fechaNacimiento = ?, ubicacion = ?, ciudad_id = ?;";
+
+        String sentenciaSQL = "UPDATE clientes SET nombre = ?, correo = ?, fechaNacimiento = ?, ubicacion = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, cliente.getNombre());
@@ -93,7 +95,8 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public void eliminarCliente(int idCliente) throws PersistenciaException {
-        String sentenciaSQL = "DELETE FROM Clientes WHERE cliente_id = ?;";
+
+        String sentenciaSQL = "DELETE FROM clientes WHERE cliente_id = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setInt(1, idCliente);
@@ -110,7 +113,8 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public List<Cliente> buscarCliente(int limit, int offset) throws PersistenciaException {
         List<Cliente> clientes = new ArrayList<>();
-        String sql = "SELECT * FROM Clientes LIMIT ? OFFSET ?";
+
+        String sql = "SELECT * FROM clientes LIMIT ? OFFSET ?";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setInt(1, limit);
@@ -137,7 +141,8 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public Cliente buscarClientePorId(int idCliente) throws PersistenciaException {
-        String sentenciaSQL = "SELECT * FROM Clientes WHERE cliente_id = ?;";
+
+        String sentenciaSQL = "SELECT * FROM clientes WHERE cliente_id = ?;";
         ResultSet res = null;
 
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {

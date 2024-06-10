@@ -5,6 +5,7 @@
 package persistencia;
 
 import entidades.Pelicula;
+import enums.Clasificaciones;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,8 +27,8 @@ public class PeliculaDAO implements IPeliculaDAO {
     }
 
     @Override
-    public Pelicula agregar(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "INSERT INTO Peliculas (titulo, sinopsis, pais, link_Trailer,duracion,cartel,clasificacion) VALUES (?,?,?,?,?,?,?);";
+    public void agregar(Pelicula pelicula) throws PersistenciaException {
+        String sentenciaSQL = "INSERT INTO peliculas (titulo, sinopsis, pais, link_Trailer, duracion, cartel, clasificacion) VALUES (?,?,?,?,?,?,?);";
         Connection conexion = null;
         PreparedStatement pS = null;
         ResultSet res = null;
@@ -42,8 +43,8 @@ public class PeliculaDAO implements IPeliculaDAO {
             pS.setString(3, pelicula.getPais());
             pS.setString(4, pelicula.getLink_trailer());
             pS.setInt(5, pelicula.getDuracion());
-            pS.setBytes(6, pelicula.getCartel());
-            pS.setString(7, pelicula.getClasificacion());
+            pS.setString(6, pelicula.getCartel());
+            pS.setString(7, pelicula.getClasificacion().name());
 
             pS.executeUpdate();
 
@@ -57,7 +58,6 @@ public class PeliculaDAO implements IPeliculaDAO {
                 throw new PersistenciaException("No se pudo obtener el ID generado.");
             }
             conexion.commit();
-            return pelicula;
         } catch (SQLException e) {
             if (conexion != null) {
                 try {
@@ -72,16 +72,17 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "UPDATE Peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
-        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+        String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
+        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+
 
             pS.setString(1, pelicula.getTitulo());
             pS.setString(2, pelicula.getSinopsis());
             pS.setString(3, pelicula.getPais());
             pS.setString(4, pelicula.getLink_trailer());
             pS.setInt(5, pelicula.getDuracion());
-            pS.setBytes(6, pelicula.getCartel());
-            pS.setString(7, pelicula.getClasificacion());
+            pS.setString(6, pelicula.getCartel());
+            pS.setString(7, pelicula.getClasificacion().name());
 
             pS.executeUpdate();
         } catch (SQLException e) {
@@ -91,8 +92,9 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void eliminarPelicula(int idCliente) throws PersistenciaException {
-        String sentenciaSQL = "DELETE FROM Peliculas WHERE pelicula_id = ?;";
-        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+
+        String sentenciaSQL = "DELETE FROM peliculas WHERE pelicula_id = ?;";
+        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setInt(1, idCliente);
             int filasAfectadas = pS.executeUpdate();
@@ -108,13 +110,14 @@ public class PeliculaDAO implements IPeliculaDAO {
     @Override
     public List<Pelicula> buscarPelicula(int limit, int offset) throws PersistenciaException {
         List<Pelicula> peliculas = new ArrayList<>();
-        String sql = "SELECT * FROM Peliculas LIMIT ? OFFSET ?";
-        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+        String sql = "SELECT * FROM peliculas LIMIT ? OFFSET ?";
+        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setInt(1, limit);
             ps.setInt(2, offset);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Pelicula pelicula = new Pelicula();
                     pelicula.setId(rs.getInt("pelicula_id"));
@@ -123,8 +126,8 @@ public class PeliculaDAO implements IPeliculaDAO {
                     pelicula.setPais(rs.getString("pais"));
                     pelicula.setLink_trailer(rs.getString("link_Trailer"));
                     pelicula.setDuracion(rs.getInt("duracion"));
-                    pelicula.setCartel(rs.getBytes("cartel"));
-                    pelicula.setClasificacion(rs.getString("clasificacion"));
+                    pelicula.setCartel(rs.getString("cartel"));
+                    pelicula.setClasificacion(Clasificaciones.valueOf(rs.getString("clasificacion")));
                     peliculas.add(pelicula);
                 }
             }
@@ -136,10 +139,11 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public Pelicula buscarPeliculaPorId(int idPelicula) throws PersistenciaException {
-        String sentenciaSQL = "SELECT * FROM Peliculas WHERE pelicula_id = ?;";
+
+        String sentenciaSQL = "SELECT * FROM peliculas WHERE pelicula_id = ?;";
         ResultSet res = null;
 
-        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
+        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
 
             ps.setInt(1, idPelicula);
 
@@ -153,8 +157,8 @@ public class PeliculaDAO implements IPeliculaDAO {
                 pelicula.setPais(res.getString("pais"));
                 pelicula.setLink_trailer(res.getString("link_Trailer"));
                 pelicula.setDuracion(res.getInt("duracion"));
-                pelicula.setCartel(res.getBytes("cartel"));
-                pelicula.setClasificacion(res.getString("clasificacion"));
+                pelicula.setCartel(res.getString("cartel"));
+                pelicula.setClasificacion(Clasificaciones.valueOf(res.getString("clasificacion")));
                 return pelicula;
             } else {
                 throw new PersistenciaException("No se encontró la pelicula con ID: " + idPelicula);
