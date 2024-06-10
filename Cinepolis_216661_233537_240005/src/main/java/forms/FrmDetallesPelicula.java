@@ -4,9 +4,13 @@
  */
 package forms;
 
+import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
+import utilerias.Forms;
 import utilerias.Utilidades;
 import static utilerias.Utilidades.textoConSaltosLinea;
 
@@ -16,11 +20,18 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  */
 public class FrmDetallesPelicula extends javax.swing.JFrame {
 
+    IPeliculaNegocio peliculas;
+    private IClienteNegocio clienteNeg;
+    private ClienteDTO cliente;
     PeliculaDTO pelicula;
 
-    public FrmDetallesPelicula(PeliculaDTO pelicula) {
+    public FrmDetallesPelicula(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
         initComponents();
+        this.setLocationRelativeTo(this);
         this.pelicula = pelicula;
+        this.peliculas = peliculas;
+        this.cliente = cliente;
+        this.clienteNeg = clienteNeg;
         cargarDetallesPelicula();
     }
 
@@ -232,7 +243,7 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        // TODO add your handling code here:
+        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
 
