@@ -7,6 +7,7 @@ package dtos;
 import java.awt.Point;
 import java.util.Date;
 
+
 /**
  *
  * @author Chris
@@ -22,11 +23,10 @@ public class ClienteDTO {
     private Date fechaNacimiento;
     private Point ubicacion;
     private int idCiudad;
-    private String ciudad;
-    private String pais;
 
     public ClienteDTO() {
     }
+
 
     public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.id = id;
@@ -38,11 +38,11 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
-        this.ciudad = ciudad;
-        this.pais = pais;
     }
 
+
     public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
+
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
         this.apellidoMA = apellidoMA;
@@ -51,8 +51,6 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
-        this.ciudad = ciudad;
-        this.pais = pais;
     }
 
     public int getId() {
@@ -117,22 +115,6 @@ public class ClienteDTO {
 
     public void setUbicacion(Point ubicacion) {
         this.ubicacion = ubicacion;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 
     public int getIdCiudad() {
