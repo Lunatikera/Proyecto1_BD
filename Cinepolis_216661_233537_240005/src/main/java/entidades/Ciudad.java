@@ -11,23 +11,13 @@ package entidades;
 public class Ciudad {
     private int id;
     private String nombre;
-    private int idPais;
 
-    public Ciudad(int ciudadId, String nombre, int idPais) {
+    public Ciudad(int ciudadId, String nombre) {
         this.nombre = nombre;
-        this.idPais=idPais;
     }
 
     public int getId() {
         return id;
-    }
-
-    public int getIdPais() {
-        return idPais;
-    }
-
-    public void setIdPais(int idPais) {
-        this.idPais = idPais;
     }
 
     public void setId(int id) {

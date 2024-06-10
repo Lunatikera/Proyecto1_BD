@@ -4,7 +4,6 @@
  */
 package entidades;
 
-
 import java.awt.Point;
 import java.util.Date;
 import java.util.Objects;
@@ -24,10 +23,11 @@ public class Cliente {
     private Date fechaNacimiento;
     private Point ubicacion;
     private int idCiudad;
+    private String ciudad;
+    private String pais;
 
     public Cliente() {
     }
-
 
     public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.id = id;
@@ -39,8 +39,9 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
+        this.ciudad = ciudad;
+        this.pais = pais;
     }
-
 
     public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.nombre = nombre;
@@ -51,6 +52,8 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
+        this.ciudad = ciudad;
+        this.pais = pais;
     }
 
     public int getId() {
@@ -123,6 +126,22 @@ public class Cliente {
 
     public void setUbicacion(Point ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
     @Override
