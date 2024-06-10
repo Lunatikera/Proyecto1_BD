@@ -175,7 +175,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         tblClientes = new javax.swing.JTable();
         bRegresar = new javax.swing.JButton();
         bSiguiente = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblPagina = new javax.swing.JLabel();
         txtFiltroNombre = new javax.swing.JTextField();
         txtFiltroCorreo = new javax.swing.JTextField();
 
@@ -261,9 +261,14 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
         bSiguiente.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         bSiguiente.setText("Siguiente");
+        bSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSiguienteActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel1.setText("Pagina 1");
+        lblPagina.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPagina.setText("Pagina 1");
 
         txtFiltroNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,7 +292,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(bRegresar)
                 .addGap(352, 352, 352)
-                .addComponent(jLabel1)
+                .addComponent(lblPagina)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(bSiguiente)
                 .addContainerGap())
@@ -312,7 +317,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bRegresar)
                     .addComponent(bSiguiente)
-                    .addComponent(jLabel1))
+                    .addComponent(lblPagina))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -324,7 +329,9 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogoActionPerformed
 
     private void bRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRegresarActionPerformed
-        // TODO add your handling code here:
+        this.pagina = this.pagina - 1;
+        this.cargarClientesEnTabla();
+        this.lblPagina.setText("Página " + this.pagina);
     }//GEN-LAST:event_bRegresarActionPerformed
 
     private void txtFiltroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroNombreActionPerformed
@@ -353,8 +360,14 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg,pelicula), this);
+        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
+
+    private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
+        this.pagina = this.pagina + 1;
+        this.cargarClientesEnTabla();
+        this.lblPagina.setText("Página " + this.pagina);
+    }//GEN-LAST:event_bSiguienteActionPerformed
 
     private void ordenarPorColumna(int columnIndexToSort) {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblClientes.getRowSorter();
@@ -379,9 +392,9 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private javax.swing.JButton BtnLogo;
     private javax.swing.JButton bRegresar;
     private javax.swing.JButton bSiguiente;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPagina;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtFiltroCorreo;
     private javax.swing.JTextField txtFiltroNombre;
