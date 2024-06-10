@@ -34,7 +34,7 @@ public class PaisNegocio implements IPaisNegocio {
             return listaPaisesDTO;
 
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al obtener la lista de países desde la capa de negocio", e);
+            throw new NegocioException("Error al obtener la lista de países", e);
         }
     }
 
