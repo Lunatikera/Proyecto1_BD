@@ -27,6 +27,7 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public Cliente agregar(Cliente cliente) throws PersistenciaException {
+
         String sentenciaSQL = "INSERT INTO clientes (nombre, correo, fechaNacimiento, ubicacion) VALUES (?,?,?,?);";
         Connection conexion = null;
         PreparedStatement pS = null;
@@ -38,9 +39,13 @@ public class ClienteDAO implements IClienteDAO {
             pS = conexion.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
 
             pS.setString(1, cliente.getNombre());
-            pS.setString(2, cliente.getCorreo());
-            pS.setDate(3, cliente.getFechaNacimiento());
-            pS.setDouble(4, cliente.getUbicacion());
+            pS.setString(2, cliente.getApellidoPA());
+            pS.setString(3, cliente.getApellidoMA());
+            pS.setString(4, cliente.getCorreo());
+            pS.setString(5, cliente.getContraseña());
+            pS.setDate(6, cliente.getFechaNacimiento());
+            pS.setDouble(7, cliente.getUbicacion());
+            pS.setInt(8, cliente.getIdCiudad());
 
             pS.executeUpdate();
 
@@ -69,13 +74,18 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public void actualizarCliente(Cliente cliente) throws PersistenciaException {
+
         String sentenciaSQL = "UPDATE clientes SET nombre = ?, correo = ?, fechaNacimiento = ?, ubicacion = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, cliente.getNombre());
-            pS.setString(2, cliente.getCorreo());
-            pS.setDate(3, cliente.getFechaNacimiento());
-            pS.setDouble(4, cliente.getUbicacion());
+            pS.setString(2, cliente.getApellidoPA());
+            pS.setString(3, cliente.getApellidoMA());
+            pS.setString(4, cliente.getCorreo());
+            pS.setString(5, cliente.getContraseña());
+            pS.setDate(6, cliente.getFechaNacimiento());
+            pS.setDouble(7, cliente.getUbicacion());
+            pS.setInt(8, cliente.getIdCiudad());
 
             pS.executeUpdate();
         } catch (SQLException e) {
@@ -85,6 +95,7 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public void eliminarCliente(int idCliente) throws PersistenciaException {
+
         String sentenciaSQL = "DELETE FROM clientes WHERE cliente_id = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
@@ -102,6 +113,7 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public List<Cliente> buscarCliente(int limit, int offset) throws PersistenciaException {
         List<Cliente> clientes = new ArrayList<>();
+
         String sql = "SELECT * FROM clientes LIMIT ? OFFSET ?";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
@@ -112,10 +124,12 @@ public class ClienteDAO implements IClienteDAO {
                 while (rs.next()) {
                     Cliente cliente = new Cliente();
                     cliente.setId(rs.getInt("cliente_id"));
-                    cliente.setNombre(rs.getString("nombre"));
+                    cliente.setNombre(rs.getString("nombres"));
+                    cliente.setApellidoPA(rs.getString("apellidoPA"));
+                    cliente.setApellidoMA(rs.getString("apellidoMA"));
                     cliente.setCorreo(rs.getString("correo"));
                     cliente.setFechaNacimiento(rs.getDate("fechaNacimiento"));
-                    cliente.setUbicacion(rs.getDouble("ubicacion"));
+                    cliente.setIdCiudad(rs.getInt("ciudad_id"));
                     clientes.add(cliente);
                 }
             }
@@ -127,6 +141,7 @@ public class ClienteDAO implements IClienteDAO {
 
     @Override
     public Cliente buscarClientePorId(int idCliente) throws PersistenciaException {
+
         String sentenciaSQL = "SELECT * FROM clientes WHERE cliente_id = ?;";
         ResultSet res = null;
 
@@ -139,16 +154,49 @@ public class ClienteDAO implements IClienteDAO {
             if (res.next()) {
                 Cliente cliente = new Cliente();
                 cliente.setId(res.getInt("cliente_id"));
-                cliente.setNombre(res.getString("nombre"));
+                cliente.setNombre(res.getString("nombres"));
+                cliente.setApellidoPA(res.getString("apellidoPA"));
+                cliente.setApellidoMA(res.getString("apellidoMA"));
                 cliente.setCorreo(res.getString("correo"));
+                cliente.setContraseña(res.getString("contraseña"));
                 cliente.setFechaNacimiento(res.getDate("fechaNacimiento"));
-                cliente.setUbicacion(res.getDouble("ubicacion"));
+                cliente.setIdCiudad(res.getInt("ciudad_id"));
                 return cliente;
             } else {
                 throw new PersistenciaException("No se encontró el cliente con ID: " + idCliente);
             }
         } catch (SQLException e) {
             throw new PersistenciaException("Error al buscar el cliente por ID: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Cliente buscarClientePorCorreo(String correo) throws PersistenciaException {
+        String sentenciaSQL = "SELECT * FROM Clientes WHERE correo = ?;";
+        ResultSet res = null;
+
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
+
+            ps.setString(1, correo);
+
+            res = ps.executeQuery();
+
+            if (res.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId(res.getInt("cliente_id"));
+                cliente.setNombre(res.getString("nombres"));
+                cliente.setApellidoPA(res.getString("apellidoPA"));
+                cliente.setApellidoMA(res.getString("apellidoMA"));
+                cliente.setCorreo(res.getString("correo"));
+                cliente.setContraseña(res.getString("contraseña"));
+                cliente.setFechaNacimiento(res.getDate("fechaNacimiento"));
+                cliente.setIdCiudad(res.getInt("ciudad_id"));
+                return cliente;
+            } else {
+                throw new PersistenciaException("No se encontró el cliente registrado con el correo: " + correo);
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Error al buscar el cliente por su correo: " + e.getMessage());
         }
     }
 

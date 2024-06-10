@@ -3,11 +3,13 @@
  */
 package cinepolis;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import negocio.GenerarTicket;
+import forms.FrmCatalogoClientes;
+import forms.FrmInicio;
+import negocio.ClienteNegocio;
+import negocio.IClienteNegocio;
+import persistencia.ClienteDAO;
 import persistencia.ConexionBD;
-import persistencia.IConexionBD;
+import persistencia.IClienteDAO;
 
 /**
  *
@@ -17,12 +19,12 @@ public class Main {
 
     public static void main(String[] args) {
         IConexionBD conexionBD = new ConexionBD();
-        GenerarTicket generarTicket = new GenerarTicket(conexionBD);
-        try {
-            generarTicket.crearTicket(1); 
-            System.out.println("Ticket generado correctamente en la ruta fija.");
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
+        IClienteDAO clientesDAO = new ClienteDAO(conexionBD);
+
+        IClienteNegocio clienteNeg = new ClienteNegocio(clientesDAO);
+
+        FrmInicio frmCrud = new FrmInicio(clienteNeg);
+        frmCrud.show();
+
     }
 }

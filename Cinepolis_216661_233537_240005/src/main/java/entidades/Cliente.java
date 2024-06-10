@@ -15,7 +15,10 @@ public class Cliente {
 
     private int id;
     private String nombre;
+    private String apellidoPA;
+    private String apellidoMA;
     private String correo;
+    private String contraseña;
     private Date fechaNacimiento;
     private double ubicacion;
     private int idCiudad;
@@ -23,18 +26,24 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String correo, Date fechaNacimiento, double ubicacion, int idCiudad) {
+    public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
         this.id = id;
         this.nombre = nombre;
+        this.apellidoPA = apellidoPA;
+        this.apellidoMA = apellidoMA;
         this.correo = correo;
+        this.contraseña = contraseña;
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
     }
 
-    public Cliente(String nombre, String correo, Date fechaNacimiento, double ubicacion, int idCiudad) {
+    public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
         this.nombre = nombre;
+        this.apellidoPA = apellidoPA;
+        this.apellidoMA = apellidoMA;
         this.correo = correo;
+        this.contraseña = contraseña;
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
@@ -64,12 +73,36 @@ public class Cliente {
         this.nombre = nombre;
     }
 
+    public String getApellidoPA() {
+        return apellidoPA;
+    }
+
+    public void setApellidoPA(String apellidoPA) {
+        this.apellidoPA = apellidoPA;
+    }
+
+    public String getApellidoMA() {
+        return apellidoMA;
+    }
+
+    public void setApellidoMA(String apellidoMA) {
+        this.apellidoMA = apellidoMA;
+    }
+
     public String getCorreo() {
         return correo;
     }
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public Date getFechaNacimiento() {

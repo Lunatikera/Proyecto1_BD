@@ -75,6 +75,7 @@ public class PeliculaDAO implements IPeliculaDAO {
         String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
         try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
+
             pS.setString(1, pelicula.getTitulo());
             pS.setString(2, pelicula.getSinopsis());
             pS.setString(3, pelicula.getPais());
@@ -91,6 +92,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void eliminarPelicula(int idCliente) throws PersistenciaException {
+
         String sentenciaSQL = "DELETE FROM peliculas WHERE pelicula_id = ?;";
         try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
@@ -108,6 +110,7 @@ public class PeliculaDAO implements IPeliculaDAO {
     @Override
     public List<Pelicula> buscarPelicula(int limit, int offset) throws PersistenciaException {
         List<Pelicula> peliculas = new ArrayList<>();
+
         String sql = "SELECT * FROM peliculas LIMIT ? OFFSET ?";
         try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sql)) {
 
@@ -136,6 +139,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public Pelicula buscarPeliculaPorId(int idPelicula) throws PersistenciaException {
+
         String sentenciaSQL = "SELECT * FROM peliculas WHERE pelicula_id = ?;";
         ResultSet res = null;
 
