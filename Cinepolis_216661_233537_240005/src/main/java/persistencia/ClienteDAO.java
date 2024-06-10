@@ -251,4 +251,23 @@ public class ClienteDAO implements IClienteDAO {
         }
     }
 
+    public boolean existeClienteConCorreo(String correo) throws PersistenciaException {
+        String sql = "SELECT COUNT(*) FROM Clientes WHERE correo = ?";
+
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, correo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Error al verificar la existencia del cliente con correo electrónico: " + correo);
+        }
+        return false;
+    }
+
 }

@@ -27,4 +27,6 @@ public interface IClienteNegocio {
 
     public List<ClienteDTO> buscarClientes(int limite, int pagina) throws NegocioException;
     
+    public boolean existeClienteConCorreo(String correo) throws NegocioException;
+    
 }
