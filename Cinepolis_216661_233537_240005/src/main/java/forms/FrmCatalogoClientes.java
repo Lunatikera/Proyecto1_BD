@@ -5,6 +5,7 @@
 package forms;
 
 import dtos.ClienteDTO;
+import dtos.PeliculaDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
+import utilerias.Forms;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
@@ -29,16 +32,22 @@ import utilerias.JButtonRenderer;
 public class FrmCatalogoClientes extends javax.swing.JFrame {
 
     private int pagina = 1;
-    private final int limite = 2;
+    private final int limite = 10;
     private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculas;
+    private PeliculaDTO pelicula;
+    private ClienteDTO cliente;
 
     /**
      * Creates new form FrmCatalogoClientes
      */
-    public FrmCatalogoClientes(IClienteNegocio clienteNeg) {
+    public FrmCatalogoClientes(IClienteNegocio clienteNeg, IPeliculaNegocio peliculas, PeliculaDTO pelicula, ClienteDTO cliente) {
         initComponents();
-
+        this.setLocationRelativeTo(this);
         this.clienteNeg = clienteNeg;
+        this.peliculas = peliculas;
+        this.pelicula = pelicula;
+        this.cliente = cliente;
         this.cargarMetodosIniciales();
     }
 
@@ -185,6 +194,11 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
         BtnLittleLogo.setContentAreaFilled(false);
+        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLittleLogoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -337,6 +351,10 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
+        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg,pelicula), this);
+    }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void ordenarPorColumna(int columnIndexToSort) {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblClientes.getRowSorter();
