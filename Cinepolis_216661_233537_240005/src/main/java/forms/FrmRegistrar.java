@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
 import utilerias.Forms;
 
 /**
@@ -18,13 +19,15 @@ import utilerias.Forms;
 public class FrmRegistrar extends javax.swing.JFrame {
 
     IClienteNegocio clienteNeg;
+    IPeliculaNegocio peliNeg;
 
     /**
      * Creates new form FrmRegistrar
      */
-    public FrmRegistrar(IClienteNegocio clienteNeg) {
+    public FrmRegistrar(IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg) {
         initComponents();
         this.clienteNeg = clienteNeg;
+        this.peliNeg = peliNeg;
         this.setLocationRelativeTo(this);
     }
 
@@ -306,7 +309,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
     private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
-        Forms.cargarForm(new FrmInicio(clienteNeg), this);
+        Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
     }//GEN-LAST:event_bAtrasActionPerformed
 
     private void agregarCliente() {
@@ -368,7 +371,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
             clienteNeg.agregaCliente(cliente);
 
             JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            Forms.cargarForm(new FrmInicio(clienteNeg), this);
+            Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
