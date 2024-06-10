@@ -4,10 +4,13 @@
  */
 package negocio;
 
+import dtos.PaisDTO;
+import java.util.List;
+
 /**
  *
  * @author Usuario
  */
 public interface IPaisNegocio {
-    
+    public List<PaisDTO> listaPaises() throws NegocioException;
 }
