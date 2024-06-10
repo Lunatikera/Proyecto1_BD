@@ -124,6 +124,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
         BtnLittleLogo.setBorderPainted(false);
         BtnLittleLogo.setContentAreaFilled(false);
+        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLittleLogoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -339,6 +344,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
         this.estadoPagina();
     }//GEN-LAST:event_BtnPaginaSiguiente1ActionPerformed
 
+
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(0);
         System.out.println(pelicula);
@@ -367,6 +373,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
         libroForm.setVisible(true);
 
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
+
+    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLittleLogoActionPerformed
+
 
     private void estadoPagina() {
         String numPagina = String.valueOf(pagina);
