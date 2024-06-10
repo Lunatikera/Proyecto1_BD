@@ -81,6 +81,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
         BtnLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
         BtnLogo.setContentAreaFilled(false);
+        BtnLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLogoActionPerformed(evt);
+            }
+        });
 
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
         BtnLittleLogo.setContentAreaFilled(false);
@@ -99,7 +104,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -124,7 +129,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 100));
         jPanel1.add(BtnPelicula4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 195, 163, 210));
         jPanel1.add(BtnPelicula1, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 195, 163, 210));
         jPanel1.add(BtnPelicula2, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 195, 163, 210));
@@ -225,6 +230,10 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnPaginaAnterior1ActionPerformed
+
+    private void BtnLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLogoActionPerformed
 
     /**
      * @param args the command line arguments

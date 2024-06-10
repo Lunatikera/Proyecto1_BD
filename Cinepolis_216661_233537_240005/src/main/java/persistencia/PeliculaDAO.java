@@ -27,7 +27,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public Pelicula agregar(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "INSERT INTO pelicula (titulo, sinopsis, pais, link_Trailer,duracion,cartel,clasificacion) VALUES (?,?,?,?,?,?,?);";
+        String sentenciaSQL = "INSERT INTO Peliculas (titulo, sinopsis, pais, link_Trailer,duracion,cartel,clasificacion) VALUES (?,?,?,?,?,?,?);";
         Connection conexion = null;
         PreparedStatement pS = null;
         ResultSet res = null;
@@ -72,7 +72,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "UPDATE pelicula SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
+        String sentenciaSQL = "UPDATE Peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, pelicula.getTitulo());
@@ -91,7 +91,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void eliminarPelicula(int idCliente) throws PersistenciaException {
-        String sentenciaSQL = "DELETE FROM pelicula WHERE pelicula_id = ?;";
+        String sentenciaSQL = "DELETE FROM Peliculas WHERE pelicula_id = ?;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setInt(1, idCliente);
@@ -108,7 +108,7 @@ public class PeliculaDAO implements IPeliculaDAO {
     @Override
     public List<Pelicula> buscarPelicula(int limit, int offset) throws PersistenciaException {
         List<Pelicula> peliculas = new ArrayList<>();
-        String sql = "SELECT * FROM pelicula LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM Peliculas LIMIT ? OFFSET ?";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setInt(1, limit);
@@ -136,7 +136,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public Pelicula buscarPeliculaPorId(int idPelicula) throws PersistenciaException {
-        String sentenciaSQL = "SELECT * FROM pelicula WHERE pelicula_id = ?;";
+        String sentenciaSQL = "SELECT * FROM Peliculas WHERE pelicula_id = ?;";
         ResultSet res = null;
 
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
