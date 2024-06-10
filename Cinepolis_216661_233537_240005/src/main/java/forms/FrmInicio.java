@@ -229,8 +229,10 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
+
         Forms.cargarForm(new FrmRegistrar(clienteNeg, peliculaNeg), this);
-    }//GEN-LAST:event_BtnRegistrarseActionPerformed
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnIniciarSesion;
