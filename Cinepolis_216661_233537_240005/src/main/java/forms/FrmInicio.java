@@ -9,7 +9,10 @@ import dtos.PeliculaDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import negocio.ClienteNegocio;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
@@ -23,16 +26,21 @@ public class FrmInicio extends javax.swing.JFrame {
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliculaNeg;
     PeliculaDTO pelicula;
+    ICiudadNegocio ciudadNeg;
+    IPaisNegocio paisNeg;
 
     /**
      * Creates new form FrmInicio
      */
-    public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg) {
+    public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg,
+            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.peliculaNeg = peliculaNeg;
         this.clienteNeg = clienteNeg;
         this.pelicula = new PeliculaDTO();
+        this.ciudadNeg=ciudadNeg;
+        this.paisNeg=paisNeg;
     }
 
     /**
@@ -230,7 +238,7 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        Forms.cargarForm(new FrmRegistrar(clienteNeg, peliculaNeg), this);
+        Forms.cargarForm(new FrmRegistrar(clienteNeg, peliculaNeg, ciudadNeg, paisNeg), this);
     }//GEN-LAST:event_BtnRegistrarseActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

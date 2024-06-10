@@ -12,6 +12,7 @@ import java.util.List;
  * @author Usuario
  */
 public interface ICiudadDAO {
-       public List<Ciudad> listaCiudades(String pais) throws PersistenciaException;
- 
+
+    public List<Ciudad> listaCiudades(String pais) throws PersistenciaException;
+
 }

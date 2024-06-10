@@ -4,12 +4,23 @@
  */
 package forms;
 
+import dtos.CiudadDTO;
 import dtos.ClienteDTO;
+import dtos.PaisDTO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.NegocioException;
 import utilerias.Forms;
 
 /**
@@ -20,15 +31,25 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliNeg;
+    ICiudadNegocio ciudadNeg;
+    IPaisNegocio paisNeg;
+    List<CiudadDTO> listaCiudades;
+    List<PaisDTO> listaPaises;
 
     /**
      * Creates new form FrmRegistrar
      */
-    public FrmRegistrar(IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg) {
+    public FrmRegistrar(IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
+            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.clienteNeg = clienteNeg;
         this.peliNeg = peliNeg;
+        this.ciudadNeg = ciudadNeg;
+        this.paisNeg = paisNeg;
+        listaCiudades = new ArrayList<>();
+        listaPaises = new ArrayList<>();
         this.setLocationRelativeTo(this);
+        llenarComboBoxPaises();
     }
 
     /**
@@ -51,7 +72,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
         txtCorreo = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
-        jdcFecha = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -63,7 +84,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         txtApellidos1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        bAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,7 +148,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Contraseña:");
 
-        jdcFecha.setBackground(new java.awt.Color(5, 16, 42));
+        jDateChooser1.setBackground(new java.awt.Color(5, 16, 42));
 
         jLabel4.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -142,15 +162,14 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Pais:");
 
-        cbCiudad.setBackground(new java.awt.Color(0, 0, 0));
+        cbCiudad.setBackground(new java.awt.Color(187, 187, 187));
         cbCiudad.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         cbCiudad.setForeground(new java.awt.Color(204, 204, 204));
-        cbCiudad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ciudad obregon" }));
 
-        cbPais.setBackground(new java.awt.Color(0, 0, 0));
+        cbPais.setBackground(new java.awt.Color(187, 187, 187));
         cbPais.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         cbPais.setForeground(new java.awt.Color(204, 204, 204));
-        cbPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mexico" }));
+        cbPais.setToolTipText("");
 
         jButton1.setBackground(new java.awt.Color(252, 207, 4));
         jButton1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
@@ -180,25 +199,17 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Apellido Materno:");
 
-        bAtras.setBackground(new java.awt.Color(252, 207, 4));
-        bAtras.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        bAtras.setForeground(new java.awt.Color(0, 0, 0));
-        bAtras.setText("Atras");
-        bAtras.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        bAtras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAtrasActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(78, 78, 78)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
+                        .addGap(115, 115, 115)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblNombres)
                             .addComponent(jLabel1)
@@ -213,7 +224,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jdcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtContraseña)
                                 .addComponent(txtNombres)
                                 .addComponent(txtApellidos)
@@ -221,21 +232,14 @@ public class FrmRegistrar extends javax.swing.JFrame {
                                 .addComponent(cbPais, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cbCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtContraseña1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtApellidos1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(bAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel9)))
-                .addContainerGap(226, Short.MAX_VALUE))
+                                .addComponent(txtApellidos1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bAtras))
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombres)
@@ -262,7 +266,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
                     .addComponent(txtContraseña1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jdcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -294,6 +298,44 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void llenarComboBoxPaises() {
+        try {
+            listaPaises = paisNeg.listaPaises();
+
+            for (PaisDTO pais : listaPaises) {
+                cbPais.addItem(pais.getNombre());
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        cbPais.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarComboBoxCiudad();
+            }
+        });
+    }
+
+    private void actualizarComboBoxCiudad() {
+        String PaisSeleccionado = (String) cbPais.getSelectedItem();
+        try {
+            listaCiudades = ciudadNeg.listaCiudades(PaisSeleccionado);
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Limpiar el combo box de ciudades
+        cbCiudad.removeAllItems();
+
+        // Añadir las ciudades correspondientes
+        if (listaCiudades != null) {
+            for (CiudadDTO ciudad : listaCiudades) {
+                cbCiudad.addItem(ciudad.getNombre());
+            }
+        }
+    }
+
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.agregarCliente();
@@ -309,11 +351,11 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
     private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
-        Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
+        Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
     }//GEN-LAST:event_bAtrasActionPerformed
 
     private void agregarCliente() {
-        Date mFecha = jdcFecha.getDate();
+        Date mFecha = jDateChooser1.getDate();
 
         try {
             String nombre = txtNombres.getText().trim();
@@ -371,7 +413,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
             clienteNeg.agregaCliente(cliente);
 
             JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
+            Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -379,10 +421,10 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LblLogo;
-    private javax.swing.JButton bAtras;
     private javax.swing.JComboBox<String> cbCiudad;
     private javax.swing.JComboBox<String> cbPais;
     private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -394,7 +436,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private com.toedter.calendar.JDateChooser jdcFecha;
     private javax.swing.JLabel lblNombres;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtApellidos1;

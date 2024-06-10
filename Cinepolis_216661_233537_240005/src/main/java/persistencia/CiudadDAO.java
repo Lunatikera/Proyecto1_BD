@@ -16,7 +16,11 @@ import java.util.List;
  *
  * @author Usuario
  */
+
 public class CiudadDAO {
+
+public class CiudadDAO implements ICiudadDAO {
+
 
     IConexionBD conexionBD;
 
@@ -24,16 +28,27 @@ public class CiudadDAO {
         this.conexionBD = conexionBD;
     }
 
+
     public List<Ciudad> listaCiudades(String pais) throws PersistenciaException, SQLException {
+
+   public List<Ciudad> listaCiudades(String pais) throws PersistenciaException {
+
         List<Ciudad> ciudades = new ArrayList<>();
 
         // Consulta SQL para obtener las ciudades de un país
         String sentenciaSQL = "SELECT C.ciudad_id, C.nombre "
+
                 + "FROM Ciudades C "
                 + "JOIN Paises P ON C.pais_id = P.pais_id "
                 + "WHERE P.nombre = ?";
 
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+                            + "FROM Ciudades C "
+                            + "JOIN Paises P ON C.pais_id = P.pais_id "
+                            + "WHERE P.nombre = ?";
+
+        try (Connection conexion = this.conexionBD.crearConexion();
+             PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             // Establecer el parámetro de país en la consulta preparada
             pS.setString(1, pais);
@@ -44,6 +59,20 @@ public class CiudadDAO {
                 while (resultSet.next()) {
                     int ciudadId = resultSet.getInt("ciudad_id");
                     String nombre = resultSet.getString("nombre");
+
+                    // Crear un objeto Ciudad y agregarlo a la lista
+                    Ciudad ciudad = new Ciudad(ciudadId, nombre);
+                    ciudades.add(ciudad);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaException("Error al obtener la lista de ciudades", e);
+        }
+
+        return ciudades;
+    }
+}
 
                     // Crear un objeto Ciudad y agregarlo a la lista
                     Ciudad ciudad = new Ciudad(ciudadId, nombre);
