@@ -4,10 +4,17 @@
  */
 package negocio;
 
+import persistencia.IPaisDAO;
+
 /**
  *
  * @author Usuario
  */
-public class PaisNegocio {
-    
+public class PaisNegocio implements IPaisNegocio {
+     private IPaisDAO paisDAO;
+
+    public PaisNegocio(IPaisDAO paisDAO) {
+        this.paisDAO = paisDAO;
+    }
+
 }
