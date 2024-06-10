@@ -183,6 +183,15 @@ public class ClienteNegocio implements IClienteNegocio {
         this.esNumeroNegativo(offset);
         return offset;
     }
+    
+    public boolean existeClienteConCorreo(String correo) throws NegocioException {
+    try {
+        return clienteDAO.existeClienteConCorreo(correo);
+    } catch (PersistenciaException e) {
+        throw new NegocioException("Error al verificar la existencia del cliente con correo electrónico: " + correo);
+    }
+}
+
 
     public boolean existeClienteConCorreo(String correo) throws NegocioException {
         try {

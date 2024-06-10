@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import negocio.NegocioException;
 
 /**
  *
@@ -135,7 +136,7 @@ public class ClienteDAO implements IClienteDAO {
             pS.setString(4, cliente.getCorreo());
             pS.setString(5, cliente.getContraseña());
             pS.setDate(6, sqlDate);
-            pS.setDouble(7, cliente.getUbicacion());
+            pS.setObject(7, cliente.getUbicacion());
             pS.setInt(8, cliente.getIdCiudad());
 
             pS.executeUpdate();
