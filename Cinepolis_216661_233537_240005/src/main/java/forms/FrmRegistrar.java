@@ -341,11 +341,17 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
             if (clienteNeg.existeClienteConCorreo(correo)) {
                 JOptionPane.showMessageDialog(this, "El correo electrónico ya está registrado.", "Error de correo electrónico", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La fecha de nacimiento no es válida o no eres mayor a 16 años.", "Error de fecha de nacimiento", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!contraseña.equals(confirmarContraseña)) {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error de contraseña", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (clienteNeg.existeClienteConCorreo(correo)) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico ya está registrado.", "Error de correo electrónico", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
