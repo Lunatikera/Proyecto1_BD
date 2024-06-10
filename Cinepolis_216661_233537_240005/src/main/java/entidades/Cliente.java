@@ -4,7 +4,9 @@
  */
 package entidades;
 
-import java.sql.Date;
+
+import java.awt.Point;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,13 +22,14 @@ public class Cliente {
     private String correo;
     private String contraseña;
     private Date fechaNacimiento;
-    private double ubicacion;
+    private Point ubicacion;
     private int idCiudad;
 
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
+
+    public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
@@ -38,7 +41,8 @@ public class Cliente {
         this.idCiudad = idCiudad;
     }
 
-    public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
+
+    public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
         this.apellidoMA = apellidoMA;
@@ -113,11 +117,11 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public double getUbicacion() {
+    public Point getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(double ubicacion) {
+    public void setUbicacion(Point ubicacion) {
         this.ubicacion = ubicacion;
     }
 

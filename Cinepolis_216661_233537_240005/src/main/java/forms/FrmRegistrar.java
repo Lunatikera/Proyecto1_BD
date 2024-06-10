@@ -5,6 +5,13 @@
 package forms;
 
 
+import dtos.ClienteDTO;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import negocio.IClienteNegocio;
+import utilerias.Forms;
+
 /**
  *
  * @author Chris
@@ -306,12 +313,51 @@ public class FrmRegistrar extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmRegistrar().setVisible(true);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(mFecha);
+            int añoNacimiento = cal.get(Calendar.YEAR);
+            int añoActual = Calendar.getInstance().get(Calendar.YEAR);
+            int edad = añoActual - añoNacimiento;
+
+            if (añoNacimiento < 1900 || edad < 16) {
+                JOptionPane.showMessageDialog(this, "La fecha de nacimiento no es válida.", "Error de fecha de nacimiento", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+
+            if (clienteNeg.existeClienteConCorreo(correo)) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico ya está registrado.", "Error de correo electrónico", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La fecha de nacimiento no es válida o no eres mayor a 16 años.", "Error de fecha de nacimiento", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!contraseña.equals(confirmarContraseña)) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error de contraseña", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (clienteNeg.existeClienteConCorreo(correo)) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico ya está registrado.", "Error de correo electrónico", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ClienteDTO cliente = new ClienteDTO();
+            cliente.setNombre(nombre);
+            cliente.setApellidoPA(apellidoPA);
+            cliente.setApellidoMA(apellidoMA);
+            cliente.setCorreo(correo);
+            cliente.setContraseña(contraseña);
+            cliente.setFechaNacimiento(mFecha);
+            cliente.setCiudad(ciudad);
+            cliente.setPais(pais);
+
+            clienteNeg.agregaCliente(cliente);
+
+            JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            Forms.cargarForm(new FrmInicio(clienteNeg), this);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

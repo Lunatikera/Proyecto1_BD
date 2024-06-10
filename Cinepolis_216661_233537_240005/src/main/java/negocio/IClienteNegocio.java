@@ -18,13 +18,16 @@ public interface IClienteNegocio {
     public void actualizarCliente(ClienteDTO clienteDTO) throws NegocioException;
 
     public void eliminarCliente(int idCliente) throws NegocioException;
-    
+
     public ClienteDTO iniciarSesion(String correo, String contraseña) throws NegocioException;
 
     public ClienteDTO buscarClientePorId(int idCliente) throws NegocioException;
-    
+
     public ClienteDTO buscarClientePorCorreo(String correo) throws NegocioException;
 
     public List<ClienteDTO> buscarClientes(int limite, int pagina) throws NegocioException;
+
+    public boolean existeClienteConCorreo(String correo) throws NegocioException;
     
+    public boolean existeClienteConCorreo(String correo) throws NegocioException;
 }

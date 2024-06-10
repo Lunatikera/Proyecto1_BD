@@ -4,7 +4,9 @@
  */
 package dtos;
 
-import java.sql.Date;
+import java.awt.Point;
+import java.util.Date;
+
 
 /**
  *
@@ -19,13 +21,14 @@ public class ClienteDTO {
     private String correo;
     private String contraseña;
     private Date fechaNacimiento;
-    private double ubicacion;
+    private Point ubicacion;
     private int idCiudad;
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
+
+    public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
@@ -37,7 +40,9 @@ public class ClienteDTO {
         this.idCiudad = idCiudad;
     }
 
-    public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
+
+    public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
+
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
         this.apellidoMA = apellidoMA;
@@ -104,11 +109,11 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public double getUbicacion() {
+    public Point getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(double ubicacion) {
+    public void setUbicacion(Point ubicacion) {
         this.ubicacion = ubicacion;
     }
 
