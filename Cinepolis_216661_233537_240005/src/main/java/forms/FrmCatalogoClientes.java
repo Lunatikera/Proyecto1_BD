@@ -176,8 +176,6 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         bRegresar = new javax.swing.JButton();
         bSiguiente = new javax.swing.JButton();
         lblPagina = new javax.swing.JLabel();
-        txtFiltroNombre = new javax.swing.JTextField();
-        txtFiltroCorreo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -270,18 +268,6 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         lblPagina.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblPagina.setText("Pagina 1");
 
-        txtFiltroNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFiltroNombreActionPerformed(evt);
-            }
-        });
-
-        txtFiltroCorreo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFiltroCorreoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -296,22 +282,12 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(bSiguiente)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(158, 158, 158))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(74, 74, 74)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -333,14 +309,6 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         this.cargarClientesEnTabla();
         this.lblPagina.setText("Página " + this.pagina);
     }//GEN-LAST:event_bRegresarActionPerformed
-
-    private void txtFiltroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFiltroNombreActionPerformed
-
-    private void txtFiltroCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroCorreoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFiltroCorreoActionPerformed
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         int col = tblClientes.columnAtPoint(evt.getPoint());
@@ -396,7 +364,5 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPagina;
     private javax.swing.JTable tblClientes;
-    private javax.swing.JTextField txtFiltroCorreo;
-    private javax.swing.JTextField txtFiltroNombre;
     // End of variables declaration//GEN-END:variables
 }
