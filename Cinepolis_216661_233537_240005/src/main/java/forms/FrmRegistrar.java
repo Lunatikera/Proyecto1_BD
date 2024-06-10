@@ -355,7 +355,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }//GEN-LAST:event_bAtrasActionPerformed
 
     private void agregarCliente() {
-        Date mFecha = jdcFecha.getDate();
+        Date mFecha = jDateChooser1.getDate();
 
         try {
             String nombre = txtNombres.getText().trim();
