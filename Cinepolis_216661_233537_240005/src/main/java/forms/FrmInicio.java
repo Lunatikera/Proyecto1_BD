@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import negocio.ClienteNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
 import utilerias.Dialogos;
 import utilerias.Forms;
@@ -21,14 +22,15 @@ import utilerias.Forms;
 public class FrmInicio extends javax.swing.JFrame {
 
     IClienteNegocio clienteNeg;
+    IPeliculaNegocio peliculaNeg;
 
     /**
      * Creates new form FrmInicio
      */
-    public FrmInicio(IClienteNegocio clienteNeg) {
+    public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
-
+        this.peliculaNeg = peliculaNeg;
         this.clienteNeg = clienteNeg;
     }
 
@@ -215,14 +217,15 @@ public class FrmInicio extends javax.swing.JFrame {
 
         if (cliente != null) {
             JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. ¡Bienvenido, " + cliente.getNombre() + "!");
+            this.iniciarSesion(cliente);
+
         } else {
             JOptionPane.showMessageDialog(this, "Inicio de sesión fallido. Por favor, verifica tus credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        this.iniciarSesion(cliente);
     }
 
     private void iniciarSesion(ClienteDTO cliente) {
-//        Forms.cargarForm(new sdfsdf(cliente), this);
+        Forms.cargarForm(new FrmCatalogo(peliculaNeg,cliente), this);
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed

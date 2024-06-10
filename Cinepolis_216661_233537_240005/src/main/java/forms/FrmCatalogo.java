@@ -4,8 +4,10 @@
  */
 package forms;
 
+import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,15 +33,18 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private JButton[] botones;
     private JLabel[] labels;
     IPeliculaNegocio peliculas;
+    private ClienteDTO cliente;
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogo(IPeliculaNegocio peliculas) {
+    public FrmCatalogo(IPeliculaNegocio peliculas, ClienteDTO cliente) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
         this.peliculas = peliculas;
+        this.cliente = cliente;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
+        this.peliculasCargadas = new ArrayList<>();
         this.cargarMetodosIniciales();
 
     }
@@ -104,6 +109,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLogOut.setBackground(new java.awt.Color(5, 16, 42));
         BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
         BtnLogOut.setText("Log out");
+        BtnLogOut.setBorderPainted(false);
         BtnLogOut.setContentAreaFilled(false);
         BtnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,9 +118,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
         });
 
         BtnLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
+        BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
+        BtnLittleLogo.setBorderPainted(false);
         BtnLittleLogo.setContentAreaFilled(false);
         BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,16 +135,16 @@ public class FrmCatalogo extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(24, 24, 24)
                 .addComponent(BtnLittleLogo)
-                .addGap(221, 221, 221)
+                .addGap(219, 219, 219)
                 .addComponent(BtnLogo)
-                .addGap(144, 144, 144)
+                .addGap(147, 147, 147)
                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -156,15 +164,39 @@ public class FrmCatalogo extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnLittleLogo)
-                            .addComponent(BtnLogo))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(BtnLogo)
+                            .addComponent(BtnLittleLogo))))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 100));
+
+        BtnPelicula4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPelicula4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnPelicula4, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 195, 163, 210));
+
+        BtnPelicula1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPelicula1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnPelicula1, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 195, 163, 210));
+
+        BtnPelicula2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPelicula2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnPelicula2, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 195, 163, 210));
+
+        BtnPelicula3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPelicula3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnPelicula3, new org.netbeans.lib.awtextra.AbsoluteConstraints(489, 195, 163, 210));
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 48)); // NOI18N
@@ -190,6 +222,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(102, 102, 102));
 
         BtnPaginaAnterior1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/flechaIzq.png"))); // NOI18N
+        BtnPaginaAnterior1.setBorderPainted(false);
         BtnPaginaAnterior1.setContentAreaFilled(false);
         BtnPaginaAnterior1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,6 +292,9 @@ public class FrmCatalogo extends javax.swing.JFrame {
     public void cargarPeliculas() {
         try {
             List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
+            
+            peliculasCargadas.clear();
+            peliculasCargadas.addAll(peliculasLista);
             this.llenarCampos(peliculasLista);
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Informacion", JOptionPane.ERROR_MESSAGE);
@@ -272,7 +308,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
             ImageIcon icon = new ImageIcon(peliculasLista.get(i).getCartel());
             Image scaledImage = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
             botones[i].setIcon(new ImageIcon(scaledImage));
-            labels[i].setText(textoConSaltosLinea(peliculasLista.get(i).getTitulo(),5));
+            labels[i].setText(textoConSaltosLinea(peliculasLista.get(i).getTitulo(), 5));
         }
         // Limpiar botones y etiquetas restantes
         for (int i = peliculasLista.size(); i < LIMITE; i++) {
@@ -308,9 +344,40 @@ public class FrmCatalogo extends javax.swing.JFrame {
         this.estadoPagina();
     }//GEN-LAST:event_BtnPaginaSiguiente1ActionPerformed
 
+
+    private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
+        PeliculaDTO pelicula = peliculasCargadas.get(0);
+        System.out.println(pelicula);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        libroForm.setVisible(true);
+
+    }//GEN-LAST:event_BtnPelicula1ActionPerformed
+
+    private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
+        PeliculaDTO pelicula = peliculasCargadas.get(1);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        libroForm.setVisible(true);
+
+    }//GEN-LAST:event_BtnPelicula2ActionPerformed
+
+    private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
+        PeliculaDTO pelicula = peliculasCargadas.get(2);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        libroForm.setVisible(true);
+
+    }//GEN-LAST:event_BtnPelicula3ActionPerformed
+
+    private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
+        PeliculaDTO pelicula = peliculasCargadas.get(3);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        libroForm.setVisible(true);
+
+    }//GEN-LAST:event_BtnPelicula4ActionPerformed
+
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
+
 
     private void estadoPagina() {
         String numPagina = String.valueOf(pagina);
@@ -343,44 +410,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
         }
     }
 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmCatalogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmCatalogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmCatalogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmCatalogo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                IConexionBD conexion = new ConexionBD();
-                IPeliculaDAO peliculaDAO = new PeliculaDAO(conexion);
-                IPeliculaNegocio peliculas = new PeliculaNegocio(peliculaDAO);
-                new FrmCatalogo(peliculas).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLittleLogo;

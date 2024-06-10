@@ -107,6 +107,7 @@ public class ClienteDAO implements IClienteDAO {
                 throw new PersistenciaException("No se pudo obtener el ID generado.");
             }
             conexion.commit();
+            conexion.close();
             return cliente;
         } catch (SQLException e) {
             if (conexion != null) {
