@@ -23,10 +23,4 @@ public interface IClienteNegocio {
     public ClienteDTO buscarClientePorId(int idCliente) throws NegocioException, PersistenciaException;
 
     public List<ClienteDTO> buscarClientes(int limite, int pagina) throws NegocioException;
-<<<<<<< Updated upstream
-=======
-    
-    public boolean existeClienteConCorreo(String correo) throws NegocioException;
-    
->>>>>>> Stashed changes
 }
