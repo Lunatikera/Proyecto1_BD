@@ -10,6 +10,7 @@ import negocio.IClienteNegocio;
 import persistencia.ClienteDAO;
 import persistencia.ConexionBD;
 import persistencia.IClienteDAO;
+import persistencia.IConexionBD;
 
 /**
  *
