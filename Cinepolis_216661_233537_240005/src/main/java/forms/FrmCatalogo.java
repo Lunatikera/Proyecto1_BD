@@ -13,13 +13,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import negocio.IClienteNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
-import negocio.PeliculaNegocio;
-import persistencia.ConexionBD;
-import persistencia.IConexionBD;
-import persistencia.IPeliculaDAO;
-import persistencia.PeliculaDAO;
+import utilerias.Forms;
 import static utilerias.Utilidades.textoConSaltosLinea;
 
 /**
@@ -32,16 +29,20 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private final int LIMITE = 4;
     private JButton[] botones;
     private JLabel[] labels;
+    IClienteNegocio clienteNeg;
     IPeliculaNegocio peliculas;
+    private PeliculaDTO pelicula;
     private ClienteDTO cliente;
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogo(IPeliculaNegocio peliculas, ClienteDTO cliente) {
+    public FrmCatalogo(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
         this.peliculas = peliculas;
         this.cliente = cliente;
+        this.clienteNeg = clienteNeg;
+        this.pelicula = pelicula;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
@@ -70,6 +71,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
         BtnLittleLogo = new javax.swing.JButton();
+        lblAdmin = new javax.swing.JLabel();
         BtnPelicula4 = new javax.swing.JButton();
         BtnPelicula1 = new javax.swing.JButton();
         BtnPelicula2 = new javax.swing.JButton();
@@ -130,6 +132,14 @@ public class FrmCatalogo extends javax.swing.JFrame {
             }
         });
 
+        lblAdmin.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblAdmin.setText("Modo administrador");
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAdminMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -137,14 +147,16 @@ public class FrmCatalogo extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(BtnLittleLogo)
-                .addGap(219, 219, 219)
+                .addGap(49, 49, 49)
+                .addComponent(lblAdmin)
+                .addGap(61, 61, 61)
                 .addComponent(BtnLogo)
                 .addGap(147, 147, 147)
                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -166,7 +178,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BtnLogo)
                             .addComponent(BtnLittleLogo))))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblAdmin)
+                .addGap(39, 39, 39))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 100));
@@ -292,7 +308,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
     public void cargarPeliculas() {
         try {
             List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
-            
+
             peliculasCargadas.clear();
             peliculasCargadas.addAll(peliculasLista);
             this.llenarCampos(peliculasLista);
@@ -348,36 +364,40 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(0);
         System.out.println(pelicula);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
+        this.dispose();
 
     }//GEN-LAST:event_BtnPelicula1ActionPerformed
 
     private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(1);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(2);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(3);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
+    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
+        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
+    }//GEN-LAST:event_lblAdminMouseClicked
 
     private void estadoPagina() {
         String numPagina = String.valueOf(pagina);
@@ -432,5 +452,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblAdmin;
     // End of variables declaration//GEN-END:variables
 }

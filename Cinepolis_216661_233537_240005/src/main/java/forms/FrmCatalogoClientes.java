@@ -5,6 +5,7 @@
 package forms;
 
 import dtos.ClienteDTO;
+import dtos.PeliculaDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
+import utilerias.Forms;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
@@ -29,16 +32,22 @@ import utilerias.JButtonRenderer;
 public class FrmCatalogoClientes extends javax.swing.JFrame {
 
     private int pagina = 1;
-    private final int limite = 2;
+    private final int limite = 10;
     private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculas;
+    private PeliculaDTO pelicula;
+    private ClienteDTO cliente;
 
     /**
      * Creates new form FrmCatalogoClientes
      */
-    public FrmCatalogoClientes(IClienteNegocio clienteNeg) {
+    public FrmCatalogoClientes(IClienteNegocio clienteNeg, IPeliculaNegocio peliculas, PeliculaDTO pelicula, ClienteDTO cliente) {
         initComponents();
-
+        this.setLocationRelativeTo(this);
         this.clienteNeg = clienteNeg;
+        this.peliculas = peliculas;
+        this.pelicula = pelicula;
+        this.cliente = cliente;
         this.cargarMetodosIniciales();
     }
 
@@ -166,9 +175,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         tblClientes = new javax.swing.JTable();
         bRegresar = new javax.swing.JButton();
         bSiguiente = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        txtFiltroNombre = new javax.swing.JTextField();
-        txtFiltroCorreo = new javax.swing.JTextField();
+        lblPagina = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -185,6 +192,11 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
         BtnLittleLogo.setContentAreaFilled(false);
+        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLittleLogoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -247,21 +259,14 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
         bSiguiente.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         bSiguiente.setText("Siguiente");
-
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel1.setText("Pagina 1");
-
-        txtFiltroNombre.addActionListener(new java.awt.event.ActionListener() {
+        bSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFiltroNombreActionPerformed(evt);
+                bSiguienteActionPerformed(evt);
             }
         });
 
-        txtFiltroCorreo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFiltroCorreoActionPerformed(evt);
-            }
-        });
+        lblPagina.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPagina.setText("Pagina 1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -273,32 +278,22 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(bRegresar)
                 .addGap(352, 352, 352)
-                .addComponent(jLabel1)
+                .addComponent(lblPagina)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(bSiguiente)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(115, 115, 115)
-                .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(158, 158, 158))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(74, 74, 74)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bRegresar)
                     .addComponent(bSiguiente)
-                    .addComponent(jLabel1))
+                    .addComponent(lblPagina))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -310,16 +305,10 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogoActionPerformed
 
     private void bRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRegresarActionPerformed
-        // TODO add your handling code here:
+        this.pagina = this.pagina - 1;
+        this.cargarClientesEnTabla();
+        this.lblPagina.setText("Página " + this.pagina);
     }//GEN-LAST:event_bRegresarActionPerformed
-
-    private void txtFiltroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFiltroNombreActionPerformed
-
-    private void txtFiltroCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroCorreoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFiltroCorreoActionPerformed
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         int col = tblClientes.columnAtPoint(evt.getPoint());
@@ -337,6 +326,16 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
+        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
+    }//GEN-LAST:event_BtnLittleLogoActionPerformed
+
+    private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
+        this.pagina = this.pagina + 1;
+        this.cargarClientesEnTabla();
+        this.lblPagina.setText("Página " + this.pagina);
+    }//GEN-LAST:event_bSiguienteActionPerformed
 
     private void ordenarPorColumna(int columnIndexToSort) {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblClientes.getRowSorter();
@@ -361,11 +360,9 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private javax.swing.JButton BtnLogo;
     private javax.swing.JButton bRegresar;
     private javax.swing.JButton bSiguiente;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPagina;
     private javax.swing.JTable tblClientes;
-    private javax.swing.JTextField txtFiltroCorreo;
-    private javax.swing.JTextField txtFiltroNombre;
     // End of variables declaration//GEN-END:variables
 }

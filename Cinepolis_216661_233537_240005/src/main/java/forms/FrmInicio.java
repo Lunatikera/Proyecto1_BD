@@ -5,6 +5,7 @@
 package forms;
 
 import dtos.ClienteDTO;
+import dtos.PeliculaDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,7 +15,6 @@ import negocio.IClienteNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
-import utilerias.Dialogos;
 import utilerias.Forms;
 
 /**
@@ -25,6 +25,7 @@ public class FrmInicio extends javax.swing.JFrame {
 
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliculaNeg;
+    PeliculaDTO pelicula;
     ICiudadNegocio ciudadNeg;
     IPaisNegocio paisNeg;
 
@@ -37,6 +38,7 @@ public class FrmInicio extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         this.peliculaNeg = peliculaNeg;
         this.clienteNeg = clienteNeg;
+        this.pelicula = new PeliculaDTO();
         this.ciudadNeg=ciudadNeg;
         this.paisNeg=paisNeg;
     }
@@ -232,7 +234,7 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void iniciarSesion(ClienteDTO cliente) {
-        Forms.cargarForm(new FrmCatalogo(peliculaNeg, cliente), this);
+        Forms.cargarForm(new FrmCatalogo(peliculaNeg, cliente,clienteNeg,pelicula), this);
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed

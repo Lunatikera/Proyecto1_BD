@@ -16,15 +16,15 @@ import java.util.List;
  *
  * @author Usuario
  */
-public class CiudadDAO implements ICiudadDAO {
+    public class CiudadDAO implements ICiudadDAO {
 
-    IConexionBD conexionBD;
+        IConexionBD conexionBD;
 
-    public CiudadDAO(IConexionBD conexionBD) {
-        this.conexionBD = conexionBD;
-    }
+        public CiudadDAO(IConexionBD conexionBD) {
+            this.conexionBD = conexionBD;
+        }
 
-    public List<Ciudad> listaCiudades(String pais) throws PersistenciaException {
+ public List<Ciudad> listaCiudades(String pais) throws PersistenciaException {
         List<Ciudad> ciudades = new ArrayList<>();
 
         // Consulta SQL para obtener las ciudades de un país
