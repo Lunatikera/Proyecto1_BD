@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface IPeliculaNegocio {
 
-    public PeliculaDTO agregaPelicula(PeliculaDTO peliculaDTO) throws NegocioException, PersistenciaException;
+    public void agregaPelicula(PeliculaDTO peliculaDTO) throws NegocioException;
 
-    public void actualizarPelicula(PeliculaDTO peliculaDTO) throws NegocioException, PersistenciaException;
+    public void actualizarPelicula(PeliculaDTO peliculaDTO) throws NegocioException;
 
-    public void eliminarPelicula(int idPelicula) throws NegocioException, PersistenciaException;
+    public void eliminarPelicula(int idPelicula) throws NegocioException;
 
-    public PeliculaDTO buscarClientePorId(int idCliente) throws NegocioException, PersistenciaException;
+    public PeliculaDTO buscarPeliculaPorId(int idCliente) throws NegocioException;
 
-    public List<PeliculaDTO> buscarClientes(int limite, int pagina) throws NegocioException;
+    public List<PeliculaDTO> buscarPaginadoPeliculas(int limite, int pagina) throws NegocioException;
 }

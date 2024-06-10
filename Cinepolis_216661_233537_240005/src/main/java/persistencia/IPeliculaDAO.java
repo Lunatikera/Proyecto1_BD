@@ -12,7 +12,7 @@ import java.util.List;
  * @author Chris
  */
 public interface IPeliculaDAO {
-    public Pelicula agregar(Pelicula pelicula) throws PersistenciaException;
+    public void agregar(Pelicula pelicula) throws PersistenciaException;
 
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException;
 
