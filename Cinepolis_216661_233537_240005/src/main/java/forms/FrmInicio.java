@@ -225,12 +225,14 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void iniciarSesion(ClienteDTO cliente) {
-        Forms.cargarForm(new FrmCatalogo(peliculaNeg,cliente), this);
+        Forms.cargarForm(new FrmCatalogo(peliculaNeg, cliente), this);
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnRegistrarseActionPerformed
+
+        Forms.cargarForm(new FrmRegistrar(clienteNeg, peliculaNeg), this);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnIniciarSesion;

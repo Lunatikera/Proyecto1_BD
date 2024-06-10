@@ -29,5 +29,4 @@ public interface IClienteNegocio {
 
     public boolean existeClienteConCorreo(String correo) throws NegocioException;
     
-    public boolean existeClienteConCorreo(String correo) throws NegocioException;
 }

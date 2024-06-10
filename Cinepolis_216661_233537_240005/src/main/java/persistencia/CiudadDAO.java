@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Usuario
  */
-public class CiudadDAO implements ICiudadDAO {
+public class CiudadDAO  {
 
     IConexionBD conexionBD;
 
@@ -61,3 +61,4 @@ public class CiudadDAO implements ICiudadDAO {
     }
 
 }
+

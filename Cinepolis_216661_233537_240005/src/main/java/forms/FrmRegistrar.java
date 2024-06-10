@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import negocio.IClienteNegocio;
+import negocio.IPeliculaNegocio;
 import utilerias.Forms;
 
 /**
@@ -18,6 +19,16 @@ import utilerias.Forms;
  */
 public class FrmRegistrar extends javax.swing.JFrame {
 
+    IClienteNegocio clienteNeg;
+    IPeliculaNegocio peliNeg;
+
+    /**
+     * Creates new form FrmRegistrar
+     */
+    public FrmRegistrar(IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg) {
+        initComponents();
+        this.clienteNeg = clienteNeg;
+        this.peliNeg = peliNeg;
     /**
      * Creates new form FrmRegistrar
      */
@@ -286,33 +297,13 @@ public class FrmRegistrar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
+    private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
+        Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
+    }//GEN-LAST:event_bAtrasActionPerformed
+
+    private void agregarCliente() {
+        Date mFecha = jdcFecha.getDate();
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(mFecha);
@@ -354,7 +345,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
             clienteNeg.agregaCliente(cliente);
 
             JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            Forms.cargarForm(new FrmInicio(clienteNeg), this);
+            Forms.cargarForm(new FrmInicio(clienteNeg,peliNeg), this);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
