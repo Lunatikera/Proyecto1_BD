@@ -4,7 +4,6 @@
  */
 package forms;
 
-
 import dtos.ClienteDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -223,11 +222,11 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void iniciarSesion(ClienteDTO cliente) {
-        Forms.cargarForm(new sdfsdf(cliente), this);
+//        Forms.cargarForm(new sdfsdf(cliente), this);
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        // TODO add your handling code here:
+        Forms.cargarForm(new FrmRegistrar(clienteNeg), this);
     }//GEN-LAST:event_BtnRegistrarseActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

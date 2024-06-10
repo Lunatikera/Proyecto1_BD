@@ -113,14 +113,14 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
         BtnLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
         BtnLogo.setContentAreaFilled(false);
-        BtnLogo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLogoActionPerformed(evt);
-            }
-        });
 
         BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
         BtnLittleLogo.setContentAreaFilled(false);
+        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLittleLogoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -307,6 +307,10 @@ public class FrmCatalogo extends javax.swing.JFrame {
         this.cargarPeliculas();
         this.estadoPagina();
     }//GEN-LAST:event_BtnPaginaSiguiente1ActionPerformed
+
+    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void estadoPagina() {
         String numPagina = String.valueOf(pagina);
