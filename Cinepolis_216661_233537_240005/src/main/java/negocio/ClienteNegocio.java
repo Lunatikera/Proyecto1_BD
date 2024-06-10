@@ -37,9 +37,7 @@ public class ClienteNegocio implements IClienteNegocio {
                 clienteDTO.getContraseña(),
                 clienteDTO.getFechaNacimiento(),
                 clienteDTO.getUbicacion(),
-                clienteDTO.getIdCiudad(),
-                clienteDTO.getCiudad(),
-                clienteDTO.getPais());
+                clienteDTO.getIdCiudad());
         try {
             String contraseñaEncriptada = Encriptacion.encriptarPassword(cliente.getContraseña());
             cliente.setContraseña(contraseñaEncriptada);
@@ -60,10 +58,8 @@ public class ClienteNegocio implements IClienteNegocio {
                     clienteDTO.getContraseña(),
                     clienteDTO.getFechaNacimiento(),
                     clienteDTO.getUbicacion(),
-                    clienteDTO.getIdCiudad(),
-                    clienteDTO.getCiudad(),
-                    clienteDTO.getPais());
-
+                    clienteDTO.getIdCiudad());
+            
             clienteDAO.actualizarCliente(cliente);
         } catch (PersistenciaException e) {
             throw new NegocioException("Error al actualizar el cliente: " + e.getMessage());
@@ -142,9 +138,6 @@ public class ClienteNegocio implements IClienteNegocio {
         dto.setFechaNacimiento(cliente.getFechaNacimiento());
         dto.setUbicacion(cliente.getUbicacion());
         dto.setIdCiudad(cliente.getIdCiudad());
-        dto.setCiudad(cliente.getCiudad());
-        dto.setPais(cliente.getPais());
-
         return dto;
 
     }
@@ -165,8 +158,6 @@ public class ClienteNegocio implements IClienteNegocio {
             dto.setFechaNacimiento(cliente.getFechaNacimiento());
             dto.setUbicacion(cliente.getUbicacion());
             dto.setIdCiudad(cliente.getIdCiudad());
-            dto.setCiudad(cliente.getCiudad());
-            dto.setPais(cliente.getPais());
             clientesDTO.add(dto);
         }
         return clientesDTO;

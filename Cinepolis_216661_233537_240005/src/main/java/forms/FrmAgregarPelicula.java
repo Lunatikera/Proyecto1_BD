@@ -4,6 +4,7 @@
  */
 package forms;
 
+import dtos.PeliculaDTO;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;

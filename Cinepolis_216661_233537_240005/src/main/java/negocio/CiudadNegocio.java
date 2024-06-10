@@ -40,6 +40,22 @@ public class CiudadNegocio implements ICiudadNegocio {
             throw new NegocioException("Error al obtener la lista de ciudades desde la capa de negocio", e);
         }
     }
+    
+     @Override
+    public CiudadDTO obtenerCiudadPorNombre(String nombre) throws NegocioException {
+        try {
+            // Verificar si el nombre de la ciudad no está vacío
+            if (nombre == null || nombre.isEmpty()) {
+                throw new NegocioException("El nombre de la ciudad no puede estar vacío.");
+            }
+            CiudadDTO ciudadDTO=convertirACiudadDTO(ciudadDAO.obtenerCiudadporNombre(nombre));
+            return ciudadDTO;
+        } catch (PersistenciaException e) {
+            // Manejar las excepciones de persistencia y lanzar una excepción de negocio
+            throw new NegocioException("Error al obtener la ciudad por nombre: " + e.getMessage(), e);
+        }
+    }
+
 
     // Método privado para convertir Ciudad a CiudadDTO
     private CiudadDTO convertirACiudadDTO(Ciudad ciudad) {

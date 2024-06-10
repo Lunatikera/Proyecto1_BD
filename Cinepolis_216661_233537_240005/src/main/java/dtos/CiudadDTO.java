@@ -32,5 +32,12 @@ public class CiudadDTO {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    @Override
+    public String toString() {
+        return "CiudadDTO{" + "id=" + id + ", nombre=" + nombre + '}';
+    }
+    
+    
     
 }

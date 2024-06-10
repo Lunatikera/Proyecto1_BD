@@ -14,5 +14,7 @@ import java.util.List;
 public interface ICiudadDAO {
 
     public List<Ciudad> listaCiudades(String pais) throws PersistenciaException;
-
+    
+    public Ciudad obtenerCiudadporNombre(String nombre) throws PersistenciaException;
+ 
 }

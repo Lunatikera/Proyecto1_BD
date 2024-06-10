@@ -9,6 +9,7 @@ import dtos.ClienteDTO;
 import dtos.PaisDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +23,7 @@ import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
+import static utilerias.Geocalizacion.obtenerCoordenadas;
 
 /**
  *
@@ -50,6 +52,12 @@ public class FrmRegistrar extends javax.swing.JFrame {
         listaPaises = new ArrayList<>();
         this.setLocationRelativeTo(this);
         llenarComboBoxPaises();
+        try {
+            System.out.println(obtenerCoordenadas());
+        } catch (IOException ex) {
+            Logger.getLogger(FrmRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -355,7 +363,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }//GEN-LAST:event_bAtrasActionPerformed
 
     private void agregarCliente() {
-        Date mFecha = jdcFecha.getDate();
+        Date mFecha = jDateChooser1.getDate();
 
         try {
             String nombre = txtNombres.getText().trim();
@@ -407,8 +415,9 @@ public class FrmRegistrar extends javax.swing.JFrame {
             cliente.setCorreo(correo);
             cliente.setContraseña(contraseña);
             cliente.setFechaNacimiento(mFecha);
-            cliente.setCiudad(ciudad);
-            cliente.setPais(pais);
+            CiudadDTO ciudadDTO = ciudadNeg.obtenerCiudadPorNombre(ciudad);
+            cliente.setIdCiudad(ciudadDTO.getId());
+            cliente.setUbicacion(obtenerCoordenadas());
 
             clienteNeg.agregaCliente(cliente);
 
@@ -416,6 +425,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
             Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
         }
     }
 

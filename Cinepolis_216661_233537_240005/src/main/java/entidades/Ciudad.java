@@ -13,6 +13,7 @@ public class Ciudad {
     private String nombre;
 
     public Ciudad(int ciudadId, String nombre) {
+        this.id=ciudadId;
         this.nombre = nombre;
     }
 
@@ -30,6 +31,11 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Ciudad{" + "id=" + id + ", nombre=" + nombre + '}';
     }
     
     
