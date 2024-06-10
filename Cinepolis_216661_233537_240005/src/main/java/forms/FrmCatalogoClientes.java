@@ -7,15 +7,18 @@ package forms;
 import dtos.ClienteDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 import negocio.IClienteNegocio;
 import negocio.NegocioException;
-import persistencia.PersistenciaException;
 import utilerias.JButtonCellEditor;
 import utilerias.JButtonRenderer;
 
@@ -84,14 +87,14 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 clienteNeg.eliminarCliente(id);
                 actualizarTabla();
                 JOptionPane.showMessageDialog(this, "Cliente eliminado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } catch (NegocioException | PersistenciaException e) {
+            } catch (NegocioException e) {
                 Logger.getLogger(FrmCatalogoClientes.class.getName()).log(Level.SEVERE, null, e);
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    private void llenarTablaAlumnos(List<ClienteDTO> listaCliente) {
+    private void llenarTablaClientes(List<ClienteDTO> listaCliente) {
         DefaultTableModel modeloTabla = (DefaultTableModel) this.tblClientes.getModel();
 
         if (modeloTabla.getRowCount() > 0) {
@@ -118,7 +121,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private void cargarClientesEnTabla() {
         try {
             List<ClienteDTO> clientes = this.clienteNeg.buscarClientes(limite, pagina);
-            this.llenarTablaAlumnos(clientes);
+            this.llenarTablaClientes(clientes);
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Informacion", JOptionPane.ERROR_MESSAGE);
         }
@@ -164,8 +167,11 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         bRegresar = new javax.swing.JButton();
         bSiguiente = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        txtFiltroNombre = new javax.swing.JTextField();
+        txtFiltroCorreo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 51));
 
@@ -201,6 +207,8 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        tblClientes.setAutoCreateRowSorter(true);
+        tblClientes.setBackground(new java.awt.Color(0, 0, 102));
         tblClientes.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         tblClientes.setForeground(new java.awt.Color(0, 153, 153));
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -222,6 +230,11 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClientes);
 
         bRegresar.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -238,6 +251,18 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel1.setText("Pagina 1");
 
+        txtFiltroNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFiltroNombreActionPerformed(evt);
+            }
+        });
+
+        txtFiltroCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFiltroCorreoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,12 +277,22 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
                 .addComponent(bSiguiente)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(158, 158, 158))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFiltroCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -278,6 +313,49 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bRegresarActionPerformed
 
+    private void txtFiltroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFiltroNombreActionPerformed
+
+    private void txtFiltroCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFiltroCorreoActionPerformed
+
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+        int col = tblClientes.columnAtPoint(evt.getPoint());
+        String name = tblClientes.getColumnName(col);
+
+        switch (name) {
+            case "Nombre":
+                ordenarPorColumna(1);
+                break;
+            case "Apellido Paterno":
+                ordenarPorColumna(2);
+                break;
+            case "Apellido Materno":
+                ordenarPorColumna(3);
+                break;
+        }
+    }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void ordenarPorColumna(int columnIndexToSort) {
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblClientes.getRowSorter();
+
+        if (sorter != null) {
+            List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+            SortOrder sortOrder = SortOrder.ASCENDING;
+
+            List<RowSorter.SortKey> currentSortKeys = (List<RowSorter.SortKey>) sorter.getSortKeys();
+            if (!currentSortKeys.isEmpty() && currentSortKeys.get(0).getColumn() == columnIndexToSort) {
+                SortOrder currentOrder = currentSortKeys.get(0).getSortOrder();
+                sortOrder = currentOrder == SortOrder.ASCENDING ? SortOrder.DESCENDING : SortOrder.ASCENDING;
+            }
+
+            sortKeys.add(new RowSorter.SortKey(columnIndexToSort, sortOrder));
+            sorter.setSortKeys(sortKeys);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLittleLogo;
     private javax.swing.JButton BtnLogo;
@@ -287,5 +365,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblClientes;
+    private javax.swing.JTextField txtFiltroCorreo;
+    private javax.swing.JTextField txtFiltroNombre;
     // End of variables declaration//GEN-END:variables
 }

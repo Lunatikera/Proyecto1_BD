@@ -11,6 +11,8 @@ import persistencia.PersistenciaException;
 import utilerias.Utilidades;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +27,7 @@ public class ClienteNegocio implements IClienteNegocio {
     }
 
     @Override
-    public ClienteDTO agregaCliente(ClienteDTO clienteDTO) throws NegocioException, PersistenciaException {
+    public void agregaCliente(ClienteDTO clienteDTO) throws NegocioException {
         Cliente cliente = new Cliente(clienteDTO.getId(),
                 clienteDTO.getNombre(),
                 clienteDTO.getApellidoPA(),
@@ -35,15 +37,15 @@ public class ClienteNegocio implements IClienteNegocio {
                 clienteDTO.getFechaNacimiento(),
                 clienteDTO.getUbicacion(),
                 clienteDTO.getIdCiudad());
-        Cliente clientNuevo = clienteDAO.agregar(cliente);
-
-        ClienteDTO clienteNuevoDTO = convertirADTO(clientNuevo);
-
-        return clienteNuevoDTO;
+        try {
+            clienteDAO.agregar(cliente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ClienteNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public void actualizarCliente(ClienteDTO clienteDTO) throws NegocioException, PersistenciaException {
+    public void actualizarCliente(ClienteDTO clienteDTO) throws NegocioException {
         try {
             Cliente cliente = new Cliente(clienteDTO.getId(),
                     clienteDTO.getNombre(),
@@ -62,7 +64,7 @@ public class ClienteNegocio implements IClienteNegocio {
     }
 
     @Override
-    public void eliminarCliente(int idCliente) throws NegocioException, PersistenciaException {
+    public void eliminarCliente(int idCliente) throws NegocioException {
         try {
             clienteDAO.eliminarCliente(idCliente);
         } catch (PersistenciaException e) {
@@ -70,13 +72,34 @@ public class ClienteNegocio implements IClienteNegocio {
         }
     }
 
+    public ClienteDTO iniciarSesion(String correo, String contraseña) throws NegocioException {
+        ClienteDTO cliente = buscarClientePorCorreo(correo);
+        if (cliente == null) {
+            return null;
+        }
+        if (!cliente.getContraseña().equals(contraseña)) {
+            return null;
+        }
+        return cliente;
+    }
+
     @Override
-    public ClienteDTO buscarClientePorId(int idCliente) throws NegocioException, PersistenciaException {
+    public ClienteDTO buscarClientePorId(int idCliente) throws NegocioException {
         try {
             Cliente cliente = clienteDAO.buscarClientePorId(idCliente);
             return convertirADTO(cliente);
         } catch (PersistenciaException e) {
             throw new NegocioException("Error al buscar el alumno por ID: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ClienteDTO buscarClientePorCorreo(String correo) throws NegocioException {
+        try {
+            Cliente cliente = clienteDAO.buscarClientePorCorreo(correo);
+            return convertirADTO(cliente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al buscar el alumno por correo: " + e.getMessage());
         }
     }
 

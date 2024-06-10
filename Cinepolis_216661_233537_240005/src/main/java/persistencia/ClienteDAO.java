@@ -124,9 +124,7 @@ public class ClienteDAO implements IClienteDAO {
                     cliente.setApellidoPA(rs.getString("apellidoPA"));
                     cliente.setApellidoMA(rs.getString("apellidoMA"));
                     cliente.setCorreo(rs.getString("correo"));
-                    cliente.setContraseña(rs.getString("contraseña"));
                     cliente.setFechaNacimiento(rs.getDate("fechaNacimiento"));
-                    cliente.setUbicacion(rs.getDouble("ubicacion"));
                     cliente.setIdCiudad(rs.getInt("ciudad_id"));
                     clientes.add(cliente);
                 }
@@ -157,7 +155,6 @@ public class ClienteDAO implements IClienteDAO {
                 cliente.setCorreo(res.getString("correo"));
                 cliente.setContraseña(res.getString("contraseña"));
                 cliente.setFechaNacimiento(res.getDate("fechaNacimiento"));
-                cliente.setUbicacion(res.getDouble("ubicacion"));
                 cliente.setIdCiudad(res.getInt("ciudad_id"));
                 return cliente;
             } else {
@@ -188,7 +185,6 @@ public class ClienteDAO implements IClienteDAO {
                 cliente.setCorreo(res.getString("correo"));
                 cliente.setContraseña(res.getString("contraseña"));
                 cliente.setFechaNacimiento(res.getDate("fechaNacimiento"));
-                cliente.setUbicacion(res.getDouble("ubicacion"));
                 cliente.setIdCiudad(res.getInt("ciudad_id"));
                 return cliente;
             } else {
