@@ -374,21 +374,21 @@ public class FrmCatalogo extends javax.swing.JFrame {
         PeliculaDTO pelicula = peliculasCargadas.get(1);
         FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(2);
         FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(3);
         FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
         libroForm.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
