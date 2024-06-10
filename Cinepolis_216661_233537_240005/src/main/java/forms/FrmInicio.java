@@ -229,7 +229,7 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        Forms.cargarForm(new FrmRegistrar(clienteNeg), this);
+        // TODO add your handling code here:
     }//GEN-LAST:event_BtnRegistrarseActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

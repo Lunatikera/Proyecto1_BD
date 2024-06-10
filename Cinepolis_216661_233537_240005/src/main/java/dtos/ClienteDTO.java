@@ -4,7 +4,7 @@
  */
 package dtos;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -21,13 +21,11 @@ public class ClienteDTO {
     private Date fechaNacimiento;
     private double ubicacion;
     private int idCiudad;
-    private String ciudad;
-    private String pais;
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad, String ciudad, String pais) {
+    public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
@@ -37,11 +35,9 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
-        this.ciudad = ciudad;
-        this.pais = pais;
     }
 
-    public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad, String ciudad, String pais) {
+    public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad) {
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
         this.apellidoMA = apellidoMA;
@@ -50,8 +46,6 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
-        this.ciudad = ciudad;
-        this.pais = pais;
     }
 
     public int getId() {
@@ -116,22 +110,6 @@ public class ClienteDTO {
 
     public void setUbicacion(double ubicacion) {
         this.ubicacion = ubicacion;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 
     public int getIdCiudad() {

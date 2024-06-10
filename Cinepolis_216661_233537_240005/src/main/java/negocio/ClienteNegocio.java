@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utilerias.Encriptacion;
 
 /**
  *
@@ -37,12 +36,8 @@ public class ClienteNegocio implements IClienteNegocio {
                 clienteDTO.getContraseña(),
                 clienteDTO.getFechaNacimiento(),
                 clienteDTO.getUbicacion(),
-                clienteDTO.getIdCiudad(),
-                clienteDTO.getCiudad(),
-                clienteDTO.getPais());
+                clienteDTO.getIdCiudad());
         try {
-            String contraseñaEncriptada = Encriptacion.encriptarPassword(cliente.getContraseña());
-            cliente.setContraseña(contraseñaEncriptada);
             clienteDAO.agregar(cliente);
         } catch (PersistenciaException ex) {
             Logger.getLogger(ClienteNegocio.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,9 +55,7 @@ public class ClienteNegocio implements IClienteNegocio {
                     clienteDTO.getContraseña(),
                     clienteDTO.getFechaNacimiento(),
                     clienteDTO.getUbicacion(),
-                    clienteDTO.getIdCiudad(),
-                    clienteDTO.getCiudad(),
-                    clienteDTO.getPais());
+                    clienteDTO.getIdCiudad());
 
             clienteDAO.actualizarCliente(cliente);
         } catch (PersistenciaException e) {
@@ -82,11 +75,10 @@ public class ClienteNegocio implements IClienteNegocio {
     public ClienteDTO iniciarSesion(String correo, String contraseña) throws NegocioException {
         ClienteDTO cliente = buscarClientePorCorreo(correo);
         if (cliente == null) {
-            throw new NegocioException("Correo no encontrado.");
+            return null;
         }
-        boolean contraseñaValida = Encriptacion.verificarPasswordConHash(contraseña, cliente.getContraseña());
-        if (!contraseñaValida) {
-            throw new NegocioException("Credenciales no válidas.");
+        if (!cliente.getContraseña().equals(contraseña)) {
+            return null;
         }
         return cliente;
     }
@@ -142,8 +134,6 @@ public class ClienteNegocio implements IClienteNegocio {
         dto.setFechaNacimiento(cliente.getFechaNacimiento());
         dto.setUbicacion(cliente.getUbicacion());
         dto.setIdCiudad(cliente.getIdCiudad());
-        dto.setCiudad(cliente.getCiudad());
-        dto.setPais(cliente.getPais());
 
         return dto;
 
@@ -165,8 +155,6 @@ public class ClienteNegocio implements IClienteNegocio {
             dto.setFechaNacimiento(cliente.getFechaNacimiento());
             dto.setUbicacion(cliente.getUbicacion());
             dto.setIdCiudad(cliente.getIdCiudad());
-            dto.setCiudad(cliente.getCiudad());
-            dto.setPais(cliente.getPais());
             clientesDTO.add(dto);
         }
         return clientesDTO;
