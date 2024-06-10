@@ -5,6 +5,7 @@
 package forms;
 
 import dtos.ClienteDTO;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import negocio.IClienteNegocio;
@@ -324,6 +325,22 @@ public class FrmRegistrar extends javax.swing.JFrame {
             if (nombre.isEmpty() || apellidoPA.isEmpty() || correo.isEmpty()
                     || contraseña.isEmpty() || confirmarContraseña.isEmpty() || ciudad.isEmpty() || pais.isEmpty() || mFecha == null) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Campos vacíos", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(mFecha);
+            int añoNacimiento = cal.get(Calendar.YEAR);
+            int añoActual = Calendar.getInstance().get(Calendar.YEAR);
+            int edad = añoActual - añoNacimiento;
+
+            if (añoNacimiento < 1900 || edad < 16) {
+                JOptionPane.showMessageDialog(this, "La fecha de nacimiento no es válida.", "Error de fecha de nacimiento", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (clienteNeg.existeClienteConCorreo(correo)) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico ya está registrado.", "Error de correo electrónico", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

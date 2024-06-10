@@ -4,6 +4,7 @@
  */
 package entidades;
 
+import java.awt.Point;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class Cliente {
     private String correo;
     private String contraseña;
     private Date fechaNacimiento;
-    private double ubicacion;
+    private Point ubicacion;
     private int idCiudad;
     private String ciudad;
     private String pais;
@@ -28,7 +29,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad, String ciudad, String pais) {
+    public Cliente(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
@@ -42,7 +43,7 @@ public class Cliente {
         this.pais = pais;
     }
 
-    public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, double ubicacion, int idCiudad, String ciudad, String pais) {
+    public Cliente(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, Point ubicacion, int idCiudad, String ciudad, String pais) {
         this.nombre = nombre;
         this.apellidoPA = apellidoPA;
         this.apellidoMA = apellidoMA;
@@ -119,11 +120,11 @@ public class Cliente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public double getUbicacion() {
+    public Point getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(double ubicacion) {
+    public void setUbicacion(Point ubicacion) {
         this.ubicacion = ubicacion;
     }
 
