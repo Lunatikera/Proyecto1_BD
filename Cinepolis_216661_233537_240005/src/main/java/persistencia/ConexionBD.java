@@ -18,7 +18,7 @@ public class ConexionBD implements IConexionBD {
     final String database = "cinepolis";
     final String conexionBD = "jdbc:mysql://" + SERVER + "/" + database;
     final String usuario = "root";
-    final String contraseña = "Itson";
+    final String contraseña = "Imperial99";
 
     @Override
     public Connection crearConexion() throws SQLException {
