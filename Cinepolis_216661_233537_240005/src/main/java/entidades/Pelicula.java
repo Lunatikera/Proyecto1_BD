@@ -4,6 +4,8 @@
  */
 package entidades;
 
+import enums.Clasificaciones;
+
 /**
  *
  * @author Chris
@@ -16,13 +18,13 @@ public class Pelicula {
     private String pais;
     private String link_trailer;
     private int duracion;
-    private byte[] cartel;
-    private String clasificacion;
+    private String cartel;
+    private Clasificaciones clasificacion;
 
     public Pelicula() {
     }
 
-    public Pelicula(int id, String titulo, String sinopsis, String pais, String link_trailer, int duracion, byte[] cartel, String clasificacion) {
+    public Pelicula(int id, String titulo, String sinopsis, String pais, String link_trailer, int duracion, String cartel, Clasificaciones clasificacion) {
         this.id = id;
         this.titulo = titulo;
         this.sinopsis = sinopsis;
@@ -33,7 +35,7 @@ public class Pelicula {
         this.clasificacion = clasificacion;
     }
 
-    public Pelicula(String titulo, String sinopsis, String pais, String link_trailer, int duracion, byte[] cartel, String clasificacion) {
+    public Pelicula(String titulo, String sinopsis, String pais, String link_trailer, int duracion, String cartel, Clasificaciones clasificacion) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.pais = pais;
@@ -91,19 +93,19 @@ public class Pelicula {
         this.duracion = duracion;
     }
 
-    public byte[] getCartel() {
+    public String getCartel() {
         return cartel;
     }
 
-    public void setCartel(byte[] cartel) {
+    public void setCartel(String cartel) {
         this.cartel = cartel;
     }
 
-    public String getClasificacion() {
+    public Clasificaciones getClasificacion() {
         return clasificacion;
     }
 
-    public void setClasificacion(String clasificacion) {
+    public void setClasificacion(Clasificaciones clasificacion) {
         this.clasificacion = clasificacion;
     }
 

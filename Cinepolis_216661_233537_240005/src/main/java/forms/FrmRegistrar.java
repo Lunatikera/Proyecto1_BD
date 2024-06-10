@@ -4,7 +4,6 @@
  */
 package forms;
 
-import static utilerias.Utilidades.SetImageLabel;
 
 /**
  *

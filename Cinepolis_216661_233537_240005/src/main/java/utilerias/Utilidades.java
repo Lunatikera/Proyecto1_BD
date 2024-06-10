@@ -28,10 +28,22 @@ public class Utilidades {
         return ((int) (limite * (pagina - 1)));
     }
 
-    public static void SetImageLabel(JFrame jf, JLabel name, String root) {
-        ImageIcon image = new ImageIcon(root);
-        Icon icon = new ImageIcon(image.getImage().getScaledInstance(name.getWidth(), name.getHeight(), Image.SCALE_DEFAULT));
-        name.setIcon(icon);
-        jf.repaint();
+    public static String textoConSaltosLinea(String texto, int maxPalabrasporLinea) {
+        StringBuilder formattedText = new StringBuilder();
+        String[] words = texto.split("\\s+");
+        int wordsInLine = 0;
+
+        for (String word : words) {
+            // If adding the word exceeds the maximum words per line, insert a line break
+            if (wordsInLine >= maxPalabrasporLinea) {
+                formattedText.append("<br>");
+                wordsInLine = 0;
+            }
+            formattedText.append(word).append(" ");
+            wordsInLine++;
+        }
+
+        // Set the formatted text with HTML line breaks
+        return ("<html>" + formattedText.toString() + "</html>");
     }
 }
