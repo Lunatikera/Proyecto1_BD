@@ -48,8 +48,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         BtnPelicula = new javax.swing.JButton();
         txtTitulo = new javax.swing.JTextField();
         LblCorreo = new javax.swing.JLabel();
-        txtDirector = new javax.swing.JTextField();
-        LblCorreo2 = new javax.swing.JLabel();
         cbClasificacion = new javax.swing.JComboBox<>();
         txtSinopsis = new javax.swing.JTextField();
         btnAplicar = new javax.swing.JButton();
@@ -109,7 +107,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
-        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
+        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
         BtnLittleLogo.setBorderPainted(false);
         BtnLittleLogo.setContentAreaFilled(false);
         BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +130,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -175,16 +173,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         LblCorreo.setForeground(new java.awt.Color(5, 16, 42));
         LblCorreo.setText("Pais:");
         LblCorreo.setToolTipText("");
-
-        txtDirector.setForeground(new java.awt.Color(102, 102, 102));
-        txtDirector.setToolTipText("");
-        txtDirector.setBorder(null);
-
-        LblCorreo2.setBackground(new java.awt.Color(5, 16, 42));
-        LblCorreo2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        LblCorreo2.setForeground(new java.awt.Color(5, 16, 42));
-        LblCorreo2.setText("Director: ");
-        LblCorreo2.setToolTipText("");
 
         btnAplicar.setText("Aplicar");
         btnAplicar.addActionListener(new java.awt.event.ActionListener() {
@@ -259,14 +247,9 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LblCorreo3)
                             .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LblCorreo2)
-                            .addComponent(txtDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(LblCorreo5)
-                                    .addComponent(txtDirector1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(94, 94, 94)
+                            .addComponent(LblCorreo5)
+                            .addComponent(txtDirector1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(96, 96, 96)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(LblCorreo)
                             .addComponent(cbClasificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -300,11 +283,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
                         .addComponent(LblCorreo3)
                         .addGap(4, 4, 4)
                         .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(LblCorreo2)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
+                        .addGap(18, 18, 18)
                         .addComponent(LblCorreo5)
                         .addGap(5, 5, 5)
                         .addComponent(txtDirector1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,7 +348,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
 
     private void btnAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarActionPerformed
         String titulo=txtTitulo.getText();
-        String directpr=txtDirector.getText();
         String sinopsis=txtSinopsis.getText();
         String clasificacion=(String)cbClasificacion.getSelectedItem();
         
@@ -389,7 +367,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
     private javax.swing.JButton BtnPerfil;
     private javax.swing.JLabel LblCorreo;
     private javax.swing.JLabel LblCorreo1;
-    private javax.swing.JLabel LblCorreo2;
     private javax.swing.JLabel LblCorreo3;
     private javax.swing.JLabel LblCorreo4;
     private javax.swing.JLabel LblCorreo5;
@@ -402,7 +379,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField txtCorreo1;
-    private javax.swing.JTextField txtDirector;
     private javax.swing.JTextField txtDirector1;
     private javax.swing.JTextField txtDirector2;
     private javax.swing.JTextField txtSinopsis;
