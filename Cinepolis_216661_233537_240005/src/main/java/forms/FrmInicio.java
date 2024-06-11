@@ -4,7 +4,18 @@
  */
 package forms;
 
-import static utilerias.Utilidades.SetImageLabel;
+import dtos.ClienteDTO;
+import dtos.PeliculaDTO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import negocio.ClienteNegocio;
+import negocio.ICiudadNegocio;
+import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
+import negocio.IPeliculaNegocio;
+import negocio.NegocioException;
+import utilerias.Forms;
 
 /**
  *
@@ -12,13 +23,24 @@ import static utilerias.Utilidades.SetImageLabel;
  */
 public class FrmInicio extends javax.swing.JFrame {
 
+    IClienteNegocio clienteNeg;
+    IPeliculaNegocio peliculaNeg;
+    PeliculaDTO pelicula;
+    ICiudadNegocio ciudadNeg;
+    IPaisNegocio paisNeg;
+
     /**
      * Creates new form FrmInicio
      */
-    public FrmInicio() {
+    public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg,
+            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
-        
+        this.peliculaNeg = peliculaNeg;
+        this.clienteNeg = clienteNeg;
+        this.pelicula = new PeliculaDTO();
+        this.ciudadNeg=ciudadNeg;
+        this.paisNeg=paisNeg;
     }
 
     /**
@@ -71,15 +93,16 @@ public class FrmInicio extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(148, 148, 148)
+                .addGap(154, 154, 154)
                 .addComponent(LblLogo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
-                .addComponent(LblLogo))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(LblLogo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
@@ -155,7 +178,7 @@ public class FrmInicio extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(BtnRegistrarse)
                 .addGap(18, 18, 18)
                 .addComponent(BtnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,55 +200,47 @@ public class FrmInicio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIniciarSesionActionPerformed
-        // TODO add your handling code here:
+        try {
+            this.iniciarSesion();
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmInicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BtnIniciarSesionActionPerformed
 
-    private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnRegistrarseActionPerformed
+    private void iniciarSesion() throws NegocioException {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        String correo = txtCorreo.getText();
+        String contraseña = new String(txtPassword.getPassword());
+
+        if (correo.isEmpty() || contraseña.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese su correo electrónico y contraseña.", "Campos Vacíos", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
+        ClienteDTO cliente = clienteNeg.iniciarSesion(correo, contraseña);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmInicio().setVisible(true);
-            }
-        });
+        if (cliente != null) {
+            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. ¡Bienvenido, " + cliente.getNombre() + "!");
+            this.iniciarSesion(cliente);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Inicio de sesión fallido. Por favor, verifica tus credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
+    private void iniciarSesion(ClienteDTO cliente) {
+        Forms.cargarForm(new FrmCatalogo(peliculaNeg, cliente,clienteNeg,pelicula), this);
+    }
+
+    private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
+        Forms.cargarForm(new FrmRegistrar(clienteNeg, peliculaNeg, ciudadNeg, paisNeg), this);
+    }//GEN-LAST:event_BtnRegistrarseActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnIniciarSesion;

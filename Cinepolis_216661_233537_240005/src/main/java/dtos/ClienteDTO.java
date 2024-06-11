@@ -4,7 +4,8 @@
  */
 package dtos;
 
-import java.sql.Date;
+import java.awt.Point;
+import java.util.Date;
 
 /**
  *
@@ -14,29 +15,41 @@ public class ClienteDTO {
 
     private int id;
     private String nombre;
+    private String apellidoPA;
+    private String apellidoMA;
     private String correo;
+    private String contraseña;
     private Date fechaNacimiento;
-    private double ubicacion;
+    private String ubicacion;
     private int idCiudad;
+
 
     public ClienteDTO() {
     }
 
-    public ClienteDTO(int id, String nombre, String correo, Date fechaNacimiento, double ubicacion, int idCiudad) {
+    public ClienteDTO(int id, String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, String ubicacion, int idCiudad) {
         this.id = id;
         this.nombre = nombre;
+        this.apellidoPA = apellidoPA;
+        this.apellidoMA = apellidoMA;
         this.correo = correo;
+        this.contraseña = contraseña;
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
+
     }
 
-    public ClienteDTO(String nombre, String correo, Date fechaNacimiento, double ubicacion, int idCiudad) {
+    public ClienteDTO(String nombre, String apellidoPA, String apellidoMA, String correo, String contraseña, Date fechaNacimiento, String ubicacion, int idCiudad, String ciudad, String pais) {
         this.nombre = nombre;
+        this.apellidoPA = apellidoPA;
+        this.apellidoMA = apellidoMA;
         this.correo = correo;
+        this.contraseña = contraseña;
         this.fechaNacimiento = fechaNacimiento;
         this.ubicacion = ubicacion;
         this.idCiudad = idCiudad;
+
     }
 
     public int getId() {
@@ -55,12 +68,36 @@ public class ClienteDTO {
         this.nombre = nombre;
     }
 
+    public String getApellidoPA() {
+        return apellidoPA;
+    }
+
+    public void setApellidoPA(String apellidoPA) {
+        this.apellidoPA = apellidoPA;
+    }
+
+    public String getApellidoMA() {
+        return apellidoMA;
+    }
+
+    public void setApellidoMA(String apellidoMA) {
+        this.apellidoMA = apellidoMA;
+    }
+
     public String getCorreo() {
         return correo;
     }
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public Date getFechaNacimiento() {
@@ -71,11 +108,11 @@ public class ClienteDTO {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public double getUbicacion() {
+    public String getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(double ubicacion) {
+    public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
 
