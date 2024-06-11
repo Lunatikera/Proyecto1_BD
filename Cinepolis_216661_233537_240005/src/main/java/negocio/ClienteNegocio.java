@@ -103,7 +103,7 @@ public class ClienteNegocio implements IClienteNegocio {
             Cliente cliente = clienteDAO.buscarClientePorCorreo(correo);
             return convertirADTO(cliente);
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al buscar el alumno por correo: " + e.getMessage());
+            throw new NegocioException("Error al buscar el alumno por correo: ");
         }
     }
 

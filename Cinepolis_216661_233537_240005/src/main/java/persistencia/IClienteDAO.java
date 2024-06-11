@@ -25,4 +25,6 @@ public interface IClienteDAO {
     public Cliente buscarClientePorCorreo(String correo) throws PersistenciaException;
     
     public boolean existeClienteConCorreo(String correo) throws PersistenciaException;
+    
+    public void actualizarUbicacionCliente(String ubicacion) throws PersistenciaException;
 }

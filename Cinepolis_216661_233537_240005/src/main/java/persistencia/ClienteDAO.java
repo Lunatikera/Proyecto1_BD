@@ -95,7 +95,8 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public void actualizarCliente(Cliente cliente) throws PersistenciaException {
 
-        String sentenciaSQL = "UPDATE clientes SET nombres = ?, apellidoPA = ?, apellidoMA = ?, correo = ?, contraseña = ?, fechaNacimiento = ?, ubicacion = ?, ciudad_id = ? WHERE id = ?;";
+        String sentenciaSQL = "UPDATE clientes SET nombres = ?, apellidoPA = ?, apellidoMA = ?, correo = ?, contraseña = ?, fechaNacimiento = ?,"
+                + " ubicacion = ST_GeomFromText (?), ciudad_id = ? WHERE cliente_id = ? ;";
         try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             java.sql.Date sqlDate = new java.sql.Date(cliente.getFechaNacimiento().getTime());
@@ -244,6 +245,11 @@ public class ClienteDAO implements IClienteDAO {
             throw new PersistenciaException("Error al verificar la existencia del cliente con correo electrónico: " + correo);
         }
         return false;
+    }
+
+    @Override
+    public void actualizarUbicacionCliente(String ubicacion) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
         
