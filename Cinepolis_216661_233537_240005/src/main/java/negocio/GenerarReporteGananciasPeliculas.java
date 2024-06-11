@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import persistencia.ReporteGananciasPeliculasDAO;
 import persistencia.IConexionBD;
-import persistencia.ReporteGananciasPeliculas;
+import reportes.ReporteGananciasPeliculas;
 
 public class GenerarReporteGananciasPeliculas {
 

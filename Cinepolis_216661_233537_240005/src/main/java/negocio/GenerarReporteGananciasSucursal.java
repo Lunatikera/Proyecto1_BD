@@ -2,7 +2,7 @@ package negocio;
 
 
 import persistencia.IConexionBD;
-import persistencia.ReporteGananciasSucursal;
+import reportes.ReporteGananciasSucursal;
 
 import java.io.IOException;
 import java.sql.SQLException;

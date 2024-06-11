@@ -6,6 +6,7 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
 import static utilerias.Geocalizacion.obtenerCoordenadas;
@@ -26,6 +28,8 @@ public class FrmInicio extends javax.swing.JFrame {
 
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliculaNeg;
+    ISucursalNegocio sucursalNeg;
+
     PeliculaDTO pelicula;
     ICiudadNegocio ciudadNeg;
     IPaisNegocio paisNeg;
@@ -34,7 +38,7 @@ public class FrmInicio extends javax.swing.JFrame {
      * Creates new form FrmInicio
      */
     public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg,
-            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg) {
+            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg, ISucursalNegocio sucursalNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.peliculaNeg = peliculaNeg;
@@ -42,6 +46,7 @@ public class FrmInicio extends javax.swing.JFrame {
         this.pelicula = new PeliculaDTO();
         this.ciudadNeg = ciudadNeg;
         this.paisNeg = paisNeg;
+        this.sucursalNeg = sucursalNeg;
     }
 
     /**
@@ -84,6 +89,7 @@ public class FrmInicio extends javax.swing.JFrame {
         jLabel3.setToolTipText("");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Log in - Cinepolis ");
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
@@ -251,11 +257,12 @@ public class FrmInicio extends javax.swing.JFrame {
     private void procesarInicioSesionExitoso(ClienteDTO cliente) {
         try {
             clienteNeg.actualizarCliente(cliente);
+            SucursalDTO sucursalFavorable = sucursalNeg.obtenerSucursalMasCercana(cliente.getId());
+            Forms.cargarForm(new FrmCatalogoSucursal(peliculaNeg, cliente, clienteNeg, pelicula, sucursalFavorable),this);
+
         } catch (NegocioException ex) {
             Logger.getLogger(FrmInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(cliente.getUbicacion());
-        Forms.cargarForm(new FrmCatalogo(peliculaNeg, cliente, clienteNeg, pelicula), this);
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed

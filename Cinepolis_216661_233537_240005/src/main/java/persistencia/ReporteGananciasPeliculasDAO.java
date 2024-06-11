@@ -1,5 +1,6 @@
 package persistencia;
 
+import reportes.ReporteGananciasPeliculas;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
