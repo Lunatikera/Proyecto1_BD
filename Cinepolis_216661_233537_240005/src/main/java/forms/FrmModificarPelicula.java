@@ -16,6 +16,7 @@ import negocio.IClienteNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
+import static utilerias.Utilidades.textoConSaltosLinea;
 
 /**
  *
@@ -28,10 +29,13 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
     private ClienteDTO cliente;
     PeliculaDTO pelicula;
 
-    public FrmModificarPelicula(PeliculaDTO pelicula) {
+    public FrmModificarPelicula(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.pelicula = pelicula;
+        this.peliculas = peliculas;
+        this.cliente = cliente;
+        this.clienteNeg = clienteNeg;
         cargarDetallesPelicula();
         llenarComboEnum();
     }

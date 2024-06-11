@@ -95,9 +95,8 @@ public class ClienteDAO implements IClienteDAO {
     @Override
     public void actualizarCliente(Cliente cliente) throws PersistenciaException {
 
-        String sentenciaSQL = "UPDATE clientes SET nombres = ?, apellidoPA = ?, apellidoMA = ?, correo = ?, contraseña = ?, fechaNacimiento = ?,"
-                + " ubicacion = ST_GeomFromText (?), ciudad_id = ? WHERE cliente_id = ? ;";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+        String sentenciaSQL = "UPDATE clientes SET nombres = ?, apellidoPA = ?, apellidoMA = ?, correo = ? WHERE cliente_id = ? ;";
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             java.sql.Date sqlDate = new java.sql.Date(cliente.getFechaNacimiento().getTime());
 
@@ -105,11 +104,7 @@ public class ClienteDAO implements IClienteDAO {
             pS.setString(2, cliente.getApellidoPA());
             pS.setString(3, cliente.getApellidoMA());
             pS.setString(4, cliente.getCorreo());
-            pS.setString(5, cliente.getContraseña());
-            pS.setDate(6, sqlDate);
-            pS.setString(7, cliente.getUbicacion());
-            pS.setInt(8, cliente.getIdCiudad());
-            pS.setInt(9, cliente.getId());
+            pS.setInt(5, cliente.getId());
 
             pS.executeUpdate();
         } catch (SQLException e) {
@@ -121,7 +116,7 @@ public class ClienteDAO implements IClienteDAO {
     public void eliminarCliente(int idCliente) throws PersistenciaException {
 
         String sentenciaSQL = "DELETE FROM clientes WHERE cliente_id = ?;";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setInt(1, idCliente);
             int filasAfectadas = pS.executeUpdate();
@@ -139,12 +134,12 @@ public class ClienteDAO implements IClienteDAO {
         List<Cliente> clientes = new ArrayList<>();
 
         String sql = "SELECT * FROM clientes LIMIT ? OFFSET ?";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setInt(1, limit);
             ps.setInt(2, offset);
 
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Cliente cliente = new Cliente();
                     cliente.setId(rs.getInt("cliente_id"));
@@ -171,7 +166,7 @@ public class ClienteDAO implements IClienteDAO {
         String sentenciaSQL = "SELECT * FROM clientes WHERE cliente_id = ?;";
         ResultSet res = null;
 
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
 
             ps.setInt(1, idCliente);
 
@@ -202,7 +197,7 @@ public class ClienteDAO implements IClienteDAO {
         String sentenciaSQL = "SELECT * FROM Clientes WHERE correo = ?;";
         ResultSet res = null;
 
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
 
             ps.setString(1, correo);
 
@@ -231,11 +226,11 @@ public class ClienteDAO implements IClienteDAO {
     public boolean existeClienteConCorreo(String correo) throws PersistenciaException {
         String sql = "SELECT COUNT(*) FROM Clientes WHERE correo = ?";
 
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setString(1, correo);
 
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int count = rs.getInt(1);
                     return count > 0;
@@ -251,7 +246,5 @@ public class ClienteDAO implements IClienteDAO {
     public void actualizarUbicacionCliente(String ubicacion) throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-        
 
 }

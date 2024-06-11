@@ -354,7 +354,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula1);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula1, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -386,7 +386,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula2);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula2, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -418,7 +418,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula3);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula3, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -450,7 +450,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula4);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
