@@ -11,8 +11,10 @@ import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.PaisNegocio;
 import negocio.PeliculaNegocio;
+import negocio.SucursalNegocio;
 import persistencia.CiudadDAO;
 import persistencia.ClienteDAO;
 import persistencia.ConexionBD;
@@ -21,8 +23,10 @@ import persistencia.IClienteDAO;
 import persistencia.IConexionBD;
 import persistencia.IPaisDAO;
 import persistencia.IPeliculaDAO;
+import persistencia.ISucursalDAO;
 import persistencia.PaisDAO;
 import persistencia.PeliculaDAO;
+import persistencia.SucursalDAO;
 
 public class Main {
 
@@ -32,15 +36,14 @@ public class Main {
         IClienteDAO clienteDAO = new ClienteDAO(conexionBD);
         ICiudadDAO ciudadDAO = new CiudadDAO(conexionBD);
         IPaisDAO paisDAO = new PaisDAO(conexionBD);
+        ISucursalDAO sucursalDAO= new SucursalDAO(conexionBD);
         IClienteNegocio clienteNeg = new ClienteNegocio(clienteDAO);
         ICiudadNegocio ciudadNeg = new CiudadNegocio(ciudadDAO);
         IPaisNegocio paisNeg = new PaisNegocio(paisDAO);
-
+        ISucursalNegocio sucursalNeg= new SucursalNegocio(sucursalDAO);
         IPeliculaNegocio peliNeg = new PeliculaNegocio(peliDAO);
-        ClienteDTO cliente = new ClienteDTO();
-        PeliculaDTO pelicula = new PeliculaDTO();
 
-        FrmInicio a = new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg);
+        FrmInicio a = new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg, sucursalNeg);
         a.show();
 
     }

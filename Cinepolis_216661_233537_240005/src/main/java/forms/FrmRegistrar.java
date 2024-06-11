@@ -71,7 +71,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         LblLogo = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txtNombres = new javax.swing.JTextField();
         lblNombres = new javax.swing.JLabel();
@@ -87,32 +86,26 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         cbCiudad = new javax.swing.JComboBox<>();
         cbPais = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        BtnRegistrarse = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtContraseña1 = new javax.swing.JPasswordField();
         jLabel9 = new javax.swing.JLabel();
         txtApellidos1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Registrate - Cinepolis");
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
         LblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
-        jButton2.setToolTipText("");
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jButton2)
-                .addGap(98, 98, 98)
+                .addGap(175, 175, 175)
                 .addComponent(LblLogo)
                 .addContainerGap(187, Short.MAX_VALUE))
         );
@@ -120,13 +113,8 @@ public class FrmRegistrar extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(10, 10, 10))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(LblLogo)
-                        .addContainerGap())))
+                .addComponent(LblLogo)
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(102, 102, 102));
@@ -148,11 +136,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
         txtApellidos.setBackground(new java.awt.Color(187, 187, 187));
         txtApellidos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        txtApellidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtApellidosActionPerformed(evt);
-            }
-        });
         jPanel2.add(txtApellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 123, 200, -1));
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -166,11 +149,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
         txtContraseña.setBackground(new java.awt.Color(187, 187, 187));
         txtContraseña.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        txtContraseña.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraseñaActionPerformed(evt);
-            }
-        });
         jPanel2.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 236, 200, -1));
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
@@ -205,24 +183,19 @@ public class FrmRegistrar extends javax.swing.JFrame {
         cbPais.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         cbPais.setForeground(new java.awt.Color(51, 51, 51));
         cbPais.setToolTipText("");
-        cbPais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPaisActionPerformed(evt);
-            }
-        });
         jPanel2.add(cbPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 365, 200, -1));
 
-        jButton1.setBackground(new java.awt.Color(252, 207, 4));
-        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Registrarse");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BtnRegistrarse.setBackground(new java.awt.Color(252, 207, 4));
+        BtnRegistrarse.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
+        BtnRegistrarse.setForeground(new java.awt.Color(0, 0, 0));
+        BtnRegistrarse.setText("Registrarse");
+        BtnRegistrarse.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        BtnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtnRegistrarseActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 459, 190, 42));
+        jPanel2.add(BtnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 459, 190, 42));
 
         jLabel8.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
@@ -302,26 +275,14 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }
 
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
         this.agregarCliente();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BtnRegistrarseActionPerformed
 
-
-    private void txtApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtApellidosActionPerformed
-
-    private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraseñaActionPerformed
 
     private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
         Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
     }//GEN-LAST:event_bAtrasActionPerformed
-
-    private void cbPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPaisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbPaisActionPerformed
 
     private void agregarCliente() {
         Date mFecha = jDateChooser1.getDate();
@@ -391,11 +352,10 @@ public class FrmRegistrar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnRegistrarse;
     private javax.swing.JLabel LblLogo;
     private javax.swing.JComboBox<String> cbCiudad;
     private javax.swing.JComboBox<String> cbPais;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

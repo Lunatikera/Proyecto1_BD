@@ -1,4 +1,4 @@
-package persistencia;
+package reportes;
 
 public class ReporteGananciasPeliculas {
     private String ciudad;
