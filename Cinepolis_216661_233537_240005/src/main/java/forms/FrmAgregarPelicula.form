@@ -92,28 +92,29 @@
                               <Component id="LblCorreo3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtTitulo" min="-2" pref="280" max="-2" attributes="0"/>
                               <Component id="LblCorreo5" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtDirector1" min="-2" pref="280" max="-2" attributes="0"/>
+                              <Component id="txtTrailer" min="-2" pref="280" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="LblCorreo" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbClasificacion" min="-2" pref="128" max="-2" attributes="0"/>
-                              <Component id="txtDirector2" max="32767" attributes="0"/>
+                              <Component id="txtDuracion" max="32767" attributes="0"/>
                               <Component id="LblCorreo6" alignment="0" pref="150" max="32767" attributes="0"/>
                               <Component id="LblCorreo7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbClasificacion1" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                              <Component id="cbPais" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                              <Component id="cbClasificacion" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="210" pref="210" max="-2" attributes="0"/>
                           <Component id="txtSinopsis" min="-2" pref="619" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="350" pref="350" max="-2" attributes="0"/>
-                          <Component id="btnAplicar" min="-2" pref="122" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="btnAplicar" min="-2" pref="122" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="378" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -140,27 +141,28 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="LblCorreo5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
-                          <Component id="txtDirector1" min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="txtTrailer" min="-2" pref="34" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
                           <Component id="LblCorreo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                          <Component id="cbClasificacion" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbPais" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="LblCorreo6" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
-                          <Component id="txtDirector2" min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="txtDuracion" min="-2" pref="34" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="LblCorreo7" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                          <Component id="cbClasificacion1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cbClasificacion" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
                   <Component id="txtSinopsis" min="-2" pref="121" max="-2" attributes="0"/>
-                  <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnAplicar" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -330,10 +332,12 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbClasificacion">
+        <Component class="javax.swing.JComboBox" name="cbPais">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="1">
+                <StringItem index="0" value="Estados Unidos"/>
+              </StringArray>
             </Property>
           </Properties>
           <AuxValues>
@@ -344,7 +348,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAplicar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Aplicar"/>
+            <Property name="text" type="java.lang.String" value="Agregar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAplicarActionPerformed"/>
@@ -393,7 +397,7 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtDirector1">
+        <Component class="javax.swing.JTextField" name="txtTrailer">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
@@ -415,11 +419,11 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="2a" green="10" red="5" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Director: "/>
+            <Property name="text" type="java.lang.String" value="Trailer:"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtDirector2">
+        <Component class="javax.swing.JTextField" name="txtDuracion">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
@@ -445,16 +449,6 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbClasificacion1">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
         <Component class="javax.swing.JLabel" name="LblCorreo7">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -469,6 +463,19 @@
             <Property name="text" type="java.lang.String" value="Clasificacion:"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbClasificacion">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbClasificacionActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Clasificaciones&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

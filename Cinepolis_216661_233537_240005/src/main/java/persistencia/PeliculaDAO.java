@@ -6,6 +6,7 @@ package persistencia;
 
 import entidades.Pelicula;
 import enums.Clasificaciones;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,8 +74,7 @@ public class PeliculaDAO implements IPeliculaDAO {
     @Override
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException {
         String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
-
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, pelicula.getTitulo());
             pS.setString(2, pelicula.getSinopsis());
@@ -91,19 +91,14 @@ public class PeliculaDAO implements IPeliculaDAO {
     }
 
     @Override
-    public void eliminarPelicula(int idCliente) throws PersistenciaException {
+    public void eliminarPelicula(int idPelicula) throws PersistenciaException {
 
-        String sentenciaSQL = "DELETE FROM peliculas WHERE pelicula_id = ?;";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
-
-            pS.setInt(1, idCliente);
-            int filasAfectadas = pS.executeUpdate();
-
-            if (filasAfectadas == 0) {
-                throw new PersistenciaException("No se encontró la pelicula con ID: " + idCliente);
-            }
+        String sql = "{ CALL EliminarPeliculaConFuncionesYCompras(?) }";
+        try (Connection conexion = this.conexionBD.crearConexion(); CallableStatement cs = conexion.prepareCall(sql)) {
+            cs.setInt(1, idPelicula);
+            cs.execute();
         } catch (SQLException e) {
-            throw new PersistenciaException("Error al eliminar la pelicula: " + e.getMessage());
+            throw new PersistenciaException("Error al eliminar la película y sus funciones: " + e.getMessage(), e);
         }
     }
 
@@ -112,12 +107,12 @@ public class PeliculaDAO implements IPeliculaDAO {
         List<Pelicula> peliculas = new ArrayList<>();
 
         String sql = "SELECT * FROM peliculas LIMIT ? OFFSET ?";
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setInt(1, limit);
             ps.setInt(2, offset);
 
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Pelicula pelicula = new Pelicula();
                     pelicula.setId(rs.getInt("pelicula_id"));
@@ -143,7 +138,7 @@ public class PeliculaDAO implements IPeliculaDAO {
         String sentenciaSQL = "SELECT * FROM peliculas WHERE pelicula_id = ?;";
         ResultSet res = null;
 
-        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement ps = conexion.prepareStatement(sentenciaSQL)) {
 
             ps.setInt(1, idPelicula);
 

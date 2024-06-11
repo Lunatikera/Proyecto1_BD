@@ -205,6 +205,11 @@ public class FrmRegistrar extends javax.swing.JFrame {
         cbPais.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         cbPais.setForeground(new java.awt.Color(51, 51, 51));
         cbPais.setToolTipText("");
+        cbPais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPaisActionPerformed(evt);
+            }
+        });
         jPanel2.add(cbPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 365, 200, -1));
 
         jButton1.setBackground(new java.awt.Color(252, 207, 4));
@@ -313,6 +318,10 @@ public class FrmRegistrar extends javax.swing.JFrame {
     private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
         Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
     }//GEN-LAST:event_bAtrasActionPerformed
+
+    private void cbPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPaisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPaisActionPerformed
 
     private void agregarCliente() {
         Date mFecha = jDateChooser1.getDate();

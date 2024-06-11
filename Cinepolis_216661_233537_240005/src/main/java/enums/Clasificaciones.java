@@ -13,5 +13,5 @@ public enum Clasificaciones {
     B,
     B15,
     C,
-    R
+    R;
 }
