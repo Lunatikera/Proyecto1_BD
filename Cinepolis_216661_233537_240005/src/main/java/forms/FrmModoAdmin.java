@@ -44,31 +44,49 @@ public class FrmModoAdmin extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         LblLogo = new javax.swing.JLabel();
+        bRegresar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         bCatalogo = new javax.swing.JButton();
-        bRegresar = new javax.swing.JButton();
+        bCatalogo1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
+        jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
         LblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
+
+        bRegresar.setBackground(new java.awt.Color(252, 207, 4));
+        bRegresar.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
+        bRegresar.setForeground(new java.awt.Color(0, 0, 0));
+        bRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
+        bRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        bRegresar.setBorderPainted(false);
+        bRegresar.setContentAreaFilled(false);
+        bRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(165, 165, 165)
+                .addContainerGap()
+                .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87)
                 .addComponent(LblLogo)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
-                .addComponent(LblLogo)
-                .addGap(18, 18, 18))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LblLogo))
+                .addGap(15, 15, 15))
         );
 
         jPanel2.setBackground(new java.awt.Color(102, 102, 102));
@@ -84,14 +102,14 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             }
         });
 
-        bRegresar.setBackground(new java.awt.Color(252, 207, 4));
-        bRegresar.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        bRegresar.setForeground(new java.awt.Color(0, 0, 0));
-        bRegresar.setText("Regresar");
-        bRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        bRegresar.addActionListener(new java.awt.event.ActionListener() {
+        bCatalogo1.setBackground(new java.awt.Color(252, 207, 4));
+        bCatalogo1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
+        bCatalogo1.setForeground(new java.awt.Color(0, 0, 0));
+        bCatalogo1.setText("Catalogo de Peliculas");
+        bCatalogo1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        bCatalogo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bRegresarActionPerformed(evt);
+                bCatalogo1ActionPerformed(evt);
             }
         });
 
@@ -100,23 +118,20 @@ public class FrmModoAdmin extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(210, 210, 210)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(220, 220, 220)
-                        .addComponent(bCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(bCatalogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
+                .addComponent(bCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bCatalogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(324, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,9 +160,14 @@ public class FrmModoAdmin extends javax.swing.JFrame {
         Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
     }//GEN-LAST:event_bRegresarActionPerformed
 
+    private void bCatalogo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCatalogo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bCatalogo1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LblLogo;
     private javax.swing.JButton bCatalogo;
+    private javax.swing.JButton bCatalogo1;
     private javax.swing.JButton bRegresar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -7,12 +7,16 @@ package forms;
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import negocio.IClienteNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
@@ -25,6 +29,7 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  */
 public class FrmCatalogo extends javax.swing.JFrame {
 
+    private JPopupMenu menuDesplegable;
     private int pagina = 1;
     private final int LIMITE = 4;
     private JButton[] botones;
@@ -46,6 +51,24 @@ public class FrmCatalogo extends javax.swing.JFrame {
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
+
+        menuDesplegable = new JPopupMenu();
+        JMenuItem item1 = new JMenuItem("Opción 1");
+        JMenuItem item2 = new JMenuItem("Opción 2");
+        JMenuItem item3 = new JMenuItem("Opción 3");
+        menuDesplegable.add(item1);
+        menuDesplegable.add(item2);
+        menuDesplegable.add(item3);
+        
+        
+        BtnLocalizacion.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            menuDesplegable.show(BtnLocalizacion, BtnLocalizacion.getWidth()/2, BtnLocalizacion.getHeight()/2);
+        }
+    });
+
+        
         this.cargarMetodosIniciales();
 
     }
@@ -123,7 +146,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
-        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/littlelogo.png"))); // NOI18N
+        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
         BtnLittleLogo.setBorderPainted(false);
         BtnLittleLogo.setContentAreaFilled(false);
         BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
@@ -145,9 +168,9 @@ public class FrmCatalogo extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(20, 20, 20)
                 .addComponent(BtnLittleLogo)
-                .addGap(49, 49, 49)
+                .addGap(53, 53, 53)
                 .addComponent(lblAdmin)
                 .addGap(61, 61, 61)
                 .addComponent(BtnLogo)
@@ -156,7 +179,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
