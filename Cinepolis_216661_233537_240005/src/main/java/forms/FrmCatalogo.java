@@ -75,7 +75,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLocalizacion = new javax.swing.JButton();
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
-        BtnLittleLogo = new javax.swing.JButton();
         lblAdmin = new javax.swing.JLabel();
         BtnPelicula4 = new javax.swing.JButton();
         BtnPelicula1 = new javax.swing.JButton();
@@ -130,15 +129,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
-        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
-        BtnLittleLogo.setBorderPainted(false);
-        BtnLittleLogo.setContentAreaFilled(false);
-        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLittleLogoActionPerformed(evt);
-            }
-        });
-
         lblAdmin.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
         lblAdmin.setText("Modo administrador");
         lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -152,18 +142,16 @@ public class FrmCatalogo extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(BtnLittleLogo)
-                .addGap(44, 44, 44)
+                .addGap(82, 82, 82)
                 .addComponent(lblAdmin)
-                .addGap(70, 70, 70)
+                .addGap(110, 110, 110)
                 .addComponent(BtnLogo)
                 .addGap(147, 147, 147)
                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -182,12 +170,12 @@ public class FrmCatalogo extends javax.swing.JFrame {
                                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnLogo)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblAdmin)
-                                .addComponent(BtnLittleLogo)))))
-                .addContainerGap(7, Short.MAX_VALUE))
+                        .addComponent(BtnLogo)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblAdmin)
+                .addGap(38, 38, 38))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 100));
@@ -348,7 +336,18 @@ public class FrmCatalogo extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(
+                null,
+                "¿Está seguro de que desea cerrar sesión?",
+                "Confirmar cierre de sesión",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (response == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed
@@ -396,10 +395,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
-    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLittleLogoActionPerformed
-
     private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
         Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
     }//GEN-LAST:event_lblAdminMouseClicked
@@ -437,7 +432,6 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnLittleLogo;
     private javax.swing.JButton BtnLocalizacion;
     private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;

@@ -6,12 +6,16 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import enums.Clasificaciones;
 import java.awt.Image;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import negocio.IClienteNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.NegocioException;
 import utilerias.Forms;
-import static utilerias.Utilidades.textoConSaltosLinea;
 
 /**
  *
@@ -24,23 +28,20 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
     private ClienteDTO cliente;
     PeliculaDTO pelicula;
 
-    public FrmModificarPelicula(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
+    public FrmModificarPelicula(PeliculaDTO pelicula) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.pelicula = pelicula;
-        this.peliculas = peliculas;
-        this.cliente = cliente;
-        this.clienteNeg = clienteNeg;
         cargarDetallesPelicula();
+        llenarComboEnum();
     }
 
     private void cargarDetallesPelicula() {
-        LblTitulo.setText(pelicula.getTitulo());
-        LblSinopsis.setText(textoConSaltosLinea(pelicula.getSinopsis(), 8));
-        LblPais.setText("Pais de Origen: " + pelicula.getPais());
+        txtTitulo.setText(pelicula.getTitulo());
+        txtSinopsis.setText(pelicula.getSinopsis());
+        txtPais.setText(pelicula.getPais());
         configurarTrailer();
-        LblDuracion.setText("Duracion: " + pelicula.getDuracion() + " minutos");
-        LblClasificacion.setText("Clasificacion: " + pelicula.getClasificacion());
+        txtDuracion.setText(String.valueOf(pelicula.getDuracion()));
 
         //Cargar Cartel Pelicula
         ImageIcon icon = new ImageIcon(pelicula.getCartel());
@@ -60,6 +61,29 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
                 }
             }
         });
+    }
+
+    private void guardarCambios() throws NegocioException {
+        try {
+            pelicula.setTitulo(txtTitulo.getText());
+            pelicula.setSinopsis(txtSinopsis.getText());
+            pelicula.setPais(txtPais.getText());
+            pelicula.setDuracion(Integer.parseInt(txtDuracion.getText()));
+            pelicula.setClasificacion(cbClasi.getSelectedItem().toString());
+
+            peliculas.actualizarPelicula(pelicula);
+
+            JOptionPane.showMessageDialog(this, "Película actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Duración debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void llenarComboEnum() {
+        for (Clasificaciones clasi : Clasificaciones.values()) {
+            cbClasi.addItem(clasi);
+        }
     }
 
     /**
@@ -83,6 +107,12 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
         LblPais = new javax.swing.JLabel();
         LblClasificacion = new javax.swing.JLabel();
         LblTrailer = new javax.swing.JLabel();
+        txtTitulo = new javax.swing.JTextField();
+        txtSinopsis = new javax.swing.JTextField();
+        txtPais = new javax.swing.JTextField();
+        txtDuracion = new javax.swing.JTextField();
+        cbClasi = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -148,32 +178,61 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
         LblTitulo.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 36)); // NOI18N
         LblTitulo.setForeground(new java.awt.Color(255, 255, 255));
         LblTitulo.setText("Titulo");
-        jPanel1.add(LblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, -1, -1));
+        jPanel1.add(LblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, 100, 40));
 
         LblSinopsis.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 24)); // NOI18N
-        LblSinopsis.setForeground(new java.awt.Color(204, 204, 204));
+        LblSinopsis.setForeground(new java.awt.Color(255, 255, 255));
         LblSinopsis.setText("Sinopsis");
-        jPanel1.add(LblSinopsis, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 170, -1, -1));
+        jPanel1.add(LblSinopsis, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
 
         LblDuracion.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        LblDuracion.setForeground(new java.awt.Color(204, 204, 204));
-        LblDuracion.setText("Duracion(min)");
+        LblDuracion.setForeground(new java.awt.Color(255, 255, 255));
+        LblDuracion.setText("Duracion(min):");
         jPanel1.add(LblDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, -1, -1));
 
         LblPais.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        LblPais.setForeground(new java.awt.Color(204, 204, 204));
-        LblPais.setText("Pais");
+        LblPais.setForeground(new java.awt.Color(255, 255, 255));
+        LblPais.setText("Pais:");
         jPanel1.add(LblPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, -1));
 
         LblClasificacion.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        LblClasificacion.setForeground(new java.awt.Color(204, 204, 204));
+        LblClasificacion.setForeground(new java.awt.Color(255, 255, 255));
         LblClasificacion.setText("Clasificacion:");
         jPanel1.add(LblClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         LblTrailer.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        LblTrailer.setForeground(new java.awt.Color(204, 204, 204));
+        LblTrailer.setForeground(new java.awt.Color(255, 255, 255));
         LblTrailer.setText("Trailer");
         jPanel1.add(LblTrailer, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
+        jPanel1.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 320, 40));
+
+        txtSinopsis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSinopsisActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtSinopsis, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 570, 110));
+        jPanel1.add(txtPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 140, -1));
+        jPanel1.add(txtDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 80, -1));
+
+        cbClasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbClasiActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cbClasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(252, 207, 4));
+        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("Confirmar cambios");
+        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 500, 160, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,6 +254,22 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
         Forms.cargarForm(new FrmCatalogoPeliculas(peliculas, cliente, clienteNeg, pelicula), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
+    private void txtSinopsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSinopsisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSinopsisActionPerformed
+
+    private void cbClasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClasiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbClasiActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            this.guardarCambios();
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmModificarPelicula.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLittleLogo;
     private javax.swing.JButton BtnLogo;
@@ -205,8 +280,14 @@ public class FrmModificarPelicula extends javax.swing.JFrame {
     private javax.swing.JLabel LblSinopsis;
     private javax.swing.JLabel LblTitulo;
     private javax.swing.JLabel LblTrailer;
+    private javax.swing.JComboBox<Clasificaciones> cbClasi;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField txtDuracion;
+    private javax.swing.JTextField txtPais;
+    private javax.swing.JTextField txtSinopsis;
+    private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
