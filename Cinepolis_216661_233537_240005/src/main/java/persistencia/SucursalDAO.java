@@ -110,21 +110,20 @@ public class SucursalDAO implements ISucursalDAO {
 
     @Override
     public Sucursal obtenerSucursalporNombre(String nombre) throws PersistenciaException {
-       Sucursal sucursal = null;
+        Sucursal sucursal = null;
 
         // Consulta SQL para obtener la sucursal por nombre
         String sentenciaSQL = "SELECT sucursal_id, nombre, direccion, ubicacion, ciudad_id "
                 + "FROM Sucursales "
                 + "WHERE nombre = ?";
 
-        try (Connection conexion = this.conexionBD.crearConexion();
-             PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+        try ( Connection conexion = this.conexionBD.crearConexion();  PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             // Establecer el parámetro del nombre en la consulta preparada
             pS.setString(1, nombre);
 
             // Ejecutar la consulta
-            try (ResultSet resultSet = pS.executeQuery()) {
+            try ( ResultSet resultSet = pS.executeQuery()) {
                 // Si se encuentra una sucursal, mapearla a un objeto Sucursal
                 if (resultSet.next()) {
                     int sucursalId = resultSet.getInt("sucursal_id");
@@ -133,12 +132,12 @@ public class SucursalDAO implements ISucursalDAO {
                     int ciudadId = resultSet.getInt("ciudad_id");
                     sucursal = new Sucursal(sucursalId, nombre, direccion, ubicacion, ciudadId);
                 }
+                return sucursal;
             }
 
         } catch (SQLException e) {
             throw new PersistenciaException("Error al obtener la sucursal por nombre", e);
         }
 
-        return sucursal;
     }
 }

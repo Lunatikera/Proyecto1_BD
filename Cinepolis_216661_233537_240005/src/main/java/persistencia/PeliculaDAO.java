@@ -73,7 +73,8 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ?;";
+        String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ? WHERE"
+                + " pelicula_id=? ;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, pelicula.getTitulo());
@@ -83,6 +84,7 @@ public class PeliculaDAO implements IPeliculaDAO {
             pS.setInt(5, pelicula.getDuracion());
             pS.setString(6, pelicula.getCartel());
             pS.setString(7, pelicula.getClasificacion().name());
+            pS.setInt(8, pelicula.getId());
 
             pS.executeUpdate();
         } catch (SQLException e) {

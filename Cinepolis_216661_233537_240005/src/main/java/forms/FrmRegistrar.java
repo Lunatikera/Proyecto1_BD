@@ -281,7 +281,6 @@ public class FrmRegistrar extends javax.swing.JFrame {
 
 
     private void bAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAtrasActionPerformed
-        Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
     }//GEN-LAST:event_bAtrasActionPerformed
 
     private void agregarCliente() {
@@ -344,7 +343,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
             clienteNeg.agregaCliente(cliente);
 
             JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            Forms.cargarForm(new FrmInicio(clienteNeg, peliNeg, ciudadNeg, paisNeg), this);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al agregar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println(e.getMessage());
