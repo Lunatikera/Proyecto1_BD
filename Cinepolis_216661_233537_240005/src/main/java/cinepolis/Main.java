@@ -1,26 +1,28 @@
-
 package cinepolis;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import negocio.GenerarReporteGananciasSucursal;
+import negocio.GenerarReporteGananciasPeliculas;
 import persistencia.ConexionBD;
 import persistencia.IConexionBD;
 
 public class Main {
+
     public static void main(String[] args) {
         IConexionBD conexionBD = new ConexionBD();
-        GenerarReporteGananciasSucursal generarReporte = new GenerarReporteGananciasSucursal(conexionBD);
-
-        int sucursalId = 1;
-        String fechaInicio = "2024-06-08";
-        String fechaFin = "2024-06-25";
+        GenerarReporteGananciasPeliculas generarReporte = new GenerarReporteGananciasPeliculas(conexionBD);
+        
+        String[] ciudades = {"CDMX", "Ciudad2"};
+        String[] peliculas = {"Origen", "Pelicula2"};
+        String[] generos = {"Accion", "Comedia"};
+        String fechaInicio = "2023-06-08";
+        String fechaFin = "2023-06-20";
 
         try {
-            generarReporte.generarReporte(sucursalId, fechaInicio, fechaFin);
+            generarReporte.crearReporte(ciudades, peliculas, generos, fechaInicio, fechaFin);
+            System.out.println("Reporte generado exitosamente.");
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
 }
-
