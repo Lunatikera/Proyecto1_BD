@@ -209,7 +209,7 @@ public class FrmInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIniciarSesionActionPerformed
-            this.iniciarSesion();
+        this.iniciarSesion();
     }//GEN-LAST:event_BtnIniciarSesionActionPerformed
 
     private void iniciarSesion() {
@@ -221,34 +221,33 @@ public class FrmInicio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese su correo electrónico y contraseña.", "Campos Vacíos", JOptionPane.ERROR_MESSAGE);
         }
         try {
-        // Intentar iniciar sesión con las credenciales proporcionadas
-        ClienteDTO cliente = clienteNeg.iniciarSesion(correo, contraseña);
+            // Intentar iniciar sesión con las credenciales proporcionadas
+            ClienteDTO cliente = clienteNeg.iniciarSesion(correo, contraseña);
             System.out.println(cliente.getUbicacion());
-        if (cliente != null) {
-            // Inicio de sesión exitoso
-            JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. ¡Bienvenido, " + cliente.getNombre() + "!");
+            if (cliente != null) {
+                // Inicio de sesión exitoso
+                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso. ¡Bienvenido, " + cliente.getNombre() + "!");
 
-            // Obtener la ubicación del cliente
-            String ubicacion = obtenerCoordenadas();
-            cliente.setUbicacion(ubicacion);
+                // Obtener la ubicación del cliente
+                String ubicacion = obtenerCoordenadas();
+                cliente.setUbicacion(ubicacion);
 
-            // Realizar acciones adicionales necesarias después del inicio de sesión
-            this.procesarInicioSesionExitoso(cliente);
+                // Realizar acciones adicionales necesarias después del inicio de sesión
+                this.procesarInicioSesionExitoso(cliente);
 
-        } else {
-            // Credenciales incorrectas
-            JOptionPane.showMessageDialog(this, "Inicio de sesión fallido. Por favor, verifica tus credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Credenciales incorrectas
+                JOptionPane.showMessageDialog(this, "Inicio de sesión fallido. Por favor, verifica tus credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException ex) {
+            // Manejar la excepción de negocio y mostrar un mensaje de error
+            JOptionPane.showMessageDialog(this, "Ocurrió un error durante el inicio de sesión. Por favor verifique sus credenciales,.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            // Manejar cualquier otra excepción inesperada
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (NegocioException ex) {
-        // Manejar la excepción de negocio y mostrar un mensaje de error
-        JOptionPane.showMessageDialog(this, "Ocurrió un error durante el inicio de sesión. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
-        Logger.getLogger(FrmInicio.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (Exception ex) {
-        // Manejar cualquier otra excepción inesperada
-        JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
-        Logger.getLogger(FrmInicio.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
+
     private void procesarInicioSesionExitoso(ClienteDTO cliente) {
         try {
             clienteNeg.actualizarCliente(cliente);
