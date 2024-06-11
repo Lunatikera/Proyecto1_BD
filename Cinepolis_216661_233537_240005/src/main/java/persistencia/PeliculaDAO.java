@@ -162,5 +162,47 @@ public class PeliculaDAO implements IPeliculaDAO {
             throw new PersistenciaException("Error al buscar la pelicula por ID: " + e.getMessage());
         }
     }
+    
+ public List<Pelicula> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws PersistenciaException {
+        List<Pelicula> peliculas = new ArrayList<>();
+        
+        // Consulta SQL para obtener películas para una sucursal específica con límite y desplazamiento
+        String sentenciaSQL = "SELECT p.pelicula_id, p.titulo, p.sinopsis, p.pais, p.link_Trailer, p.duracion, p.cartel, p.clasificacion " +
+                              "FROM pelicula_sucursal s " +
+                              "INNER JOIN peliculas p ON s.pelicula_id = p.pelicula_id " +
+                              "WHERE s.sucursal_id = ? " +
+                              "LIMIT ? OFFSET ?";
+        
+        try (Connection conexion = this.conexionBD.crearConexion();
+             PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+            
+            // Establecer los parámetros en la consulta preparada
+            pS.setInt(1, idSucursal);
+            pS.setInt(2, limit);
+            pS.setInt(3, offset);
+            
+            // Ejecutar la consulta
+            try (ResultSet resultSet = pS.executeQuery()) {
+                // Iterar sobre los resultados y mapearlos a objetos Pelicula
+                while (resultSet.next()) {
+                    int peliculaId = resultSet.getInt("pelicula_id");
+                    String titulo = resultSet.getString("titulo");
+                    String sinopsis = resultSet.getString("sinopsis");
+                    String pais = resultSet.getString("pais");
+                    String linkTrailer = resultSet.getString("link_Trailer");
+                    int duracion = resultSet.getInt("duracion");
+                    String cartel = resultSet.getString("cartel");
+                    Clasificaciones clasificacion = Clasificaciones.valueOf(resultSet.getString("clasificacion"));
 
+                    // Crear un objeto Pelicula y agregarlo a la lista
+                    Pelicula pelicula = new Pelicula(peliculaId, titulo, sinopsis, pais, linkTrailer, duracion, cartel, clasificacion);
+                    peliculas.add(pelicula);
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Error al buscar películas para la sucursal", e);
+        }
+        
+        return peliculas;
+    }
 }
