@@ -23,4 +23,7 @@ public interface IPeliculaNegocio {
     public PeliculaDTO buscarPeliculaPorId(int idCliente) throws NegocioException;
 
     public List<PeliculaDTO> buscarPaginadoPeliculas(int limite, int pagina) throws NegocioException;
+
+    public List<PeliculaDTO> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws NegocioException;
+
 }
