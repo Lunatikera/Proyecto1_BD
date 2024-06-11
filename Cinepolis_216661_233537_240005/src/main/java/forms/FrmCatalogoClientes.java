@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
@@ -57,6 +58,19 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }
 
     private void cargarConfiguracionInicialTablaCliente() {
+        ActionListener onEditarClickListener = new ActionListener() {
+            final int columnaId = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editar();
+            }
+        };
+        int indiceColumnaEditar = 6;
+        TableColumnModel modeloColumnas = this.tblClientes.getColumnModel();
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellRenderer(new JButtonRenderer("Editar"));
+        modeloColumnas.getColumn(indiceColumnaEditar).setCellEditor(new JButtonCellEditor("Editar", onEditarClickListener));
+
         ActionListener onEliminarClickListener = new ActionListener() {
             final int columnald = 0;
 
@@ -66,8 +80,8 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
             }
         };
 
-        int indiceColumnaEliminar = 6;
-        TableColumnModel modeloColumnas = this.tblClientes.getColumnModel();
+        int indiceColumnaEliminar = 7;
+        modeloColumnas = this.tblClientes.getColumnModel();
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellRenderer(new JButtonRenderer("Eliminar"));
 
         modeloColumnas.getColumn(indiceColumnaEliminar).setCellEditor(new JButtonCellEditor("Eliminar", onEliminarClickListener));
@@ -84,6 +98,45 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
             return idSocioSeleccionado;
         } else {
             return 0;
+        }
+    }
+
+    private void editar() {
+        int id = this.getIdSeleccionadoTabla();
+
+        try {
+            ClienteDTO cliente = clienteNeg.buscarClientePorId(id);
+
+            if (cliente != null) {
+                JTextField nuevoNombre = new JTextField(cliente.getNombre());
+                JTextField nuevoApellidoPA = new JTextField(cliente.getApellidoPA());
+                JTextField nuevoApellidoMA = new JTextField(cliente.getApellidoMA());
+                JTextField nuevoCorreo = new JTextField(cliente.getCorreo());
+
+                Object[] message = {
+                    "Nuevo Nombre:", nuevoNombre,
+                    "Nuevo Apellido Paterno:", nuevoApellidoPA,
+                    "Nuevo Apellido Materno:", nuevoApellidoMA,
+                    "Nuevo Correo:", nuevoCorreo
+                };
+
+                int option = JOptionPane.showConfirmDialog(this, message, "Editar Cliente", JOptionPane.OK_CANCEL_OPTION);
+
+                if (option == JOptionPane.OK_OPTION) {
+                    cliente.setNombre(nuevoNombre.getText());
+                    cliente.setApellidoPA(nuevoApellidoPA.getText());
+                    cliente.setApellidoMA(nuevoApellidoMA.getText());
+                    cliente.setCorreo(nuevoCorreo.getText());
+
+                    clienteNeg.actualizarCliente(cliente);
+                    this.actualizarTabla();
+                    JOptionPane.showMessageDialog(this, "Cliente actualizado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -226,17 +279,17 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         tblClientes.setForeground(new java.awt.Color(0, 153, 153));
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Apellido P.", "Apellido M.", "Correo", "Fecha de nacimiento", "Eliminar"
+                "ID", "Nombre", "Apellido P.", "Apellido M.", "Correo", "Fecha de nacimiento", "Editar", "Eliminar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {

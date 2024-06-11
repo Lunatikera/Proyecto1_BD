@@ -340,7 +340,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
-        PeliculaDTO pelicula = peliculasCargadas.get(0);
+        PeliculaDTO pelicula1 = peliculasCargadas.get(3);
         Object[] opciones = {"Editar", "Eliminar"};
         int opcionSeleccionada = JOptionPane.showOptionDialog(
                 this,
@@ -354,7 +354,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula, peliculas, clienteNeg, cliente);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula1, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -372,7 +372,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
-        PeliculaDTO pelicula = peliculasCargadas.get(0);
+        PeliculaDTO pelicula2 = peliculasCargadas.get(0);
         Object[] opciones = {"Editar", "Eliminar"};
         int opcionSeleccionada = JOptionPane.showOptionDialog(
                 this,
@@ -386,7 +386,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula, peliculas, clienteNeg, cliente);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula2, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -404,7 +404,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPelicula1ActionPerformed
 
     private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
-        PeliculaDTO pelicula = peliculasCargadas.get(0);
+        PeliculaDTO pelicula3 = peliculasCargadas.get(1);
         Object[] opciones = {"Editar", "Eliminar"};
         int opcionSeleccionada = JOptionPane.showOptionDialog(
                 this,
@@ -418,7 +418,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula, peliculas, clienteNeg, cliente);
+            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula3, peliculas, clienteNeg, cliente);
             peliculaForm.setVisible(true);
             this.dispose();
         } else if (opcionSeleccionada == 1) {
@@ -436,7 +436,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
-        PeliculaDTO pelicula = peliculasCargadas.get(0);
+        PeliculaDTO pelicula4 = peliculasCargadas.get(2);
         Object[] opciones = {"Editar", "Eliminar"};
         int opcionSeleccionada = JOptionPane.showOptionDialog(
                 this,
