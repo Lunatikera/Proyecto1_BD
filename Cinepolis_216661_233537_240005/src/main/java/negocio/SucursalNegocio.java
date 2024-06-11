@@ -86,7 +86,6 @@ public class SucursalNegocio implements ISucursalNegocio {
         try {
             // Llamar al método del DAO para obtener la sucursal por nombre
             Sucursal sucursal = sucursalDAO.obtenerSucursalporNombre(nombre);
-
             if (sucursal != null) {
                 // Convertir la sucursal obtenida a un objeto SucursalDTO
                 SucursalDTO sucursalDTO = convertirASucursalDTO(sucursal);

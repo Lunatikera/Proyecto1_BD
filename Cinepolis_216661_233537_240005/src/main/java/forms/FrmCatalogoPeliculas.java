@@ -54,14 +54,6 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
 
-        menuDesplegable = new JPopupMenu();
-        JMenuItem item1 = new JMenuItem("Opción 1");
-        JMenuItem item2 = new JMenuItem("Opción 2");
-        JMenuItem item3 = new JMenuItem("Opción 3");
-        menuDesplegable.add(item1);
-        menuDesplegable.add(item2);
-        menuDesplegable.add(item3);
-
         this.cargarMetodosIniciales();
 
     }
@@ -354,15 +346,20 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula1, peliculas, clienteNeg, cliente);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula1, peliculas);
             peliculaForm.setVisible(true);
-            this.dispose();
+            cargarPeliculas();
         } else if (opcionSeleccionada == 1) {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
                     peliculas.eliminarPelicula(pelicula.getId());
-                    cargarPeliculas();
+
+                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                        this.BtnPaginaAnterior1ActionPerformed(null);
+                    } else {
+                        cargarPeliculas();
+                    }
                 } catch (NegocioException ex) {
                     Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -386,19 +383,28 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula2, peliculas, clienteNeg, cliente);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula2, peliculas);
             peliculaForm.setVisible(true);
-            this.dispose();
+            cargarPeliculas();
+
         } else if (opcionSeleccionada == 1) {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
                     peliculas.eliminarPelicula(pelicula.getId());
-                    cargarPeliculas();
+
+                    // Error handling for the deletion operation
+                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                        this.BtnPaginaAnterior1ActionPerformed(null);
+                    } else {
+                        cargarPeliculas();
+                    }
+                    JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NegocioException ex) {
                     Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
+                    // Optionally, show an error message to the user
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la película.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_BtnPelicula1ActionPerformed
@@ -418,19 +424,28 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula3, peliculas, clienteNeg, cliente);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula3, peliculas);
             peliculaForm.setVisible(true);
-            this.dispose();
+            cargarPeliculas();
+
         } else if (opcionSeleccionada == 1) {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
                     peliculas.eliminarPelicula(pelicula.getId());
-                    cargarPeliculas();
+
+                    // Error handling for the deletion operation
+                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                        this.BtnPaginaAnterior1ActionPerformed(null);
+                    } else {
+                        cargarPeliculas();
+                    }
+                    JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } catch (NegocioException ex) {
                     Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
+                    // Optionally, show an error message to the user
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la película.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
@@ -450,21 +465,29 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmModificarPelicula peliculaForm = new FrmModificarPelicula(pelicula, peliculas, clienteNeg, cliente);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula4, peliculas);
             peliculaForm.setVisible(true);
-            this.dispose();
+            cargarPeliculas();
         } else if (opcionSeleccionada == 1) {
-            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                try {
-                    peliculas.eliminarPelicula(pelicula.getId());
-                    cargarPeliculas();
-                } catch (NegocioException ex) {
-                    Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            peliculas.eliminarPelicula(pelicula.getId());
+
+            // Error handling for the deletion operation
+            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                this.BtnPaginaAnterior1ActionPerformed(null);
+            } else {
+                cargarPeliculas();
             }
+            JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
+            // Optionally, show an error message to the user
+            JOptionPane.showMessageDialog(this, "Error al eliminar la película.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+}
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed

@@ -4,6 +4,7 @@
  */
 package forms;
 
+import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
 import enums.Clasificaciones;
 import java.awt.Image;
@@ -11,23 +12,28 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import negocio.IClienteNegocio;
 import negocio.IPeliculaNegocio;
 import negocio.NegocioException;
-import utilerias.Forms;
 
 /**
  *
  * @author Usuario
  */
-public class FrmAgregarPelicula extends javax.swing.JFrame {
+public class FrmEditarPelicula extends javax.swing.JFrame {
 
+    FrmCatalogoPeliculas pantallaPrincipal;
+    PeliculaDTO pelicula;
     IPeliculaNegocio peliNeg;
     String ruta = "";
 
-    public FrmAgregarPelicula(IPeliculaNegocio peliNeg) {
+    public FrmEditarPelicula(FrmCatalogoPeliculas pantallaPrincipal, PeliculaDTO pelicula, IPeliculaNegocio peliNeg) {
         initComponents();
         this.peliNeg = peliNeg;
+        this.pelicula = pelicula;
+        this.pantallaPrincipal = pantallaPrincipal;
         llenarComboEnum();
+        cargarDetallesPelicula();
     }
 
     /**
@@ -179,11 +185,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         txtTitulo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtTitulo.setToolTipText("");
         txtTitulo.setBorder(null);
-        txtTitulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTituloActionPerformed(evt);
-            }
-        });
         jPanel1.add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 156, 280, 34));
 
         LblCorreo.setBackground(new java.awt.Color(5, 16, 42));
@@ -196,7 +197,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         cbPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estados Unidos" }));
         jPanel1.add(cbPais, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 162, 128, -1));
 
-        btnAplicar.setText("Agregar");
+        btnAplicar.setText("Editar");
         btnAplicar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAplicarActionPerformed(evt);
@@ -231,11 +232,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         txtTrailer.setForeground(new java.awt.Color(51, 51, 51));
         txtTrailer.setToolTipText("");
         txtTrailer.setBorder(null);
-        txtTrailer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTrailerActionPerformed(evt);
-            }
-        });
         jPanel1.add(txtTrailer, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 238, 280, 34));
 
         LblCorreo5.setBackground(new java.awt.Color(5, 16, 42));
@@ -249,11 +245,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         txtDuracion.setForeground(new java.awt.Color(51, 51, 51));
         txtDuracion.setToolTipText("");
         txtDuracion.setBorder(null);
-        txtDuracion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDuracionActionPerformed(evt);
-            }
-        });
         jPanel1.add(txtDuracion, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 232, 150, 34));
 
         LblCorreo6.setBackground(new java.awt.Color(5, 16, 42));
@@ -270,11 +261,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         LblCorreo7.setToolTipText("");
         jPanel1.add(LblCorreo7, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 284, -1, -1));
 
-        cbClasificacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbClasificacionActionPerformed(evt);
-            }
-        });
         jPanel1.add(cbClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 315, 128, -1));
 
         txtSinopsis.setColumns(20);
@@ -299,6 +285,20 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargarDetallesPelicula() {
+        txtTitulo.setText(pelicula.getTitulo());
+        txtSinopsis.setText(pelicula.getSinopsis());
+        cbClasificacion.setSelectedItem(pelicula.getClasificacion());
+        cbPais.setSelectedItem(pelicula.getPais());
+        txtDuracion.setText(String.valueOf(pelicula.getDuracion()));
+        txtTrailer.setText(pelicula.getLink_trailer());
+
+        //Cargar Cartel Pelicula
+        ImageIcon icon = new ImageIcon(pelicula.getCartel());
+        Image scaledImage = icon.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+        BtnPelicula.setIcon(new ImageIcon(scaledImage));
+    }
+
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnPerfilActionPerformed
@@ -308,8 +308,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-
-        dispose();
+        // TODO add your handling code here:
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void BtnExplorarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExplorarActionPerformed
@@ -322,6 +321,7 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
             ImageIcon icon = new ImageIcon(ruta);
             Image scaledImage = icon.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
             BtnPelicula.setIcon(new ImageIcon(scaledImage));
+            pelicula.setCartel(ruta);
 
         }
     }//GEN-LAST:event_BtnExplorarActionPerformed
@@ -334,6 +334,10 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         String pais = cbPais.getSelectedItem().toString().trim();
         String duracionStr = txtDuracion.getText().trim();
         String cartel = ruta.trim();
+
+        if (cartel == "") {
+            cartel = pelicula.getCartel();
+        }
 
         if (titulo.isEmpty() || sinopsis.isEmpty() || trailer.isEmpty()
                 || pais.isEmpty() || duracionStr.isEmpty() || cartel.isEmpty()) {
@@ -349,7 +353,6 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
             return;
         }
 
-        PeliculaDTO pelicula = new PeliculaDTO();
         pelicula.setTitulo(titulo);
         pelicula.setSinopsis(sinopsis);
         pelicula.setLink_trailer(trailer);
@@ -357,30 +360,17 @@ public class FrmAgregarPelicula extends javax.swing.JFrame {
         pelicula.setCartel(cartel);
         pelicula.setClasificacion(clasificacion);
         pelicula.setDuracion(duracion);
+
         try {
-            peliNeg.agregaPelicula(pelicula);
+            peliNeg.actualizarPelicula(pelicula);
             JOptionPane.showMessageDialog(this, "Película agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            pantallaPrincipal.cargarPeliculas();
+            this.dispose();
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "La pelicula no ha sio agregada!.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnAplicarActionPerformed
-
-    private void cbClasificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClasificacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbClasificacionActionPerformed
-
-    private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTituloActionPerformed
-
-    private void txtTrailerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTrailerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTrailerActionPerformed
-
-    private void txtDuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDuracionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDuracionActionPerformed
 
     public void llenarComboEnum() {
         for (Clasificaciones clasi : Clasificaciones.values()) {

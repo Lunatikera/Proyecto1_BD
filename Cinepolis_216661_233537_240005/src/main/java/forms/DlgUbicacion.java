@@ -6,6 +6,7 @@ package forms;
 
 import dtos.CiudadDTO;
 import dtos.ClienteDTO;
+import dtos.PeliculaDTO;
 import dtos.SucursalDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,22 +28,27 @@ import negocio.NegocioException;
  */
 public class DlgUbicacion extends javax.swing.JDialog {
 
+    FrmCatalogoSucursal pantallaPrincipal;
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliNeg;
     ICiudadNegocio ciudadNeg;
-    ClienteDTO cliente;
     ISucursalNegocio sucursalNeg;
+    IPaisNegocio paisNeg;
+    ClienteDTO cliente;
+    PeliculaDTO pelicula;
     List<CiudadDTO> listaCiudades;
     List<SucursalDTO> listaSucursales;
 
     public DlgUbicacion(java.awt.Frame parent, boolean modal, IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
-            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, ClienteDTO cliente) {
+            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ClienteDTO cliente, PeliculaDTO pelicula) {
         super(parent, modal);
         initComponents();
         this.clienteNeg = clienteNeg;
         this.peliNeg = peliNeg;
         this.ciudadNeg = ciudadNeg;
         this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
+        this.pelicula = pelicula;
         this.cliente = cliente;
         listaCiudades = new ArrayList<>();
         listaSucursales = new ArrayList<>();
@@ -250,16 +256,40 @@ public class DlgUbicacion extends javax.swing.JDialog {
     }
     private void BtnSucursalCercanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSucursalCercanaActionPerformed
         try {
-            sucursalNeg.obtenerSucursalMasCercana(cliente.getId());
+            SucursalDTO sucursalDTO = sucursalNeg.obtenerSucursalMasCercana(cliente.getId());
+            FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(peliNeg, cliente, clienteNeg, pelicula,
+                    sucursalDTO, ciudadNeg, sucursalNeg, paisNeg);
+            catalogo.setVisible(true);
+            this.dispose();
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "No se pudo encontrar la ubicacion", "Error en la ubicacion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnSucursalCercanaActionPerformed
 
     private void BtnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSiguienteActionPerformed
-        String sucursal = cbSucursal.getSelectedItem() != null ? cbCiudad.getSelectedItem().toString() : "";
-        try {
-            SucursalDTO sucursalDTO=sucursalNeg.obtenerSucursalporNombre(sucursal);
+
+       try {
+        String sucursal = cbSucursal.getSelectedItem() != null ? cbSucursal.getSelectedItem().toString() : "";
+
+        if (sucursal.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una sucursal.", "Sucursal no seleccionada", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        System.out.println("Sucursal seleccionada: " + sucursal);
+        SucursalDTO sucursalDTO = sucursalNeg.obtenerSucursalporNombre(sucursal);
+
+        if (sucursalDTO == null) {
+            JOptionPane.showMessageDialog(this, "La sucursal seleccionada no se encuentra.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(peliNeg, cliente, clienteNeg, pelicula,
+                sucursalDTO, ciudadNeg, sucursalNeg, paisNeg);
+
+        catalogo.setVisible(true);
+
+        this.dispose();
+        
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "No se pudo encontrar la ubicacion seleccionada", "Error en la ubicacion", JOptionPane.ERROR_MESSAGE);
         }
