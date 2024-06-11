@@ -21,4 +21,6 @@ public interface IPeliculaDAO {
     public List<Pelicula> buscarPelicula(int limit, int offset) throws PersistenciaException;
 
     public Pelicula buscarPeliculaPorId(int idPelicula) throws PersistenciaException;
+    
+    public List<Pelicula> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws PersistenciaException;
 }

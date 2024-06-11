@@ -6,6 +6,7 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,7 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  *
  * @author Usuario
  */
-public class FrmCatalogo extends javax.swing.JFrame {
+public class FrmCatalogoSucursal extends javax.swing.JFrame {
 
     private int pagina = 1;
     private final int LIMITE = 4;
@@ -37,9 +38,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
     IPeliculaNegocio peliculas;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
+    private SucursalDTO sucursal;
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogo(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
+    public FrmCatalogoSucursal(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
@@ -47,9 +50,10 @@ public class FrmCatalogo extends javax.swing.JFrame {
         this.cliente = cliente;
         this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal=sucursal;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
-        this.peliculasCargadas = new ArrayList<>();
+        this.peliculasCargadas = new ArrayList<>();        
         this.cargarMetodosIniciales();
 
     }
@@ -312,7 +316,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
     public void cargarPeliculas() {
         try {
-            List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
+            List<PeliculaDTO> peliculasLista = this.peliculas.buscarPeliculaSucursal(sucursal.getId(),LIMITE, pagina);
 
             peliculasCargadas.clear();
             peliculasCargadas.addAll(peliculasLista);
@@ -426,8 +430,8 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
         try {
             BtnPaginaSiguiente1.setEnabled(true);
-            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1) == null
-                    || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1).isEmpty()) {
+            if (this.peliculas.buscarPeliculaSucursal(sucursal.getId(),this.LIMITE, this.pagina + 1) == null
+                    || this.peliculas.buscarPeliculaSucursal(sucursal.getId(),this.LIMITE, this.pagina + 1).isEmpty()) {
                 BtnPaginaSiguiente1.setEnabled(false);
             }
         } catch (NegocioException ex) {

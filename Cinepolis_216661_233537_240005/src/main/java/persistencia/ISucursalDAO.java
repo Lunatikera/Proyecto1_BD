@@ -17,4 +17,8 @@ public interface ISucursalDAO {
 
     public List<Sucursal> obtenerSucursales() throws PersistenciaException;
 
+    public List<Sucursal> listaSucursalesporCiudad(int idCiudad) throws PersistenciaException;
+
+    public Sucursal obtenerSucursalporNombre(String nombre) throws PersistenciaException;
+
 }
