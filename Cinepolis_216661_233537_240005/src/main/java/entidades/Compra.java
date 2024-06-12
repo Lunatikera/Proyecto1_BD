@@ -58,4 +58,5 @@ public class Compra {
     public void setFuncionId(int funcionId) {
         this.funcionId = funcionId;
     }
+
 }

@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS cinepolis;
 USE cinepolis;
--- Creación de tablas
 
+-- Creación de tablas
 CREATE TABLE Paises (
     pais_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
@@ -198,24 +198,32 @@ VALUES
 ('Sala VIP', 40, 20, (SELECT sucursal_id FROM Sucursales WHERE nombre = 'Cinépolis Santa Rosa')),
 ('Sala ITSON', 60, 10, (SELECT sucursal_id FROM Sucursales WHERE nombre = 'Cinépolis Santa Rosa'));
 
-
+CREATE TABLE Precios (
+	precio_id INT AUTO_INCREMENT PRIMARY KEY,
+    costoFuncion DECIMAL(10, 2) NOT NULL
+);
+INSERT INTO Precios (costoFuncion)
+VALUES (60.00);
 
 CREATE TABLE Funciones (
     funcion_id INT AUTO_INCREMENT PRIMARY KEY,
     precio DECIMAL(10, 2) NOT NULL,
     dia ENUM('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo') NOT NULL,
     hora TIME NOT NULL,
+    hora_final TIME NOT NULL, -- Nueva columna para la hora final
     asientos_Disponibles INT NOT NULL,
     duracionTotal INT NOT NULL,
     sala_id INT,
     pelicula_id INT,
+    precio_id INT default 1,
     FOREIGN KEY (sala_id) REFERENCES Salas(sala_id),
-    FOREIGN KEY (pelicula_id) REFERENCES Peliculas(pelicula_id)
+    FOREIGN KEY (pelicula_id) REFERENCES Peliculas(pelicula_id),
+	FOREIGN KEY (precio_id) REFERENCES Precios(precio_id)
 );
 
 CREATE TABLE Compras (
     compra_id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_compra DATE NOT NULL,
+    fecha_compra TIMESTAMP NOT NULL default CURRENT_TIMESTAMP ,
     cantidad_Boletos INT NOT NULL,
     totalCompra DECIMAL(10, 2),
     cliente_id INT,
@@ -223,7 +231,6 @@ CREATE TABLE Compras (
     FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id),
     FOREIGN KEY (funcion_id) REFERENCES Funciones(funcion_id)
 );
-
 CREATE TABLE Pelicula_Genero (
     pelicula_id INT,
     genero_id INT,
@@ -239,7 +246,26 @@ CREATE TABLE Pelicula_Sucursal (
     FOREIGN KEY (pelicula_id) REFERENCES Peliculas(pelicula_id),
     FOREIGN KEY (sucursal_id) REFERENCES Sucursales(sucursal_id)
 );
+
+
 DELIMITER $$
+CREATE TRIGGER actualizar_precio_funcion
+BEFORE INSERT ON Funciones
+FOR EACH ROW
+BEGIN
+    DECLARE iva DECIMAL(10, 2) DEFAULT 0.16; -- IVA del 16%
+    DECLARE costo_funcion DECIMAL(10, 2);
+
+    -- Obtener el costo de función correspondiente
+    SELECT costoFuncion
+    INTO costo_funcion
+    FROM Precios
+    WHERE precio_id = NEW.precio_id;
+
+    -- Calcular el precio de la función con IVA
+    SET NEW.precio = costo_funcion * (1 + iva);
+END $$
+
 CREATE TRIGGER actualizar_asientos
 AFTER INSERT ON Compras
 FOR EACH ROW
@@ -283,28 +309,51 @@ BEGIN
     LIMIT 1;
 END $$
 
+CREATE TRIGGER before_insert_funciones
+BEFORE INSERT ON Funciones
+FOR EACH ROW
+BEGIN
+    DECLARE duracion_total INT;
+    DECLARE num_asientos INT;
 
+    -- Obtener la duración total sumando la duración de la película y el tiempo de limpieza
+    SELECT s.duracionLimpieza + p.duracion, s.num_asientos
+    INTO duracion_total, num_asientos
+    FROM Salas s
+    JOIN Peliculas p ON p.pelicula_id = NEW.pelicula_id
+    WHERE s.sala_id = NEW.sala_id;
 
+    -- Establecer el valor de duracionTotal
+    SET NEW.duracionTotal = duracion_total;
 
-CREATE PROCEDURE actualizarDuracionTotal()
+    -- Calcular la hora_final sumando duracionTotal convertida a segundos a la hora inicial
+SET NEW.hora_final = MAKETIME(
+  HOUR(ADDTIME(NEW.hora, SEC_TO_TIME(duracion_total * 60))) % 24,
+  MINUTE(ADDTIME(NEW.hora, SEC_TO_TIME(duracion_total * 60))),
+  SECOND(ADDTIME(NEW.hora, SEC_TO_TIME(duracion_total * 60))));
+
+    -- Inicializar asientos_Disponibles con el número de asientos de la sala
+SET NEW.asientos_Disponibles = num_asientos;
+END$$
+
+CREATE EVENT reiniciar_asientos_evento
+ON SCHEDULE EVERY 1 minute
+STARTS CURRENT_TIMESTAMP 
+DO
 BEGIN
     UPDATE Funciones f
     JOIN Salas s ON f.sala_id = s.sala_id
-    JOIN Peliculas p ON f.pelicula_id = p.pelicula_id
-    SET f.duracionTotal = s.duracionLimpieza + p.duracion;
-END $$
+    SET f.asientos_Disponibles = s.num_asientos
+    WHERE f.hora_final < curtime();
+END$$
 
 DELIMITER ;
 
 -- Insertar datos de prueba
-INSERT INTO Funciones (precio, dia, hora, asientos_Disponibles, duracionTotal, sala_id, pelicula_id) VALUES (100.00, 'Lunes', '18:00:00', 50, 150, 1, 1);
+INSERT INTO Funciones ( dia, hora, sala_id, pelicula_id) VALUES ('Lunes', '18:00:00', 2, 3);
 INSERT INTO Clientes (nombres, apellidoPA, apellidoMA, correo, contraseña, fechaNacimiento, ubicacion, ciudad_id) VALUES ('Juan Alonso','Perez','Lopez', 'juan@example.com', '123', '1990-01-01', ST_GeomFromText('POINT(19.4326 -99.1332)'), 1);
 INSERT INTO Compras (fecha_compra, cantidad_Boletos, cliente_id, funcion_id)
-VALUES (CURRENT_DATE(), 2, 1, 1);
-
--- Actualizar la duración total de las funciones
-CALL actualizarDuracionTotal();
-
+VALUES (5, 1, 1);
 -- Insertar Clientes
 INSERT INTO Clientes (nombres, apellidoPA, apellidoMA, correo, contraseña, fechaNacimiento, ubicacion, ciudad_id) VALUES
 ('Ana María', 'García', 'Hernández', 'ana@example.com', 'Password123', '1985-02-15', ST_GeomFromText('POINT(19.4284 -99.1276)'), 1),
@@ -336,3 +385,5 @@ INSERT INTO Pelicula_Sucursal (sucursal_id, pelicula_id) VALUES (3, 7);
 INSERT INTO Pelicula_Sucursal (sucursal_id, pelicula_id) VALUES (3, 4);
 -- Insert 8
 INSERT INTO Pelicula_Sucursal (sucursal_id, pelicula_id) VALUES (12, 15);
+
+INSERT INTO Funciones (precio, dia, hora, asientos_Disponibles, duracionTotal, sala_id, pelicula_id) VALUES (100.00, 'Lunes', '23:00:00', 50, 150, 1, 2);

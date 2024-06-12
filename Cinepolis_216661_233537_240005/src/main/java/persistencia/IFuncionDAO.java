@@ -4,15 +4,15 @@
  */
 package persistencia;
 
-
-import entidades.Compra;
+import entidades.Funcion;
+import java.util.List;
 
 /**
  *
- * @author Chris
+ * @author Usuario
  */
-public interface ICompraDAO {
+public interface IFuncionDAO {
 
-    public void insertarCompra(Compra compra) throws PersistenciaException;
+    public List<Funcion> listaFuncionporDiaSucursalPelicula(String dia, int idSala, int idPelicula) throws PersistenciaException;
 
 }
