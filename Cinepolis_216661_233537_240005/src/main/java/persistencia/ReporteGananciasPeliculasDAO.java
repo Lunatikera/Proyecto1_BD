@@ -19,7 +19,7 @@ import java.util.List;
 public class ReporteGananciasPeliculasDAO {
     
     IConexionBD conexionBD;
-    String RUTA_PDF = "C:\\Users\\jesus\\OneDrive\\Escritorio\\tickets/reporte_peliculas.pdf";
+    String RUTA_PDF = "C:\\Users\\Chris\\Desktop\\tickets/reporte_peliculas.pdf";
 
     public ReporteGananciasPeliculasDAO(IConexionBD conexionBD) {
         this.conexionBD = conexionBD;

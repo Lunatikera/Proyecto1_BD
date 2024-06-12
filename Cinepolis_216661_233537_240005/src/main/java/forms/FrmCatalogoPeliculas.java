@@ -6,6 +6,7 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
 import static utilerias.Utilidades.textoConSaltosLinea;
@@ -36,20 +40,29 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     private final int LIMITE = 4;
     private JButton[] botones;
     private JLabel[] labels;
-    IClienteNegocio clienteNeg;
-    IPeliculaNegocio peliculas;
+    private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
+    public SucursalDTO sucursal;
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogoPeliculas(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
+    public FrmCatalogoPeliculas(IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
-        this.peliculas = peliculas;
+        this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
         this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
@@ -65,7 +78,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
 
     public void cargarPeliculas() {
         try {
-            List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
+            List<PeliculaDTO> peliculasLista = this.peliculaNeg.buscarPaginadoPeliculas(LIMITE, pagina);
 
             peliculasCargadas.clear();
             peliculasCargadas.addAll(peliculasLista);
@@ -118,8 +131,8 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
 
         try {
             BtnPaginaSiguiente1.setEnabled(true);
-            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1) == null
-                    || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1).isEmpty()) {
+            if (this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1) == null
+                    || this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1).isEmpty()) {
                 BtnPaginaSiguiente1.setEnabled(false);
             }
         } catch (NegocioException ex) {
@@ -328,7 +341,7 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmModoAdmin(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
@@ -346,16 +359,17 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula1, peliculas);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
+            this.dispose();
             peliculaForm.setVisible(true);
             cargarPeliculas();
         } else if (opcionSeleccionada == 1) {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
-                    peliculas.eliminarPelicula(pelicula.getId());
+                    peliculaNeg.eliminarPelicula(pelicula.getId());
 
-                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                    if (this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
                         this.BtnPaginaAnterior1ActionPerformed(null);
                     } else {
                         cargarPeliculas();
@@ -383,7 +397,8 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula2, peliculas);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
+            this.dispose();
             peliculaForm.setVisible(true);
             cargarPeliculas();
 
@@ -391,10 +406,10 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
-                    peliculas.eliminarPelicula(pelicula.getId());
+                    peliculaNeg.eliminarPelicula(pelicula.getId());
 
                     // Error handling for the deletion operation
-                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                    if (this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
                         this.BtnPaginaAnterior1ActionPerformed(null);
                     } else {
                         cargarPeliculas();
@@ -424,7 +439,8 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula3, peliculas);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
+            this.dispose();
             peliculaForm.setVisible(true);
             cargarPeliculas();
 
@@ -432,10 +448,10 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
-                    peliculas.eliminarPelicula(pelicula.getId());
+                    peliculaNeg.eliminarPelicula(pelicula.getId());
 
                     // Error handling for the deletion operation
-                    if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                    if (this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
                         this.BtnPaginaAnterior1ActionPerformed(null);
                     } else {
                         cargarPeliculas();
@@ -465,29 +481,30 @@ public class FrmCatalogoPeliculas extends javax.swing.JFrame {
         );
 
         if (opcionSeleccionada == 0) {
-            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,pelicula4, peliculas);
+            FrmEditarPelicula peliculaForm = new FrmEditarPelicula(this,peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
+            this.dispose();
             peliculaForm.setVisible(true);
             cargarPeliculas();
         } else if (opcionSeleccionada == 1) {
-             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        try {
-            peliculas.eliminarPelicula(pelicula.getId());
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar esta película?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                try {
+                    peliculaNeg.eliminarPelicula(pelicula.getId());
 
-            // Error handling for the deletion operation
-            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
-                this.BtnPaginaAnterior1ActionPerformed(null);
-            } else {
-                cargarPeliculas();
+                    // Error handling for the deletion operation
+                    if (this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina) == null || this.peliculaNeg.buscarPaginadoPeliculas(this.LIMITE, this.pagina).isEmpty()) {
+                        this.BtnPaginaAnterior1ActionPerformed(null);
+                    } else {
+                        cargarPeliculas();
+                    }
+                    JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NegocioException ex) {
+                    Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
+                    // Optionally, show an error message to the user
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la película.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            JOptionPane.showMessageDialog(this, "Película eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NegocioException ex) {
-            Logger.getLogger(FrmCatalogoPeliculas.class.getName()).log(Level.SEVERE, null, ex);
-            // Optionally, show an error message to the user
-            JOptionPane.showMessageDialog(this, "Error al eliminar la película.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-}
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed

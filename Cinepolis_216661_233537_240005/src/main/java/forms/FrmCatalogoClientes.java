@@ -6,6 +6,7 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,8 +20,11 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
 import utilerias.JButtonCellEditor;
@@ -35,26 +39,36 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private int pagina = 1;
     private final int limite = 10;
     private IClienteNegocio clienteNeg;
-    private IPeliculaNegocio peliculas;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
+    public SucursalDTO sucursal;
 
     /**
      * Creates new form FrmCatalogoClientes
      */
-    public FrmCatalogoClientes(IClienteNegocio clienteNeg, IPeliculaNegocio peliculas, PeliculaDTO pelicula, ClienteDTO cliente) {
+    public FrmCatalogoClientes(IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.clienteNeg = clienteNeg;
-        this.peliculas = peliculas;
-        this.pelicula = pelicula;
+        this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
+        this.clienteNeg = clienteNeg;
+        this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
         this.cargarMetodosIniciales();
     }
 
     private void cargarMetodosIniciales() {
         this.cargarConfiguracionInicialTablaCliente();
         this.cargarClientesEnTabla();
+        this.estadoPagina();
     }
 
     private void cargarConfiguracionInicialTablaCliente() {
@@ -360,7 +374,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private void bRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRegresarActionPerformed
         this.pagina = this.pagina - 1;
         this.cargarClientesEnTabla();
-        this.lblPagina.setText("Página " + this.pagina);
+        this.estadoPagina();
     }//GEN-LAST:event_bRegresarActionPerformed
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
@@ -381,13 +395,13 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmModoAdmin(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
         this.pagina = this.pagina + 1;
         this.cargarClientesEnTabla();
-        this.lblPagina.setText("Página " + this.pagina);
+        this.estadoPagina();
     }//GEN-LAST:event_bSiguienteActionPerformed
 
     private void ordenarPorColumna(int columnIndexToSort) {
@@ -405,6 +419,37 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
             sortKeys.add(new RowSorter.SortKey(columnIndexToSort, sortOrder));
             sorter.setSortKeys(sortKeys);
+        }
+    }
+
+    private void estadoPagina() {
+        String numPagina = String.valueOf(pagina);
+        if (numPagina.length() == 1) {
+            numPagina = "0" + numPagina;
+        }
+        lblPagina.setText(numPagina);
+        estatusBotonAtras();
+        estatusBotonSiguiente();
+    }
+
+    private void estatusBotonAtras() {
+        if (this.pagina > 1) {
+            bRegresar.setEnabled(true);
+            return;
+        }
+        bRegresar.setEnabled(false);
+    }
+
+    private void estatusBotonSiguiente() {
+
+        try {
+            bSiguiente.setEnabled(true);
+            if (this.clienteNeg.buscarClientes(this.limite, this.pagina + 1) == null
+                    || this.clienteNeg.buscarClientes(this.limite, this.pagina + 1).isEmpty()) {
+                bSiguiente.setEnabled(false);
+            }
+        } catch (NegocioException ex) {
+            System.out.println(ex);
         }
     }
 

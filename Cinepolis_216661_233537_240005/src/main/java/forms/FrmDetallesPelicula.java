@@ -6,10 +6,14 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import utilerias.Forms;
 import utilerias.Utilidades;
 import static utilerias.Utilidades.textoConSaltosLinea;
@@ -20,18 +24,27 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  */
 public class FrmDetallesPelicula extends javax.swing.JFrame {
 
-    IPeliculaNegocio peliculas;
     private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
+    private PeliculaDTO pelicula;
     private ClienteDTO cliente;
-    PeliculaDTO pelicula;
+    public SucursalDTO sucursal;
 
-    public FrmDetallesPelicula(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
+    public FrmDetallesPelicula(IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.pelicula = pelicula;
-        this.peliculas = peliculas;
+        this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
         this.clienteNeg = clienteNeg;
+        this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
         cargarDetallesPelicula();
     }
 
@@ -191,6 +204,11 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
         jPanel1.add(LblTrailer, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
 
         BtnFunciones.setText("Ver Funciones");
+        BtnFunciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnFuncionesActionPerformed(evt);
+            }
+        });
         jPanel1.add(BtnFunciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 440, 190, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -245,8 +263,12 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoSucursal(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
+
+    private void BtnFuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnFuncionesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnFuncionesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

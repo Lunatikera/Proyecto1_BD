@@ -73,8 +73,7 @@ public class PeliculaDAO implements IPeliculaDAO {
 
     @Override
     public void actualizarPelicula(Pelicula pelicula) throws PersistenciaException {
-        String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ? WHERE"
-                + " pelicula_id=? ;";
+        String sentenciaSQL = "UPDATE peliculas SET titulo = ?, sinopsis = ?, pais = ?, link_Trailer = ?,duracion = ?,cartel = ?,clasificacion = ? WHERE pelicula_id=? ;";
         try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
 
             pS.setString(1, pelicula.getTitulo());
@@ -164,25 +163,24 @@ public class PeliculaDAO implements IPeliculaDAO {
             throw new PersistenciaException("Error al buscar la pelicula por ID: " + e.getMessage());
         }
     }
-    
- public List<Pelicula> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws PersistenciaException {
+
+    public List<Pelicula> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws PersistenciaException {
         List<Pelicula> peliculas = new ArrayList<>();
-        
+
         // Consulta SQL para obtener películas para una sucursal específica con límite y desplazamiento
-        String sentenciaSQL = "SELECT p.pelicula_id, p.titulo, p.sinopsis, p.pais, p.link_Trailer, p.duracion, p.cartel, p.clasificacion " +
-                              "FROM pelicula_sucursal s " +
-                              "INNER JOIN peliculas p ON s.pelicula_id = p.pelicula_id " +
-                              "WHERE s.sucursal_id = ? " +
-                              "LIMIT ? OFFSET ?";
-        
-        try (Connection conexion = this.conexionBD.crearConexion();
-             PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
-            
+        String sentenciaSQL = "SELECT p.pelicula_id, p.titulo, p.sinopsis, p.pais, p.link_Trailer, p.duracion, p.cartel, p.clasificacion "
+                + "FROM pelicula_sucursal s "
+                + "INNER JOIN peliculas p ON s.pelicula_id = p.pelicula_id "
+                + "WHERE s.sucursal_id = ? "
+                + "LIMIT ? OFFSET ?";
+
+        try (Connection conexion = this.conexionBD.crearConexion(); PreparedStatement pS = conexion.prepareStatement(sentenciaSQL)) {
+
             // Establecer los parámetros en la consulta preparada
             pS.setInt(1, idSucursal);
             pS.setInt(2, limit);
             pS.setInt(3, offset);
-            
+
             // Ejecutar la consulta
             try (ResultSet resultSet = pS.executeQuery()) {
                 // Iterar sobre los resultados y mapearlos a objetos Pelicula
@@ -204,7 +202,7 @@ public class PeliculaDAO implements IPeliculaDAO {
         } catch (SQLException e) {
             throw new PersistenciaException("Error al buscar películas para la sucursal", e);
         }
-        
+
         return peliculas;
     }
 }

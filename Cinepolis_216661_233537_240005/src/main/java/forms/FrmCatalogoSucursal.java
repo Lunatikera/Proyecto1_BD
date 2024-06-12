@@ -395,7 +395,7 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(0);
         System.out.println(pelicula);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
         libroForm.setVisible(true);
         this.dispose();
 
@@ -403,27 +403,27 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
 
     private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(1);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
         libroForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(2);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
         libroForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(3);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
+        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg);
         libroForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
     private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
-        Forms.cargarForm(new FrmModoAdmin(peliculaNeg, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmModoAdmin(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_lblAdminMouseClicked
 
     private void BtnLocalizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLocalizacionActionPerformed

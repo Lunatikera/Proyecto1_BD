@@ -23,7 +23,7 @@ import persistencia.IConexionBD;
  * @author Chris
  */
 public class FrmReportes extends javax.swing.JFrame {
-
+    
     GenerarReporteGananciasSucursal a;
     IConexionBD conexionBD;
     ISucursalNegocio sucursalNeg;
@@ -32,12 +32,13 @@ public class FrmReportes extends javax.swing.JFrame {
     /**
      * Creates new form FrmReportes
      */
-    public FrmReportes(ISucursalNegocio sucursalNeg) {
+    public FrmReportes(IConexionBD conexionBD, ISucursalNegocio sucursalNeg) {
         initComponents();
         this.a = new GenerarReporteGananciasSucursal(conexionBD);
         this.sucursalNeg = sucursalNeg;
+        this.conexionBD = conexionBD;
         listaSucursales = new ArrayList<>();
-        llenarComboBoxPaises();
+        llenarComboBoxSucursales();
     }
 
     /**
@@ -94,14 +95,11 @@ public class FrmReportes extends javax.swing.JFrame {
                 .addGap(200, 200, 200)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(jLabel3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel3))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(cbSucursal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jdcInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -137,12 +135,12 @@ public class FrmReportes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void llenarComboBoxPaises() {
+    private void llenarComboBoxSucursales() {
         try {
             listaSucursales = sucursalNeg.obtenerSucursales();
-
+            
             for (SucursalDTO sucursal : listaSucursales) {
-                cbSucursal.addItem(sucursal.getNombre());
+                cbSucursal.addItem(sucursal);
             }
         } catch (NegocioException ex) {
             Logger.getLogger(FrmRegistrar.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,22 +149,22 @@ public class FrmReportes extends javax.swing.JFrame {
 
     private void bReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReporteActionPerformed
         try {
-
+            
             Date fechaIni = jdcInicio.getDate();
             Date fechaFin = jdcFin.getDate();
-
+            
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String fechaInicio = sdf.format(fechaIni);
             String fechaFinStr = sdf.format(fechaFin);
-
-            SucursalDTO sucursalSeleccionada = (SucursalDTO) cbSucursal.getSelectedItem();
+            
+            SucursalDTO sucursalSeleccionada = cbSucursal.getItemAt(0);
             int sucursalId = sucursalSeleccionada.getId();
-
+            
             a.generarReporte(sucursalId, fechaInicio, fechaFinStr);
 
             // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(this, "Reporte generado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al generar el reporte: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -176,7 +174,7 @@ public class FrmReportes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bReporte;
-    private javax.swing.JComboBox<String> cbSucursal;
+    private javax.swing.JComboBox<SucursalDTO> cbSucursal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -6,15 +6,20 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import enums.Clasificaciones;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
+import utilerias.Forms;
 
 /**
  *
@@ -23,14 +28,27 @@ import negocio.NegocioException;
 public class FrmEditarPelicula extends javax.swing.JFrame {
 
     FrmCatalogoPeliculas pantallaPrincipal;
-    PeliculaDTO pelicula;
-    IPeliculaNegocio peliNeg;
+    private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
+    private PeliculaDTO pelicula;
+    private ClienteDTO cliente;
+    public SucursalDTO sucursal;
     String ruta = "";
 
-    public FrmEditarPelicula(FrmCatalogoPeliculas pantallaPrincipal, PeliculaDTO pelicula, IPeliculaNegocio peliNeg) {
+    public FrmEditarPelicula(FrmCatalogoPeliculas pantallaPrincipal, IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
         initComponents();
-        this.peliNeg = peliNeg;
+        this.peliculaNeg = peliculaNeg;
+        this.cliente = cliente;
+        this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
         this.pantallaPrincipal = pantallaPrincipal;
         llenarComboEnum();
         cargarDetallesPelicula();
@@ -308,7 +326,7 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        // TODO add your handling code here:
+        Forms.cargarForm(new FrmCatalogoPeliculas(peliculaNeg, cliente, clienteNeg, pelicula, sucursal, ciudadNeg, sucursalNeg, paisNeg), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void BtnExplorarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExplorarActionPerformed
@@ -362,12 +380,12 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
         pelicula.setDuracion(duracion);
 
         try {
-            peliNeg.actualizarPelicula(pelicula);
-            JOptionPane.showMessageDialog(this, "Película agregada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            peliculaNeg.actualizarPelicula(pelicula);
+            JOptionPane.showMessageDialog(this, "Película actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             pantallaPrincipal.cargarPeliculas();
             this.dispose();
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "La pelicula no ha sio agregada!.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La pelicula no ha sio actualizada!.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnAplicarActionPerformed

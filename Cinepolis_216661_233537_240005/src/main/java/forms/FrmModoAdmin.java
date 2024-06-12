@@ -6,8 +6,12 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISucursalNegocio;
 import utilerias.Forms;
 
 /**
@@ -16,21 +20,30 @@ import utilerias.Forms;
  */
 public class FrmModoAdmin extends javax.swing.JFrame {
 
-    IPeliculaNegocio peliculas;
     private IClienteNegocio clienteNeg;
-    private ClienteDTO cliente;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
     private PeliculaDTO pelicula;
+    private ClienteDTO cliente;
+    public SucursalDTO sucursal;
 
     /**
      * Creates new form FrmModoAdmin
      */
-    public FrmModoAdmin(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
+    public FrmModoAdmin(IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.peliculas = peliculas;
+         this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
         this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg= paisNeg;
     }
 
     /**
@@ -187,23 +200,23 @@ public class FrmModoAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCatalogoActionPerformed
-        Forms.cargarForm(new FrmCatalogoClientes(clienteNeg, peliculas, pelicula, cliente), this);
+        Forms.cargarForm(new FrmCatalogoClientes(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_bCatalogoActionPerformed
 
     private void bRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRegresarActionPerformed
-        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoSucursal(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_bRegresarActionPerformed
 
     private void bCatalogo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCatalogo1ActionPerformed
-        Forms.cargarForm(new FrmCatalogoPeliculas(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoPeliculas(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_bCatalogo1ActionPerformed
 
     private void btnAgregarPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPeliculaActionPerformed
-        Forms.cargarForm(new FrmAgregarPelicula(peliculas), this);
+        Forms.cargarForm(new FrmAgregarPelicula(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_btnAgregarPeliculaActionPerformed
 
     private void bReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportesActionPerformed
-        
+//        Forms.cargarForm(new FrmReportes(peliculaNeg, cliente, clienteNeg, pelicula,sucursal,ciudadNeg,sucursalNeg,paisNeg), this);
     }//GEN-LAST:event_bReportesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
