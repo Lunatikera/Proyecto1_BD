@@ -39,7 +39,6 @@ public class ReporteGananciasPeliculasDAO {
             "JOIN Ciudades ci ON su.ciudad_id = ci.ciudad_id " +
             "WHERE c.fecha_compra BETWEEN ? AND ? "
         );
-
         if (ciudades != null && ciudades.length > 0) {
             query.append("AND ci.nombre IN (");
             for (int i = 0; i < ciudades.length; i++) {
@@ -48,7 +47,6 @@ public class ReporteGananciasPeliculasDAO {
             }
             query.append(") ");
         }
-
         if (peliculas != null && peliculas.length > 0) {
             query.append("AND p.titulo IN (");
             for (int i = 0; i < peliculas.length; i++) {
@@ -57,7 +55,6 @@ public class ReporteGananciasPeliculasDAO {
             }
             query.append(") ");
         }
-
         if (generos != null && generos.length > 0) {
             query.append("AND g.nombreGenero IN (");
             for (int i = 0; i < generos.length; i++) {
@@ -68,7 +65,6 @@ public class ReporteGananciasPeliculasDAO {
         }
 
         query.append("GROUP BY ci.nombre, p.titulo, g.nombreGenero, c.fecha_compra");
-
         try (Connection conn = conexionBD.crearConexion();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
@@ -102,7 +98,6 @@ public class ReporteGananciasPeliculasDAO {
                 String genero = rs.getString("genero");
                 String fechaCompra = rs.getDate("fecha_compra").toString();
                 double totalGananciaPorFecha = rs.getDouble("total_ganancia_por_fecha");
-
                 ReporteGananciasPeliculas reporteItem = new ReporteGananciasPeliculas(ciudad, pelicula, genero, fechaCompra, totalGananciaPorFecha);
                 reporte.add(reporteItem);
             }
@@ -113,7 +108,7 @@ public class ReporteGananciasPeliculasDAO {
 
     public void crearPDF(List<ReporteGananciasPeliculas> reporte, String ciudad, String pelicula, String genero, String fechaInicio, String fechaFin) throws IOException {
         File archivo = new File(RUTA_PDF);
-        archivo.getParentFile().mkdirs(); // Crear directorios si no existen
+        archivo.getParentFile().mkdirs();
 
         Document document = new Document();
         try {

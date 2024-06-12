@@ -33,7 +33,6 @@ public class ReporteGananciasSucursalDAO {
                        "JOIN Salas s ON f.sala_id = s.sala_id " +
                        "WHERE s.sucursal_id = ? AND c.fecha_compra BETWEEN ? AND ? " +
                        "GROUP BY s.nombre, f.dia";
-
         try (Connection conn = conexionBD.crearConexion();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -57,8 +56,7 @@ public class ReporteGananciasSucursalDAO {
 
     public void crearPDF(List<ReporteGananciasSucursal> reportes, String sucursal, String fechaInicio, String fechaFin) throws IOException {
         File archivo = new File(RUTA_PDF);
-        archivo.getParentFile().mkdirs(); // Crear directorios si no existen
-
+        archivo.getParentFile().mkdirs(); 
         Document document = new Document();
         try {
             PdfWriter.getInstance(document, new FileOutputStream(RUTA_PDF));

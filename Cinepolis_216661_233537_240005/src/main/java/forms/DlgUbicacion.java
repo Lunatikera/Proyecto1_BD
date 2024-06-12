@@ -140,6 +140,11 @@ public class DlgUbicacion extends javax.swing.JDialog {
 
         cbSucursal.setBackground(new java.awt.Color(204, 204, 204));
         cbSucursal.setForeground(new java.awt.Color(5, 16, 42));
+        cbSucursal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSucursalActionPerformed(evt);
+            }
+        });
 
         LblCorreo1.setBackground(new java.awt.Color(5, 16, 42));
         LblCorreo1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -294,6 +299,10 @@ public class DlgUbicacion extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "No se pudo encontrar la ubicacion seleccionada", "Error en la ubicacion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnSiguienteActionPerformed
+
+    private void cbSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSucursalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSucursalActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

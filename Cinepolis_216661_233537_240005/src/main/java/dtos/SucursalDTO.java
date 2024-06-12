@@ -9,7 +9,8 @@ package dtos;
  * @author Usuario
  */
 public class SucursalDTO {
-     private int id;
+
+    private int id;
     private String nombre;
     private String direccion;
     private int idCiudad;
@@ -55,8 +56,10 @@ public class SucursalDTO {
     public void setIdCiudad(int idCiudad) {
         this.idCiudad = idCiudad;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
 }
-
-
