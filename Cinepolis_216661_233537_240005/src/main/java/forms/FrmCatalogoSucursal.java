@@ -21,8 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
 import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
@@ -43,14 +45,16 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
     private ICiudadNegocio ciudadNeg;
     private ISucursalNegocio sucursalNeg;
     private IPaisNegocio paisNeg;
+    private IFuncionNegocio funcionNeg;
+    private ISalaNegocio salaNeg;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
     public SucursalDTO sucursal;
 
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogoSucursal(IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
-            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg) {
+    public FrmCatalogoSucursal(IFuncionNegocio funcionNeg, IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ISalaNegocio salaNeg) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
@@ -61,7 +65,9 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
         this.sucursal = sucursal;
         this.ciudadNeg = ciudadNeg;
         this.sucursalNeg = sucursalNeg;
-        this.paisNeg= paisNeg;
+        this.paisNeg = paisNeg;
+        this.funcionNeg = funcionNeg;
+        this.salaNeg = salaNeg;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
@@ -91,7 +97,6 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
         BtnLocalizacion = new javax.swing.JButton();
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
-        lblAdmin = new javax.swing.JLabel();
         BtnPelicula4 = new javax.swing.JButton();
         BtnPelicula1 = new javax.swing.JButton();
         BtnPelicula2 = new javax.swing.JButton();
@@ -108,7 +113,8 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
 
         menupup.setBackground(new java.awt.Color(5, 16, 42));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Cartelera por Sucursal");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -150,22 +156,12 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
-        lblAdmin.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        lblAdmin.setText("Modo administrador");
-        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAdminMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(118, 118, 118)
-                .addComponent(lblAdmin)
-                .addGap(70, 70, 70)
+                .addGap(330, 330, 330)
                 .addComponent(BtnLogo)
                 .addGap(147, 147, 147)
                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,11 +187,7 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
                                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnLogo)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(lblAdmin)))))
+                        .addComponent(BtnLogo)))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -353,7 +345,7 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
     }
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-        // TODO add your handling code here:
+        Forms.cargarForm(new FrmModoAdmin(funcionNeg, peliculaNeg, sucursalNeg, clienteNeg, paisNeg, ciudadNeg, salaNeg, pelicula, cliente, sucursal), this);
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
@@ -370,7 +362,7 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
             for (Window window : Window.getWindows()) {
                 window.dispose();
             }
-            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg);
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
             newFrame.setVisible(true);
         }
         // Si
@@ -394,40 +386,31 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
 
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(0);
-        System.out.println(pelicula);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
-        libroForm.setVisible(true);
-        this.dispose();
+        Forms.cargarForm(new FrmDetallesPelicula(salaNeg, funcionNeg, ciudadNeg, paisNeg, sucursalNeg, peliculaNeg, clienteNeg, cliente, pelicula, sucursal), this);
+
 
     }//GEN-LAST:event_BtnPelicula1ActionPerformed
 
     private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(1);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
-        libroForm.setVisible(true);
-        this.dispose();
+        Forms.cargarForm(new FrmDetallesPelicula(salaNeg, funcionNeg, ciudadNeg, paisNeg, sucursalNeg, peliculaNeg, clienteNeg, cliente, pelicula, sucursal), this);
+
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(2);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
-        libroForm.setVisible(true);
-        this.dispose();
+        Forms.cargarForm(new FrmDetallesPelicula(salaNeg, funcionNeg, ciudadNeg, paisNeg, sucursalNeg, peliculaNeg, clienteNeg, cliente, pelicula, sucursal), this);
+
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(3);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculaNeg, clienteNeg, cliente);
-        libroForm.setVisible(true);
-        this.dispose();
+        Forms.cargarForm(new FrmDetallesPelicula(salaNeg, funcionNeg, ciudadNeg, paisNeg, sucursalNeg, peliculaNeg, clienteNeg, cliente, pelicula, sucursal), this);
+
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
-    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
-        Forms.cargarForm(new FrmModoAdmin(peliculaNeg, cliente, clienteNeg, pelicula), this);
-    }//GEN-LAST:event_lblAdminMouseClicked
-
     private void BtnLocalizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLocalizacionActionPerformed
-        DlgUbicacion ubicacion = new DlgUbicacion(this, true, clienteNeg, peliculaNeg, ciudadNeg, sucursalNeg,paisNeg, cliente, pelicula);
+        DlgUbicacion ubicacion = new DlgUbicacion(this, rootPaneCheckingEnabled, funcionNeg, clienteNeg, peliculaNeg, ciudadNeg, sucursalNeg, paisNeg, salaNeg, cliente, pelicula);
         ubicacion.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnLocalizacionActionPerformed
@@ -483,7 +466,6 @@ public class FrmCatalogoSucursal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel lblAdmin;
     private javax.swing.JLabel lblSucursal;
     private javax.swing.JPopupMenu menupup;
     // End of variables declaration//GEN-END:variables

@@ -6,10 +6,18 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
+import java.awt.Window;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
+import negocio.ISucursalNegocio;
 import utilerias.Forms;
 import utilerias.Utilidades;
 import static utilerias.Utilidades.textoConSaltosLinea;
@@ -20,18 +28,29 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  */
 public class FrmDetallesPelicula extends javax.swing.JFrame {
 
-    IPeliculaNegocio peliculas;
+    private IPeliculaNegocio peliculaNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
+    private ICiudadNegocio ciudadNeg;
     private IClienteNegocio clienteNeg;
+    private IFuncionNegocio funcionNeg;
+    private ISalaNegocio salaNeg;
     private ClienteDTO cliente;
-    PeliculaDTO pelicula;
+    private PeliculaDTO pelicula;
+    private SucursalDTO sucursal;
 
-    public FrmDetallesPelicula(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
+    public FrmDetallesPelicula(ISalaNegocio salaNeg, IFuncionNegocio funcionNeg, ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg, ISucursalNegocio sucursalNeg, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente, PeliculaDTO pelicula, SucursalDTO sucursal) {
         initComponents();
         this.setLocationRelativeTo(this);
+        this.funcionNeg=funcionNeg;
+        this.ciudadNeg = ciudadNeg;
+        this.paisNeg = paisNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.peliculaNeg = peliculas;
         this.pelicula = pelicula;
-        this.peliculas = peliculas;
         this.cliente = cliente;
-        this.clienteNeg = clienteNeg;
+        this.sucursal = sucursal;
+        this.salaNeg=salaNeg;
         cargarDetallesPelicula();
     }
 
@@ -48,7 +67,6 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         BtnPerfil = new javax.swing.JButton();
-        BtnLocalizacion = new javax.swing.JButton();
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
         BtnLittleLogo = new javax.swing.JButton();
@@ -61,7 +79,8 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
         LblTrailer = new javax.swing.JLabel();
         BtnFunciones = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Detalles de la Pelicula");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -77,11 +96,6 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
                 BtnPerfilActionPerformed(evt);
             }
         });
-
-        BtnLocalizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/localizacion.PNG"))); // NOI18N
-        BtnLocalizacion.setBorder(null);
-        BtnLocalizacion.setBorderPainted(false);
-        BtnLocalizacion.setContentAreaFilled(false);
 
         BtnLogOut.setBackground(new java.awt.Color(187, 187, 187));
         BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
@@ -116,13 +130,15 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
                 .addComponent(BtnLittleLogo)
                 .addGap(146, 146, 146)
                 .addComponent(BtnLogo)
-                .addGap(120, 120, 120)
-                .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnPerfil)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(252, 252, 252)
+                        .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BtnPerfil)
+                        .addGap(136, 136, 136))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,13 +149,13 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
                     .addGap(8, 8, 8))
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(14, 14, 14)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(BtnLogo)
-                        .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(BtnLogo)))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(BtnLittleLogo))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -197,9 +213,7 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,18 +255,34 @@ public class FrmDetallesPelicula extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLogOutActionPerformed
+  // Mostrar cuadro de diálogo de confirmación
+        int response = JOptionPane.showConfirmDialog(
+                this,
+            "¿Desea Continuar a Cerrar Sesion?",
+                "Cerrar Sesion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Verificar la respuesta del usuario
+        if (response == JOptionPane.YES_OPTION) {
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
+            newFrame.setVisible(true);
+        }
+    }
+        // Si selecciona "Cancelar", no se hace nada    }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
+        this.dispose();
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnFunciones;
     private javax.swing.JButton BtnLittleLogo;
-    private javax.swing.JButton BtnLocalizacion;
     private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;
     private javax.swing.JButton BtnPelicula1;

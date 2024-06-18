@@ -17,8 +17,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
 import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 
@@ -34,13 +36,15 @@ public class DlgUbicacion extends javax.swing.JDialog {
     ICiudadNegocio ciudadNeg;
     ISucursalNegocio sucursalNeg;
     IPaisNegocio paisNeg;
+    IFuncionNegocio funcionNeg;
+    ISalaNegocio salaNeg;
     ClienteDTO cliente;
     PeliculaDTO pelicula;
     List<CiudadDTO> listaCiudades;
     List<SucursalDTO> listaSucursales;
 
-    public DlgUbicacion(java.awt.Frame parent, boolean modal, IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
-            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ClienteDTO cliente, PeliculaDTO pelicula) {
+    public DlgUbicacion(java.awt.Frame parent, boolean modal, IFuncionNegocio funcionNeg, IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
+            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ISalaNegocio salaNeg, ClienteDTO cliente, PeliculaDTO pelicula) {
         super(parent, modal);
         initComponents();
         this.clienteNeg = clienteNeg;
@@ -48,6 +52,8 @@ public class DlgUbicacion extends javax.swing.JDialog {
         this.ciudadNeg = ciudadNeg;
         this.sucursalNeg = sucursalNeg;
         this.paisNeg = paisNeg;
+        this.funcionNeg=funcionNeg;
+        this.salaNeg=salaNeg;
         this.pelicula = pelicula;
         this.cliente = cliente;
         listaCiudades = new ArrayList<>();
@@ -79,6 +85,8 @@ public class DlgUbicacion extends javax.swing.JDialog {
         LblCorreo2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Selecciona una Sucursal");
+        setAlwaysOnTop(true);
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
@@ -87,7 +95,7 @@ public class DlgUbicacion extends javax.swing.JDialog {
 
         BtnSucursalCercana.setBackground(new java.awt.Color(204, 204, 204));
         BtnSucursalCercana.setForeground(new java.awt.Color(5, 16, 42));
-        BtnSucursalCercana.setText("Ir a la sucursal mas cercana");
+        BtnSucursalCercana.setText("Sucursal mas cercana");
         BtnSucursalCercana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnSucursalCercanaActionPerformed(evt);
@@ -172,15 +180,15 @@ public class DlgUbicacion extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addComponent(LblCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnSucursalCercana, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblCorreo2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BtnSucursalCercana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbSucursal, 0, 194, Short.MAX_VALUE)
+                    .addComponent(LblCorreo2, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,8 +270,7 @@ public class DlgUbicacion extends javax.swing.JDialog {
     private void BtnSucursalCercanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSucursalCercanaActionPerformed
         try {
             SucursalDTO sucursalDTO = sucursalNeg.obtenerSucursalMasCercana(cliente.getId());
-            FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(peliNeg, cliente, clienteNeg, pelicula,
-                    sucursalDTO, ciudadNeg, sucursalNeg, paisNeg);
+            FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(funcionNeg, peliNeg, cliente, clienteNeg, pelicula, sucursalDTO, ciudadNeg, sucursalNeg, paisNeg, salaNeg);
             catalogo.setVisible(true);
             this.dispose();
         } catch (NegocioException ex) {
@@ -288,8 +295,7 @@ public class DlgUbicacion extends javax.swing.JDialog {
             return;
         }
 
-        FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(peliNeg, cliente, clienteNeg, pelicula,
-                sucursalDTO, ciudadNeg, sucursalNeg, paisNeg);
+        FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(funcionNeg, peliNeg, cliente, clienteNeg, pelicula, sucursalDTO, ciudadNeg, sucursalNeg, paisNeg, salaNeg);
 
         catalogo.setVisible(true);
 

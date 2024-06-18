@@ -14,4 +14,6 @@ import java.util.List;
  */
 public interface ISalaNegocio {
   public List<SalaDTO> listaSalasporSucursal(int idSucursal) throws NegocioException;  
+  
+  public SalaDTO obtenerSalaPorID(int idSala) throws NegocioException;
 }

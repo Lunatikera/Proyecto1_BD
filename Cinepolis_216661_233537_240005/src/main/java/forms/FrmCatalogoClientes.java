@@ -6,6 +6,8 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,8 +21,13 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
 import utilerias.JButtonCellEditor;
@@ -35,20 +42,32 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     private int pagina = 1;
     private final int limite = 10;
     private IClienteNegocio clienteNeg;
-    private IPeliculaNegocio peliculas;
+    private IPeliculaNegocio peliculaNeg;
+    private IPaisNegocio paisNeg;
+    private ISucursalNegocio sucursalNeg;
+    private ICiudadNegocio ciudadNeg;
+    private IFuncionNegocio funcionNeg;
+    private ISalaNegocio salaNeg;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
+    private SucursalDTO sucursal;
 
     /**
      * Creates new form FrmCatalogoClientes
      */
-    public FrmCatalogoClientes(IClienteNegocio clienteNeg, IPeliculaNegocio peliculas, PeliculaDTO pelicula, ClienteDTO cliente) {
+    public FrmCatalogoClientes(ISalaNegocio salaNeg, IFuncionNegocio funcionNeg,IPaisNegocio paisNeg, ISucursalNegocio sucursalNeg, ICiudadNegocio ciudadNeg, IClienteNegocio clienteNeg, IPeliculaNegocio peliculas, PeliculaDTO pelicula, ClienteDTO cliente, SucursalDTO sucursal) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.clienteNeg = clienteNeg;
-        this.peliculas = peliculas;
+        this.paisNeg=paisNeg;
+        this.ciudadNeg=ciudadNeg;
+        this.funcionNeg=funcionNeg;
+        this.sucursalNeg=sucursalNeg;
+        this.salaNeg=salaNeg;
+        this.peliculaNeg = peliculas;
         this.pelicula = pelicula;
         this.cliente = cliente;
+        this.sucursal=sucursal;
         this.cargarMetodosIniciales();
     }
 
@@ -224,13 +243,16 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         BtnLogo = new javax.swing.JButton();
         BtnLittleLogo = new javax.swing.JButton();
+        BtnPerfil = new javax.swing.JButton();
+        BtnLogOut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         bRegresar = new javax.swing.JButton();
         bSiguiente = new javax.swing.JButton();
         lblPagina = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Catalogo Clientes");
         setBackground(new java.awt.Color(0, 0, 0));
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
@@ -251,6 +273,27 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
             }
         });
 
+        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/perfil.PNG"))); // NOI18N
+        BtnPerfil.setBorder(null);
+        BtnPerfil.setBorderPainted(false);
+        BtnPerfil.setContentAreaFilled(false);
+        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPerfilActionPerformed(evt);
+            }
+        });
+
+        BtnLogOut.setBackground(new java.awt.Color(5, 16, 42));
+        BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
+        BtnLogOut.setText("Log out");
+        BtnLogOut.setBorderPainted(false);
+        BtnLogOut.setContentAreaFilled(false);
+        BtnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLogOutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -260,15 +303,26 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
                 .addComponent(BtnLittleLogo)
                 .addGap(221, 221, 221)
                 .addComponent(BtnLogo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(197, 197, 197)
+                .addComponent(BtnPerfil)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(21, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnLittleLogo)
-                    .addComponent(BtnLogo))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGap(19, 19, 19)
+                            .addComponent(BtnLogOut)
+                            .addGap(7, 7, 7))
+                        .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BtnLittleLogo)
+                        .addComponent(BtnLogo)))
                 .addContainerGap())
         );
 
@@ -381,7 +435,7 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
+        this.dispose();
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
@@ -389,6 +443,31 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
         this.cargarClientesEnTabla();
         this.lblPagina.setText("Página " + this.pagina);
     }//GEN-LAST:event_bSiguienteActionPerformed
+
+    private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
+        Forms.cargarForm(new FrmModoAdmin(funcionNeg, peliculaNeg, sucursalNeg, clienteNeg, paisNeg, ciudadNeg, salaNeg, pelicula, cliente, sucursal), this);
+    }//GEN-LAST:event_BtnPerfilActionPerformed
+
+    private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
+        int response = JOptionPane.showConfirmDialog(
+            this,
+            "¿Desea Continuar a Cerrar Sesion?",
+            "Cerrar Sesion",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Verificar la respuesta del usuario
+        if (response == JOptionPane.YES_OPTION) {
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
+            newFrame.setVisible(true);
+        }
+        // Si
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void ordenarPorColumna(int columnIndexToSort) {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tblClientes.getRowSorter();
@@ -410,7 +489,9 @@ public class FrmCatalogoClientes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLittleLogo;
+    private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;
+    private javax.swing.JButton BtnPerfil;
     private javax.swing.JButton bRegresar;
     private javax.swing.JButton bSiguiente;
     private javax.swing.JPanel jPanel1;

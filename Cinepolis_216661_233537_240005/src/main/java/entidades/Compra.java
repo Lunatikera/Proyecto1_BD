@@ -8,5 +8,5 @@ package entidades;
  *
  * @author Usuario
  */
-pub
+public class Compra {
 }

@@ -94,7 +94,7 @@ public class FrmRegistrar extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registrate - Cinepolis");
+        setTitle("Cinepolis - Registrate ");
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 

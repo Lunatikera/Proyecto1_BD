@@ -51,11 +51,7 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        BtnPerfil = new javax.swing.JButton();
-        BtnLocalizacion = new javax.swing.JButton();
-        BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
-        BtnLittleLogo = new javax.swing.JButton();
         BtnPelicula = new javax.swing.JButton();
         txtTitulo = new javax.swing.JTextField();
         LblCorreo = new javax.swing.JLabel();
@@ -83,85 +79,33 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
         LblCorreo1.setText("Correo:");
         LblCorreo1.setToolTipText("");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Editar Pelicula");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(5, 16, 42));
 
-        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/perfil.PNG"))); // NOI18N
-        BtnPerfil.setBorder(null);
-        BtnPerfil.setBorderPainted(false);
-        BtnPerfil.setContentAreaFilled(false);
-        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnPerfilActionPerformed(evt);
-            }
-        });
-
-        BtnLocalizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/localizacion.PNG"))); // NOI18N
-        BtnLocalizacion.setBorder(null);
-        BtnLocalizacion.setBorderPainted(false);
-        BtnLocalizacion.setContentAreaFilled(false);
-
-        BtnLogOut.setBackground(new java.awt.Color(187, 187, 187));
-        BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
-        BtnLogOut.setText("Log out");
-        BtnLogOut.setBorderPainted(false);
-        BtnLogOut.setContentAreaFilled(false);
-        BtnLogOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLogOutActionPerformed(evt);
-            }
-        });
-
         BtnLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/LOGO.png"))); // NOI18N
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
-
-        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
-        BtnLittleLogo.setBorderPainted(false);
-        BtnLittleLogo.setContentAreaFilled(false);
-        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnLittleLogoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(BtnLittleLogo)
-                .addGap(146, 146, 146)
+                .addGap(222, 222, 222)
                 .addComponent(BtnLogo)
-                .addGap(120, 120, 120)
-                .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnPerfil)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(409, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addGap(52, 52, 52)
-                    .addComponent(BtnLogOut)
-                    .addGap(8, 8, 8))
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(14, 14, 14)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(BtnLogo)
-                        .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(BtnLittleLogo))
+                .addGap(14, 14, 14)
+                .addComponent(BtnLogo)
+                .addGap(1, 1, 1))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -299,18 +243,6 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
         BtnPelicula.setIcon(new ImageIcon(scaledImage));
     }
 
-    private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnPerfilActionPerformed
-
-    private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLogOutActionPerformed
-
-    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLittleLogoActionPerformed
-
     private void BtnExplorarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnExplorarActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("JPG, PNG Y JPEG", "jpg", "png", "jpeg");
@@ -380,13 +312,9 @@ public class FrmEditarPelicula extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnExplorar;
-    private javax.swing.JButton BtnLittleLogo;
-    private javax.swing.JButton BtnLocalizacion;
-    private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;
     private javax.swing.JButton BtnPelicula;
     private javax.swing.JButton BtnPelicula1;
-    private javax.swing.JButton BtnPerfil;
     private javax.swing.JLabel LblCorreo;
     private javax.swing.JLabel LblCorreo1;
     private javax.swing.JLabel LblCorreo3;

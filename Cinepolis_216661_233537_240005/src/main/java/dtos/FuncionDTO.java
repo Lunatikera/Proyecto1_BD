@@ -5,6 +5,7 @@
 package dtos;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 /**
  *
@@ -13,16 +14,36 @@ import java.sql.Timestamp;
 public class FuncionDTO {
     private int id;
     private String dia;
-    private Timestamp hora;
-    private Timestamp horaFinal;
+    private LocalTime hora;
+    private LocalTime horaFinal;
     private int idSala;
     private int idPelicula;
 
-    public FuncionDTO(int id, String dia, Timestamp hora, Timestamp horaFinal, int idSala, int idPelicula) {
+    public FuncionDTO(int id) {
+        this.id = id;
+    }
+
+    public FuncionDTO(String dia, LocalTime hora, int idSala, int idPelicula) {
+        this.dia = dia;
+        this.hora = hora;
+        this.idSala = idSala;
+        this.idPelicula = idPelicula;
+    }
+    
+
+    public FuncionDTO(int id, String dia, LocalTime hora, LocalTime horaFinal, int idSala, int idPelicula) {
         this.id = id;
         this.dia = dia;
         this.hora = hora;
         this.horaFinal = horaFinal;
+        this.idSala = idSala;
+        this.idPelicula = idPelicula;
+    }
+
+    public FuncionDTO(int id, String dia, LocalTime hora, int idSala, int idPelicula) {
+        this.id = id;
+        this.dia = dia;
+        this.hora = hora;
         this.idSala = idSala;
         this.idPelicula = idPelicula;
     }
@@ -46,19 +67,19 @@ public class FuncionDTO {
         this.dia = dia;
     }
 
-    public Timestamp getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(Timestamp hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 
-    public Timestamp getHoraFinal() {
+    public LocalTime getHoraFinal() {
         return horaFinal;
     }
 
-    public void setHoraFinal(Timestamp horaFinal) {
+    public void setHoraFinal(LocalTime horaFinal) {
         this.horaFinal = horaFinal;
     }
 
@@ -76,6 +97,11 @@ public class FuncionDTO {
 
     public void setIdPelicula(int idPelicula) {
         this.idPelicula = idPelicula;
+    }
+
+    @Override
+    public String toString() {
+        return "FuncionDTO{" + "id=" + id + ", dia=" + dia + ", hora=" + hora + ", horaFinal=" + horaFinal + ", idSala=" + idSala + ", idPelicula=" + idPelicula + '}';
     }
     
     

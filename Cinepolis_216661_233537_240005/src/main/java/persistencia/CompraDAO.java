@@ -9,5 +9,10 @@ package persistencia;
  * @author Usuario
  */
 public class CompraDAO {
-    
+
+    IConexionBD conexionBD;
+
+    public CompraDAO(IConexionBD conexionBD) {
+        this.conexionBD = conexionBD;
+    }
 }

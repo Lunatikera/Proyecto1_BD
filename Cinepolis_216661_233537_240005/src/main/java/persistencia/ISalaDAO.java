@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface ISalaDAO {
     public List<Sala> listaSalasporSucursal(int idSucursal) throws PersistenciaException;
+    
+    public Sala obtenerSalaPorID(int idSala) throws PersistenciaException;
 }

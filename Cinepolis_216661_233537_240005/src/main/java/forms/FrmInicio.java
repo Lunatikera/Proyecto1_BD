@@ -13,8 +13,10 @@ import javax.swing.JOptionPane;
 import negocio.ClienteNegocio;
 import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
 import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
@@ -29,17 +31,17 @@ public class FrmInicio extends javax.swing.JFrame {
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliculaNeg;
     ISucursalNegocio sucursalNeg;
-    
-
-    PeliculaDTO pelicula;
     ICiudadNegocio ciudadNeg;
     IPaisNegocio paisNeg;
+    IFuncionNegocio funcionNeg;
+    ISalaNegocio salaNeg;
+    PeliculaDTO pelicula;
 
     /**
      * Creates new form FrmInicio
      */
     public FrmInicio(IClienteNegocio clienteNeg, IPeliculaNegocio peliculaNeg,
-            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg, ISucursalNegocio sucursalNeg) {
+            ICiudadNegocio ciudadNeg, IPaisNegocio paisNeg, ISucursalNegocio sucursalNeg, IFuncionNegocio funcionNeg, ISalaNegocio salaNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.peliculaNeg = peliculaNeg;
@@ -48,6 +50,8 @@ public class FrmInicio extends javax.swing.JFrame {
         this.ciudadNeg = ciudadNeg;
         this.paisNeg = paisNeg;
         this.sucursalNeg = sucursalNeg;
+        this.funcionNeg = funcionNeg;
+        this.salaNeg=salaNeg;
     }
 
     /**
@@ -90,7 +94,7 @@ public class FrmInicio extends javax.swing.JFrame {
         jLabel3.setToolTipText("");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Log in - Cinepolis ");
+        setTitle("Cinepolis -  Log in");
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
@@ -259,7 +263,7 @@ public class FrmInicio extends javax.swing.JFrame {
         try {
             clienteNeg.actualizarCliente(cliente);
             SucursalDTO sucursalFavorable = sucursalNeg.obtenerSucursalMasCercana(cliente.getId());
-            Forms.cargarForm(new FrmCatalogoSucursal(peliculaNeg, cliente, clienteNeg, pelicula, sucursalFavorable, ciudadNeg, sucursalNeg, paisNeg),this);
+            Forms.cargarForm(new FrmCatalogoSucursal(funcionNeg, peliculaNeg, cliente, clienteNeg, pelicula, sucursalFavorable, ciudadNeg, sucursalNeg, paisNeg, salaNeg), this);
 
         } catch (NegocioException ex) {
             Logger.getLogger(FrmInicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -267,7 +271,7 @@ public class FrmInicio extends javax.swing.JFrame {
     }
 
     private void BtnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarseActionPerformed
-        FrmRegistrar registrar= new FrmRegistrar(clienteNeg, peliculaNeg, ciudadNeg, paisNeg);
+        FrmRegistrar registrar = new FrmRegistrar(clienteNeg, peliculaNeg, ciudadNeg, paisNeg);
         registrar.setVisible(true);
     }//GEN-LAST:event_BtnRegistrarseActionPerformed
 

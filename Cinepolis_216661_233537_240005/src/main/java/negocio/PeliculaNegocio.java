@@ -106,19 +106,20 @@ public class PeliculaNegocio implements IPeliculaNegocio {
         }
     }
     
-     public List<PeliculaDTO> buscarPeliculaSucursal(int idSucursal, int limit, int offset) throws NegocioException {
+     public List<PeliculaDTO> buscarPeliculaSucursal(int idSucursal, int limit, int pagina) throws NegocioException {
         try {
-            // Llamar al método del DAO para buscar películas para la sucursal
-            List<Pelicula> peliculas = peliculaDAO.buscarPeliculaSucursal(idSucursal, limit, offset);
-            List<PeliculaDTO> peliculasDTO = new ArrayList<>();
+            this.esNumeroNegativo(limit);
+            this.esNumeroNegativo(pagina);
 
-            // Convertir las películas obtenidas a objetos PeliculaDTO
-            for (Pelicula pelicula : peliculas) {
-                PeliculaDTO peliculaDTO = convertirADTO(pelicula);
-                peliculasDTO.add(peliculaDTO);
+            int offset = this.obtenerOFFSETMySQL(limit, pagina);
+            
+            List<Pelicula> listaPelicula = peliculaDAO.buscarPeliculaSucursal(idSucursal, limit, offset);
+              if (listaPelicula == null && pagina == 1) {
+                throw new NegocioException("No existen peliculas registrados");
             }
 
-            return peliculasDTO;
+            return this.convertirPeliculasDTO(listaPelicula);
+
         } catch (PersistenciaException e) {
             throw new NegocioException("Error en la capa de negocio al buscar películas para la sucursal", e);
         }

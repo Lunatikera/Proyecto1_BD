@@ -5,6 +5,7 @@
 package entidades;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 /**
  *
@@ -14,8 +15,8 @@ public class Funcion {
    private int id;
    private double precio;
    private String dia;
-   private Timestamp hora;
-   private Timestamp horaFinal;
+   private LocalTime hora;
+   private LocalTime horaFinal;
    private int asientosDisponibles;
    private int duracionTotalmin;
    private int idSala;
@@ -25,7 +26,7 @@ public class Funcion {
     public Funcion() {
     }
 
-    public Funcion(int id, double precio, String dia, Timestamp hora, Timestamp horaFinal, int asientosDisponibles, int duracionTotalmin, int idSala, int idPelicula, int idPrecio) {
+    public Funcion(int id, double precio, String dia, LocalTime hora, LocalTime horaFinal, int asientosDisponibles, int duracionTotalmin, int idSala, int idPelicula, int idPrecio) {
         this.id = id;
         this.precio = precio;
         this.dia = dia;
@@ -62,19 +63,19 @@ public class Funcion {
         this.dia = dia;
     }
 
-    public Timestamp getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(Timestamp hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 
-    public Timestamp getHoraFinal() {
+    public LocalTime getHoraFinal() {
         return horaFinal;
     }
 
-    public void setHoraFinal(Timestamp horaFinal) {
+    public void setHoraFinal(LocalTime horaFinal) {
         this.horaFinal = horaFinal;
     }
 
@@ -116,6 +117,11 @@ public class Funcion {
 
     public void setIdPrecio(int idPrecio) {
         this.idPrecio = idPrecio;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcion{" + "id=" + id + ", precio=" + precio + ", dia=" + dia + ", hora=" + hora + ", horaFinal=" + horaFinal + ", asientosDisponibles=" + asientosDisponibles + ", duracionTotalmin=" + duracionTotalmin + ", idSala=" + idSala + ", idPelicula=" + idPelicula + ", idPrecio=" + idPrecio + '}';
     }
     
    

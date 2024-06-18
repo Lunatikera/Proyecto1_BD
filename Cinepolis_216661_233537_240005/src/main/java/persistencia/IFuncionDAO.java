@@ -15,4 +15,11 @@ public interface IFuncionDAO {
 
     public List<Funcion> listaFuncionporDiaSucursalPelicula(String dia, int idSala, int idPelicula) throws PersistenciaException;
 
+    public Funcion buscarPorIdFuncion(int id) throws PersistenciaException;
+
+    public void eliminarFuncion(Funcion funcion) throws PersistenciaException;
+
+    public void agregarFuncion(Funcion funcion) throws PersistenciaException;
+
+    public void editarFuncion(Funcion funcion) throws PersistenciaException;
 }

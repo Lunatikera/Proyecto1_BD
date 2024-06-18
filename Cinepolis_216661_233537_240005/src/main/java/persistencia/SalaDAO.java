@@ -15,8 +15,8 @@ import java.util.List;
 /**
  *
  * @author Usuario
- */
-public class SalaDAO {
+ */ 
+public class SalaDAO implements ISalaDAO {
      IConexionBD conexionBD;
 
     public SalaDAO(IConexionBD conexionBD) {
@@ -24,6 +24,7 @@ public class SalaDAO {
     }
     
     
+     @Override
      public List<Sala> listaSalasporSucursal(int idSucursal) throws PersistenciaException {
     List<Sala> listaSalas = new ArrayList<>();
 
@@ -46,4 +47,30 @@ public class SalaDAO {
 
     return listaSalas;
 }
+
+    @Override
+    public Sala obtenerSalaPorID(int idSala) throws PersistenciaException {
+        String sql = "SELECT sala_id, nombre, num_asientos, duracionLimpieza FROM Salas WHERE sala_id = ?";
+        
+        try (Connection conn = conexionBD.crearConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, idSala);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Sala sala = new Sala();
+                    sala.setId(rs.getInt("sala_id"));
+                    sala.setNombre(rs.getString("nombre"));
+                    sala.setNumeroAsiento(rs.getInt("num_asientos"));
+                    sala.setDuracionLimpieza(rs.getInt("duracionLimpieza"));
+                    return sala;
+                } else {
+                    throw new PersistenciaException("Sala no encontrada con ID: " + idSala);
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaException("Error al obtener la sala por ID", e);
+        }
+    }
 }

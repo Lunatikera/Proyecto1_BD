@@ -6,8 +6,16 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
+import java.awt.Window;
+import javax.swing.JOptionPane;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
+import negocio.ISucursalNegocio;
 import utilerias.Forms;
 
 /**
@@ -16,21 +24,35 @@ import utilerias.Forms;
  */
 public class FrmModoAdmin extends javax.swing.JFrame {
 
-    IPeliculaNegocio peliculas;
+    private IPeliculaNegocio peliculaNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
+    private ICiudadNegocio ciudadNeg;
     private IClienteNegocio clienteNeg;
+    private IFuncionNegocio funcionNeg;
+    private ISalaNegocio salaNeg;
     private ClienteDTO cliente;
     private PeliculaDTO pelicula;
+    private SucursalDTO sucursal;
 
     /**
      * Creates new form FrmModoAdmin
      */
-    public FrmModoAdmin(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
+    public FrmModoAdmin(IFuncionNegocio funcionNeg, IPeliculaNegocio peliculas, ISucursalNegocio sucursalNeg, 
+            IClienteNegocio clienteNeg, IPaisNegocio paisNeg, ICiudadNegocio ciudadNeg, ISalaNegocio salaNeg, 
+            PeliculaDTO pelicula, ClienteDTO cliente, SucursalDTO sucursal) {
         initComponents();
         this.setLocationRelativeTo(this);
-        this.peliculas = peliculas;
+        this.peliculaNeg = peliculas;
         this.cliente = cliente;
+        this.paisNeg = paisNeg;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
         this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.funcionNeg=funcionNeg;
+        this.salaNeg=salaNeg;
     }
 
     /**
@@ -45,14 +67,15 @@ public class FrmModoAdmin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         LblLogo = new javax.swing.JLabel();
         bRegresar = new javax.swing.JButton();
+        BtnLogOut = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         bCatalogo = new javax.swing.JButton();
         bCatalogo1 = new javax.swing.JButton();
-        btnAgregarPelicula = new javax.swing.JButton();
         bReportes = new javax.swing.JButton();
-        bReportes1 = new javax.swing.JButton();
+        btnFuncion = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Modo Administrador");
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
@@ -71,6 +94,17 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             }
         });
 
+        BtnLogOut.setBackground(new java.awt.Color(5, 16, 42));
+        BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
+        BtnLogOut.setText("Log out");
+        BtnLogOut.setBorderPainted(false);
+        BtnLogOut.setContentAreaFilled(false);
+        BtnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLogOutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -78,17 +112,20 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
+                .addGap(66, 66, 66)
                 .addComponent(LblLogo)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(110, 110, 110))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblLogo))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(BtnLogOut)
+                    .addComponent(LblLogo)
+                    .addComponent(bRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
 
@@ -116,17 +153,6 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             }
         });
 
-        btnAgregarPelicula.setBackground(new java.awt.Color(252, 207, 4));
-        btnAgregarPelicula.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        btnAgregarPelicula.setForeground(new java.awt.Color(0, 0, 0));
-        btnAgregarPelicula.setText("Agregar Pelicula");
-        btnAgregarPelicula.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnAgregarPelicula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarPeliculaActionPerformed(evt);
-            }
-        });
-
         bReportes.setBackground(new java.awt.Color(252, 207, 4));
         bReportes.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
         bReportes.setForeground(new java.awt.Color(0, 0, 0));
@@ -138,14 +164,14 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             }
         });
 
-        bReportes1.setBackground(new java.awt.Color(252, 207, 4));
-        bReportes1.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
-        bReportes1.setForeground(new java.awt.Color(0, 0, 0));
-        bReportes1.setText("Catalogo Funciones");
-        bReportes1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        bReportes1.addActionListener(new java.awt.event.ActionListener() {
+        btnFuncion.setBackground(new java.awt.Color(252, 207, 4));
+        btnFuncion.setFont(new java.awt.Font("Calibri Light", 0, 16)); // NOI18N
+        btnFuncion.setForeground(new java.awt.Color(0, 0, 0));
+        btnFuncion.setText("Catalogo Funciones");
+        btnFuncion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnFuncion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bReportes1ActionPerformed(evt);
+                btnFuncionActionPerformed(evt);
             }
         });
 
@@ -155,8 +181,7 @@ public class FrmModoAdmin extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAgregarPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bReportes1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addContainerGap()
@@ -166,7 +191,7 @@ public class FrmModoAdmin extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(bCatalogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(bCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,20 +201,18 @@ public class FrmModoAdmin extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(bCatalogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(bReportes1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(btnAgregarPelicula, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(btnFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(bReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,37 +226,57 @@ public class FrmModoAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCatalogoActionPerformed
-        Forms.cargarForm(new FrmCatalogoClientes(clienteNeg, peliculas, pelicula, cliente), this);
+        Forms.cargarForm(new FrmCatalogoClientes(salaNeg, funcionNeg, paisNeg, sucursalNeg, ciudadNeg, clienteNeg, peliculaNeg, pelicula, cliente, sucursal), this);
     }//GEN-LAST:event_bCatalogoActionPerformed
 
     private void bRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRegresarActionPerformed
-        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoSucursal(funcionNeg, peliculaNeg, cliente, clienteNeg, pelicula, sucursal, ciudadNeg, sucursalNeg, paisNeg, salaNeg), this);
+
     }//GEN-LAST:event_bRegresarActionPerformed
 
     private void bCatalogo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCatalogo1ActionPerformed
-        Forms.cargarForm(new FrmCatalogoPeliculas(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoPeliculas(salaNeg, funcionNeg, ciudadNeg, paisNeg, sucursalNeg, peliculaNeg, cliente, clienteNeg, pelicula, sucursal), this);
     }//GEN-LAST:event_bCatalogo1ActionPerformed
 
-    private void btnAgregarPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPeliculaActionPerformed
-        Forms.cargarForm(new FrmAgregarPelicula(peliculas), this);
-    }//GEN-LAST:event_btnAgregarPeliculaActionPerformed
-
     private void bReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportesActionPerformed
-        
+
     }//GEN-LAST:event_bReportesActionPerformed
 
-    private void bReportes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bReportes1ActionPerformed
+    private void btnFuncionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFuncionActionPerformed
+        DlgElegirSucursal sucursal = new DlgElegirSucursal(this, rootPaneCheckingEnabled, funcionNeg, clienteNeg, peliculaNeg, ciudadNeg, sucursalNeg, paisNeg, salaNeg, cliente, pelicula);
+        sucursal.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnFuncionActionPerformed
+
+    private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
+        int response = JOptionPane.showConfirmDialog(
+            this,
+            "¿Desea Continuar a Cerrar Sesion?",
+            "Cerrar Sesion",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Verificar la respuesta del usuario
+        if (response == JOptionPane.YES_OPTION) {
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
+            newFrame.setVisible(true);
+        }
+        // Si
         // TODO add your handling code here:
-    }//GEN-LAST:event_bReportes1ActionPerformed
+    }//GEN-LAST:event_BtnLogOutActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnLogOut;
     private javax.swing.JLabel LblLogo;
     private javax.swing.JButton bCatalogo;
     private javax.swing.JButton bCatalogo1;
     private javax.swing.JButton bRegresar;
     private javax.swing.JButton bReportes;
-    private javax.swing.JButton bReportes1;
-    private javax.swing.JButton btnAgregarPelicula;
+    private javax.swing.JButton btnFuncion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

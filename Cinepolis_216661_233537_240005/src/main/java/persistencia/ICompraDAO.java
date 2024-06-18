@@ -9,5 +9,5 @@ package persistencia;
  * @author Usuario
  */
 public interface ICompraDAO {
-    
+    public void realizarCompra(int idPelicula) throws PersistenciaException;
 }

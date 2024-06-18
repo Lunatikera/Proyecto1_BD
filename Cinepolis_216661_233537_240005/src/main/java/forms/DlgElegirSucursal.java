@@ -17,8 +17,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
 import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
 import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 
@@ -28,19 +30,20 @@ import negocio.NegocioException;
  */
 public class DlgElegirSucursal extends javax.swing.JDialog {
 
-    FrmCatalogoSucursal pantallaPrincipal;
     IClienteNegocio clienteNeg;
     IPeliculaNegocio peliNeg;
     ICiudadNegocio ciudadNeg;
     ISucursalNegocio sucursalNeg;
     IPaisNegocio paisNeg;
+    IFuncionNegocio funcionNeg;
+    ISalaNegocio salaNeg;
     ClienteDTO cliente;
     PeliculaDTO pelicula;
     List<CiudadDTO> listaCiudades;
     List<SucursalDTO> listaSucursales;
 
-    public DlgElegirSucursal(java.awt.Frame parent, boolean modal, IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
-            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ClienteDTO cliente, PeliculaDTO pelicula) {
+    public DlgElegirSucursal(java.awt.Frame parent, boolean modal, IFuncionNegocio funcionNeg, IClienteNegocio clienteNeg, IPeliculaNegocio peliNeg,
+            ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ISalaNegocio salaNeg, ClienteDTO cliente, PeliculaDTO pelicula) {
         super(parent, modal);
         initComponents();
         this.clienteNeg = clienteNeg;
@@ -50,6 +53,8 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
         this.paisNeg = paisNeg;
         this.pelicula = pelicula;
         this.cliente = cliente;
+        this.funcionNeg=funcionNeg;
+        this.salaNeg= salaNeg;
         listaCiudades = new ArrayList<>();
         listaSucursales = new ArrayList<>();
         this.setLocationRelativeTo(this);
@@ -77,6 +82,8 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
         LblCorreo1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Selecciona una Sucursal");
+        setAlwaysOnTop(true);
 
         jPanel1.setBackground(new java.awt.Color(5, 16, 42));
 
@@ -90,7 +97,7 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
         LblCorreo.setText("Seleccione una Ciudad:");
         LblCorreo.setToolTipText("");
 
-        BtnSiguiente.setBackground(new java.awt.Color(0, 51, 102));
+        BtnSiguiente.setBackground(new java.awt.Color(18, 28, 53));
         BtnSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaDer.png"))); // NOI18N
         BtnSiguiente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         BtnSiguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -156,11 +163,11 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
                             .addComponent(LblCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(BtnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(BtnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,9 +183,9 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
                 .addComponent(LblCorreo1)
                 .addGap(10, 10, 10)
                 .addComponent(cbSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(29, 29, 29)
                 .addComponent(BtnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,7 +248,6 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione una sucursal.", "Sucursal no seleccionada", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        System.out.println("Sucursal seleccionada: " + sucursal);
         SucursalDTO sucursalDTO = sucursalNeg.obtenerSucursalporNombre(sucursal);
 
         if (sucursalDTO == null) {
@@ -249,8 +255,7 @@ public class DlgElegirSucursal extends javax.swing.JDialog {
             return;
         }
 
-        FrmCatalogoSucursal catalogo = new FrmCatalogoSucursal(peliNeg, cliente, clienteNeg, pelicula,
-                sucursalDTO, ciudadNeg, sucursalNeg, paisNeg);
+        FrmCatalogoSucursalFuncion catalogo = new FrmCatalogoSucursalFuncion(funcionNeg, peliNeg, cliente, clienteNeg, pelicula, sucursalDTO, ciudadNeg, sucursalNeg, paisNeg, salaNeg);
 
         catalogo.setVisible(true);
 

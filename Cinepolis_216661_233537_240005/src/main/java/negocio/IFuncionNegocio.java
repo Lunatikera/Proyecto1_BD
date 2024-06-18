@@ -12,6 +12,14 @@ import java.util.List;
  * @author Usuario
  */
 public interface IFuncionNegocio {
-        public List<FuncionDTO> listaFuncionporDiaSucursalPelicula(String dia, int idSala, int idPelicula) throws NegocioException;
 
+    public List<FuncionDTO> listaFuncionporDiaSucursalPelicula(String dia, int idSala, int idPelicula) throws NegocioException;
+
+    public FuncionDTO buscarPorIdFuncion(int id) throws NegocioException;
+
+    public void eliminarFuncion(FuncionDTO funcion) throws NegocioException;
+
+    public void agregarFuncion(FuncionDTO funcion) throws NegocioException;
+
+    public void editarFuncion(FuncionDTO funcion) throws NegocioException;
 }

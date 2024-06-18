@@ -5,22 +5,40 @@
 package forms;
 
 import dtos.ClienteDTO;
+import dtos.FuncionDTO;
 import dtos.PeliculaDTO;
+import dtos.SalaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
 import negocio.IFuncionNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Dias;
+import static utilerias.Dias.obtenerDiaActual;
+import static utilerias.Dias.obtenerDiaAnterior;
 import static utilerias.Dias.obtenerDiaSiguiente;
 import utilerias.Forms;
+import utilerias.JButtonCellEditor;
+import utilerias.JButtonRenderer;
 import utilerias.Utilidades;
 import static utilerias.Utilidades.textoConSaltosLinea;
 
@@ -29,21 +47,35 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  * @author Usuario
  */
 public class FrmPeliculaFuncion extends javax.swing.JFrame {
-    IFuncionNegocio funcionNeg;
-    IPeliculaNegocio peliculaNeg;
+
+    private ICiudadNegocio ciudadNeg;
+    private IPaisNegocio paisNeg;
+    private IFuncionNegocio funcionNeg;
+    private IPeliculaNegocio peliculaNeg;
+    private ISucursalNegocio sucursalNeg;
+    private ISalaNegocio salaNeg;
     private IClienteNegocio clienteNeg;
     private ClienteDTO cliente;
     PeliculaDTO pelicula;
+    SucursalDTO sucursal;
 
-
-    public FrmPeliculaFuncion(PeliculaDTO pelicula, IPeliculaNegocio peliculas, IClienteNegocio clienteNeg, ClienteDTO cliente) {
+    public FrmPeliculaFuncion(PeliculaDTO pelicula, IFuncionNegocio funcionNeg, IPeliculaNegocio peliculaNeg, IClienteNegocio clienteNeg,
+            ISalaNegocio salaNeg, ClienteDTO cliente, SucursalDTO sucursal, IPaisNegocio paisNeg, ICiudadNegocio ciudadNeg) {
         initComponents();
         this.setLocationRelativeTo(this);
         this.pelicula = pelicula;
-        this.peliculaNeg = peliculas;
+        this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
+        this.sucursal = sucursal;
+        this.funcionNeg = funcionNeg;
         this.clienteNeg = clienteNeg;
+        this.ciudadNeg = ciudadNeg;
+        this.paisNeg = paisNeg;
+        this.salaNeg = salaNeg;
         LblDia.setText(obtenerDiaActual());
+        cargarDetallesPelicula();
+        cargarConfiguracionInicialTablaAlumnos();
+        cargarFuncionesEnTabla();
     }
 
     /**
@@ -58,8 +90,6 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        BtnPerfil = new javax.swing.JButton();
-        BtnLocalizacion = new javax.swing.JButton();
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
         BtnLittleLogo = new javax.swing.JButton();
@@ -70,32 +100,19 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
         LblClasificacion = new javax.swing.JLabel();
         LblDia = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblFunciones = new javax.swing.JTable();
         BtnAtras = new javax.swing.JButton();
         BtnSiguiente = new javax.swing.JButton();
         LblTrailer1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Funciones por Pelicula");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(5, 16, 42));
-
-        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/perfil.PNG"))); // NOI18N
-        BtnPerfil.setBorder(null);
-        BtnPerfil.setBorderPainted(false);
-        BtnPerfil.setContentAreaFilled(false);
-        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnPerfilActionPerformed(evt);
-            }
-        });
-
-        BtnLocalizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/localizacion.PNG"))); // NOI18N
-        BtnLocalizacion.setBorder(null);
-        BtnLocalizacion.setBorderPainted(false);
-        BtnLocalizacion.setContentAreaFilled(false);
 
         BtnLogOut.setBackground(new java.awt.Color(187, 187, 187));
         BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
@@ -130,11 +147,7 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
                 .addComponent(BtnLittleLogo)
                 .addGap(146, 146, 146)
                 .addComponent(BtnLogo)
-                .addGap(120, 120, 120)
-                .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnPerfil)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(252, 252, 252)
                 .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -147,10 +160,7 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
                     .addGap(8, 8, 8))
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(14, 14, 14)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(BtnLogo)
-                        .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(BtnLogo)))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(BtnLittleLogo))
@@ -194,66 +204,78 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
         LblClasificacion.setText("Clasificacion:");
         jPanel1.add(LblClasificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
-        LblDia.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 24)); // NOI18N
+        LblDia.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 22)); // NOI18N
         LblDia.setForeground(new java.awt.Color(204, 204, 204));
         LblDia.setText("Lunes");
-        jPanel1.add(LblDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 530, -1, -1));
+        jPanel1.add(LblDia, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 530, 70, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblFunciones.setBackground(new java.awt.Color(153, 153, 153));
+        tblFunciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Sala", "Hora Inicio", "Hora Final"
+                "ID", "Sala", "Hora Inicio", "Hora Final", "Editar", "Eliminar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblFunciones);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 170, 490, 350));
 
-        BtnAtras.setText("jButton1");
+        BtnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaIzq.png"))); // NOI18N
         BtnAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnAtrasActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 530, -1, -1));
+        jPanel1.add(BtnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 530, 40, 30));
 
-        BtnSiguiente.setText("jButton2");
+        BtnSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaDer.png"))); // NOI18N
         BtnSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnSiguienteActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 530, -1, -1));
+        jPanel1.add(BtnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 530, 40, 30));
 
         LblTrailer1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
         LblTrailer1.setForeground(new java.awt.Color(204, 204, 204));
         LblTrailer1.setText("Trailer");
         jPanel1.add(LblTrailer1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
 
+        jButton1.setBackground(new java.awt.Color(18, 28, 53));
+        jButton1.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 204, 204));
+        jButton1.setText("Agregar Funcion");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 530, 160, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -273,9 +295,9 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
     }
 
     private void configurarTrailer() {
-        LblDia.setText("<html><a href=\"" + pelicula.getLink_trailer() + "\">Ver Trailer</a></html>");
-        LblDia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        LblDia.addMouseListener(new java.awt.event.MouseAdapter() {
+        LblTrailer1.setText("<html><a href=\"" + pelicula.getLink_trailer() + "\">Ver Trailer</a></html>");
+        LblTrailer1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LblTrailer1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
                     java.awt.Desktop.getDesktop().browse(new java.net.URI(pelicula.getLink_trailer()));
@@ -288,28 +310,163 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
 
     public void cargarFuncionesEnTabla() {
         try {
-           String dia = LblDia.getText();
-            List<FuncionesDTO> funcionesLista = this.funcionNeg.listaFuncionporDiaSucursalPelicula(LblDia.getText(),);
-            this.llenarTablaAlumnos(alumnoLista);
+            String dia = LblDia.getText();
+            List<FuncionDTO> funcionesLista = this.funcionNeg.listaFuncionporDiaSucursalPelicula(dia, sucursal.getId(), pelicula.getId());
+            this.llenarTablaAlumnos(funcionesLista);
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
-            pagina--;
         }
     }
-    private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnPerfilActionPerformed
 
+    private void cargarConfiguracionInicialTablaAlumnos() {
+        ActionListener onEditarClickListener = new ActionListener() {
+            final int columnaId = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Metodo para editar un alumno
+                editar();
+
+            }
+        };
+        int indiceColumnaEditar = 4;
+        TableColumnModel modeloColumnas = this.tblFunciones.getColumnModel();
+        modeloColumnas.getColumn(indiceColumnaEditar)
+                .setCellRenderer(new JButtonRenderer("Editar"));
+        modeloColumnas.getColumn(indiceColumnaEditar)
+                .setCellEditor(new JButtonCellEditor("Editar",
+                        onEditarClickListener));
+
+        ActionListener onEliminarClickListener = new ActionListener() {
+            final int columnaId = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Metodo para eliminar un alumno
+                eliminar();
+            }
+        };
+        int indiceColumnaEliminar = 5;
+        modeloColumnas = this.tblFunciones.getColumnModel();
+        modeloColumnas.getColumn(indiceColumnaEliminar)
+                .setCellRenderer(new JButtonRenderer("Eliminar"));
+        modeloColumnas.getColumn(indiceColumnaEliminar)
+                .setCellEditor(new JButtonCellEditor("Eliminar",
+                        onEliminarClickListener));
+    }
+
+    private void llenarTablaAlumnos(List<FuncionDTO> funcionLista) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.tblFunciones.getModel();
+
+        if (modeloTabla.getRowCount() > 0) {
+            for (int i = modeloTabla.getRowCount() - 1; i > -1; i--) {
+                modeloTabla.removeRow(i);
+            }
+        }
+        if (funcionLista != null) {
+            funcionLista.forEach(row
+                    -> {
+                Object[] fila = new Object[5];
+                fila[0] = row.getId();
+                try {
+                    fila[1] = salaNeg.obtenerSalaPorID(row.getIdSala()).getNombre();
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.ERROR_MESSAGE);
+                }
+                fila[2] = row.getHora();
+                fila[3] = row.getHoraFinal();
+
+                modeloTabla.addRow(fila);
+            });
+        }
+    }
+
+    private int getIdSeleccionadoTablaFunciones() {
+        int indiceFilaSeleccionada = this.tblFunciones.getSelectedRow();
+        if (indiceFilaSeleccionada != -1 && this.tblFunciones.getRowCount() > 0) {
+            DefaultTableModel modelo = (DefaultTableModel) this.tblFunciones.getModel();
+            int indiceColumnaId = 0;
+            int idSocioSeleccionado = (int) modelo.getValueAt(indiceFilaSeleccionada,
+                    indiceColumnaId);
+            return idSocioSeleccionado;
+        } else {
+            return 0;
+        }
+    }
+
+    private void editar() {
+
+        try {
+            int id = this.getIdSeleccionadoTablaFunciones();
+            if (id == 0) {
+                throw new NegocioException("Por favor seleccione una funcion");
+            }
+            FuncionDTO funcionDTO = funcionNeg.buscarPorIdFuncion(id);
+            SalaDTO sala = salaNeg.obtenerSalaPorID(funcionDTO.getIdSala());
+            DlgEditarFuncion editarFuncion = new DlgEditarFuncion(this, true, salaNeg, funcionNeg, sucursalNeg, sucursal, pelicula, funcionDTO, sala);
+            editarFuncion.setVisible(true);
+            System.out.println(funcionDTO);
+            System.out.println(sala);
+
+            cargarFuncionesEnTabla();
+
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void eliminar() {
+
+        try {
+            int id = this.getIdSeleccionadoTablaFunciones();
+            if (id == 0) {
+                throw new NegocioException("Por favor seleccione una funcion");
+            }
+
+            int confirmacion = JOptionPane.showOptionDialog(this,
+                    "¿Está seguro de que desea eliminar este alumno?",
+                    "Confirmación de eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new Object[]{"Confirmar", "Cancelar"},
+                    "Confirmar");
+
+            // Si el usuario selecciona "Cancelar", no se hace nada
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+            funcionNeg.eliminarFuncion(funcionNeg.buscarPorIdFuncion(id));
+            cargarFuncionesEnTabla();
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnLogOutActionPerformed
+        int response = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea Continuar a Cerrar Sesion?",
+                "Cerrar Sesion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        // Verificar la respuesta del usuario
+        if (response == JOptionPane.YES_OPTION) {
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
+            newFrame.setVisible(true);
+        }    }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
-        Forms.cargarForm(new FrmCatalogo(peliculas, cliente, clienteNeg, pelicula), this);
+        Forms.cargarForm(new FrmCatalogoSucursalFuncion(funcionNeg, peliculaNeg, cliente, clienteNeg, pelicula, sucursal, ciudadNeg, sucursalNeg, paisNeg, salaNeg), this);
     }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void BtnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAtrasActionPerformed
-        LblDia.setText(Dias.obtenerDiaAnterior(LblDia.getText()));
+        LblDia.setText(obtenerDiaAnterior(LblDia.getText()));
+        this.cargarFuncionesEnTabla();
 
     }//GEN-LAST:event_BtnAtrasActionPerformed
 
@@ -318,22 +475,19 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
         LblDia.setText(obtenerDiaSiguiente(LblDia.getText()));
         this.cargarFuncionesEnTabla();
     }//GEN-LAST:event_BtnSiguienteActionPerformed
-    private String obtenerDiaActual() {
-        LocalDate hoy = LocalDate.now();
-        DayOfWeek dia = hoy.getDayOfWeek();
-        String nombreDia = dia.getDisplayName(TextStyle.FULL, Locale.getDefault());
-        String nombreDiaFormato = nombreDia.substring(0, 1).toUpperCase() + nombreDia.substring(1);
-        return nombreDiaFormato;
-    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DlgAgregarFuncion agregarFuncion = new DlgAgregarFuncion(this, true, salaNeg, funcionNeg, sucursalNeg, sucursal, pelicula);
+        agregarFuncion.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAtras;
     private javax.swing.JButton BtnLittleLogo;
-    private javax.swing.JButton BtnLocalizacion;
     private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;
     private javax.swing.JButton BtnPelicula1;
-    private javax.swing.JButton BtnPerfil;
     private javax.swing.JButton BtnSiguiente;
     private javax.swing.JLabel LblClasificacion;
     private javax.swing.JLabel LblDia;
@@ -341,10 +495,11 @@ public class FrmPeliculaFuncion extends javax.swing.JFrame {
     private javax.swing.JLabel LblPais;
     private javax.swing.JLabel LblTitulo;
     private javax.swing.JLabel LblTrailer1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblFunciones;
     // End of variables declaration//GEN-END:variables
 }

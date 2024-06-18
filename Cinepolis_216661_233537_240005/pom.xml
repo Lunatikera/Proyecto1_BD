@@ -54,6 +54,12 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker -->
+        <dependency>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.0</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

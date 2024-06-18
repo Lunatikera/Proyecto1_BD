@@ -6,7 +6,9 @@ package forms;
 
 import dtos.ClienteDTO;
 import dtos.PeliculaDTO;
+import dtos.SucursalDTO;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,8 +19,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import negocio.ICiudadNegocio;
 import negocio.IClienteNegocio;
+import negocio.IFuncionNegocio;
+import negocio.IPaisNegocio;
 import negocio.IPeliculaNegocio;
+import negocio.ISalaNegocio;
+import negocio.ISucursalNegocio;
 import negocio.NegocioException;
 import utilerias.Forms;
 import static utilerias.Utilidades.textoConSaltosLinea;
@@ -27,29 +34,44 @@ import static utilerias.Utilidades.textoConSaltosLinea;
  *
  * @author Usuario
  */
-public class FrmCatalogo extends javax.swing.JFrame {
+public class FrmCatalogoSucursalFuncion extends javax.swing.JFrame {
 
     private int pagina = 1;
     private final int LIMITE = 4;
     private JButton[] botones;
     private JLabel[] labels;
-    IClienteNegocio clienteNeg;
-    IPeliculaNegocio peliculas;
+    private IClienteNegocio clienteNeg;
+    private IPeliculaNegocio peliculaNeg;
+    private ICiudadNegocio ciudadNeg;
+    private ISucursalNegocio sucursalNeg;
+    private IPaisNegocio paisNeg;
+    private IFuncionNegocio funcionNeg;
+    private ISalaNegocio salaNeg;
     private PeliculaDTO pelicula;
     private ClienteDTO cliente;
+    public SucursalDTO sucursal;
+
     private List<PeliculaDTO> peliculasCargadas;
 
-    public FrmCatalogo(IPeliculaNegocio peliculas, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula) {
+    public FrmCatalogoSucursalFuncion(IFuncionNegocio funcionNeg, IPeliculaNegocio peliculaNeg, ClienteDTO cliente, IClienteNegocio clienteNeg, PeliculaDTO pelicula,
+            SucursalDTO sucursal, ICiudadNegocio ciudadNeg, ISucursalNegocio sucursalNeg, IPaisNegocio paisNeg, ISalaNegocio salaNeg) {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(this);
-        this.peliculas = peliculas;
+        this.peliculaNeg = peliculaNeg;
         this.cliente = cliente;
+        this.funcionNeg=funcionNeg;
         this.clienteNeg = clienteNeg;
         this.pelicula = pelicula;
+        this.sucursal = sucursal;
+        this.ciudadNeg = ciudadNeg;
+        this.sucursalNeg = sucursalNeg;
+        this.paisNeg = paisNeg;
+        this.salaNeg=salaNeg;
         botones = new JButton[]{BtnPelicula1, BtnPelicula2, BtnPelicula3, BtnPelicula4};
         labels = new JLabel[]{LblPelicula1, LblPelicula2, LblPelicula3, LblPelicula4};
         this.peliculasCargadas = new ArrayList<>();
+        lblSucursal.setText("Cartelera - " + sucursal.getNombre());
         this.cargarMetodosIniciales();
 
     }
@@ -75,12 +97,12 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLocalizacion = new javax.swing.JButton();
         BtnLogOut = new javax.swing.JButton();
         BtnLogo = new javax.swing.JButton();
-        lblAdmin = new javax.swing.JLabel();
+        BtnLittleLogo = new javax.swing.JButton();
         BtnPelicula4 = new javax.swing.JButton();
         BtnPelicula1 = new javax.swing.JButton();
         BtnPelicula2 = new javax.swing.JButton();
         BtnPelicula3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblSucursal = new javax.swing.JLabel();
         LblPelicula1 = new javax.swing.JLabel();
         LblPelicula2 = new javax.swing.JLabel();
         LblPelicula3 = new javax.swing.JLabel();
@@ -92,7 +114,8 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
         menupup.setBackground(new java.awt.Color(5, 16, 42));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cinepolis - Catalogo por Sucursal");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -113,6 +136,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLocalizacion.setBorder(null);
         BtnLocalizacion.setBorderPainted(false);
         BtnLocalizacion.setContentAreaFilled(false);
+        BtnLocalizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLocalizacionActionPerformed(evt);
+            }
+        });
 
         BtnLogOut.setBackground(new java.awt.Color(5, 16, 42));
         BtnLogOut.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
@@ -129,11 +157,12 @@ public class FrmCatalogo extends javax.swing.JFrame {
         BtnLogo.setBorderPainted(false);
         BtnLogo.setContentAreaFilled(false);
 
-        lblAdmin.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        lblAdmin.setText("Modo administrador");
-        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAdminMouseClicked(evt);
+        BtnLittleLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/undo (1).png"))); // NOI18N
+        BtnLittleLogo.setBorderPainted(false);
+        BtnLittleLogo.setContentAreaFilled(false);
+        BtnLittleLogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLittleLogoActionPerformed(evt);
             }
         });
 
@@ -142,16 +171,16 @@ public class FrmCatalogo extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(lblAdmin)
-                .addGap(110, 110, 110)
+                .addGap(24, 24, 24)
+                .addComponent(BtnLittleLogo)
+                .addGap(252, 252, 252)
                 .addComponent(BtnLogo)
                 .addGap(147, 147, 147)
                 .addComponent(BtnLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(BtnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -171,11 +200,11 @@ public class FrmCatalogo extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(BtnLogo)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblAdmin)
-                .addGap(38, 38, 38))
+                .addComponent(BtnLittleLogo)
+                .addGap(16, 16, 16))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 100));
@@ -208,9 +237,9 @@ public class FrmCatalogo extends javax.swing.JFrame {
         });
         jPanel1.add(BtnPelicula3, new org.netbeans.lib.awtextra.AbsoluteConstraints(489, 195, 163, 210));
 
-        jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 48)); // NOI18N
-        jLabel1.setText("Cartelera");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(372, 117, -1, 54));
+        lblSucursal.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 32)); // NOI18N
+        lblSucursal.setText("Cartelera");
+        jPanel1.add(lblSucursal, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 630, 54));
 
         LblPelicula1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
         LblPelicula1.setText("Titulo");
@@ -300,7 +329,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
     public void cargarPeliculas() {
         try {
-            List<PeliculaDTO> peliculasLista = this.peliculas.buscarPaginadoPeliculas(LIMITE, pagina);
+            List<PeliculaDTO> peliculasLista = this.peliculaNeg.buscarPeliculaSucursal(sucursal.getId(), LIMITE, pagina);
 
             peliculasCargadas.clear();
             peliculasCargadas.addAll(peliculasLista);
@@ -332,22 +361,28 @@ public class FrmCatalogo extends javax.swing.JFrame {
     }
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-        // TODO add your handling code here:
+        Forms.cargarForm(new FrmModoAdmin(funcionNeg, peliculaNeg, sucursalNeg, clienteNeg, paisNeg, ciudadNeg, salaNeg, pelicula, cliente, sucursal), this);
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogOutActionPerformed
         int response = JOptionPane.showConfirmDialog(
-                null,
-                "¿Está seguro de que desea cerrar sesión?",
-                "Confirmar cierre de sesión",
+                this,
+                "¿Desea Continuar a Cerrar Sesion?",
+                "Cerrar Sesion",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
 
+        // Verificar la respuesta del usuario
         if (response == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            for (Window window : Window.getWindows()) {
+                window.dispose();
+            }
+            FrmInicio newFrame = new FrmInicio(clienteNeg, peliculaNeg, ciudadNeg, paisNeg, sucursalNeg, funcionNeg, salaNeg);
+            newFrame.setVisible(true);
         }
-
+        // Si
+        // TODO add your handling code here:
     }//GEN-LAST:event_BtnLogOutActionPerformed
 
     private void BtnPaginaAnterior1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPaginaAnterior1ActionPerformed
@@ -368,36 +403,42 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private void BtnPelicula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula1ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(0);
         System.out.println(pelicula);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
-        libroForm.setVisible(true);
+        FrmPeliculaFuncion peliculaform = new FrmPeliculaFuncion(pelicula, funcionNeg, peliculaNeg, clienteNeg, salaNeg, cliente, sucursal, paisNeg, ciudadNeg);
+        peliculaform.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_BtnPelicula1ActionPerformed
 
     private void BtnPelicula2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula2ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(1);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
-        libroForm.setVisible(true);
+        FrmPeliculaFuncion peliculaform = new FrmPeliculaFuncion(pelicula, funcionNeg, peliculaNeg, clienteNeg, salaNeg, cliente, sucursal, paisNeg, ciudadNeg);
+        peliculaform.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula2ActionPerformed
 
     private void BtnPelicula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula3ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(2);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
-        libroForm.setVisible(true);
+        FrmPeliculaFuncion peliculaform = new FrmPeliculaFuncion(pelicula, funcionNeg, peliculaNeg, clienteNeg, salaNeg, cliente, sucursal, paisNeg, ciudadNeg);
+        peliculaform.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula3ActionPerformed
 
     private void BtnPelicula4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPelicula4ActionPerformed
         PeliculaDTO pelicula = peliculasCargadas.get(3);
-        FrmDetallesPelicula libroForm = new FrmDetallesPelicula(pelicula, peliculas, clienteNeg, cliente);
-        libroForm.setVisible(true);
+        FrmPeliculaFuncion peliculaform = new FrmPeliculaFuncion(pelicula, funcionNeg, peliculaNeg, clienteNeg, salaNeg, cliente, sucursal, paisNeg, ciudadNeg);
+        peliculaform.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnPelicula4ActionPerformed
 
-    private void lblAdminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMouseClicked
-        Forms.cargarForm(new FrmModoAdmin(peliculas, cliente, clienteNeg, pelicula), this);
-    }//GEN-LAST:event_lblAdminMouseClicked
+    private void BtnLocalizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLocalizacionActionPerformed
+        DlgUbicacion ubicacion = new DlgUbicacion(this, rootPaneCheckingEnabled, funcionNeg, clienteNeg, peliculaNeg, ciudadNeg, sucursalNeg, paisNeg, salaNeg, cliente, pelicula);
+        ubicacion.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnLocalizacionActionPerformed
+
+    private void BtnLittleLogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLittleLogoActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BtnLittleLogoActionPerformed
 
     private void estadoPagina() {
         String numPagina = String.valueOf(pagina);
@@ -421,8 +462,8 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
         try {
             BtnPaginaSiguiente1.setEnabled(true);
-            if (this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1) == null
-                    || this.peliculas.buscarPaginadoPeliculas(this.LIMITE, this.pagina + 1).isEmpty()) {
+            if (this.peliculaNeg.buscarPeliculaSucursal(sucursal.getId(), this.LIMITE, this.pagina + 1) == null
+                    || this.peliculaNeg.buscarPeliculaSucursal(sucursal.getId(), this.LIMITE, this.pagina + 1).isEmpty()) {
                 BtnPaginaSiguiente1.setEnabled(false);
             }
         } catch (NegocioException ex) {
@@ -432,6 +473,7 @@ public class FrmCatalogo extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnLittleLogo;
     private javax.swing.JButton BtnLocalizacion;
     private javax.swing.JButton BtnLogOut;
     private javax.swing.JButton BtnLogo;
@@ -447,11 +489,10 @@ public class FrmCatalogo extends javax.swing.JFrame {
     private javax.swing.JLabel LblPelicula2;
     private javax.swing.JLabel LblPelicula3;
     private javax.swing.JLabel LblPelicula4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel lblAdmin;
+    private javax.swing.JLabel lblSucursal;
     private javax.swing.JPopupMenu menupup;
     // End of variables declaration//GEN-END:variables
 }
